@@ -47,7 +47,7 @@ button{font:inherit;font-weight:700;background:var(--acc);color:#1c1712;border:0
 .p2 .ctl{display:none}
 .ctl div{display:flex;gap:10px}
 .ctl button{width:min(74px,calc(var(--zvw,1vw)*16));height:min(74px,calc(var(--zvw,1vw)*16));padding:0;font-size:26px;background:var(--panel);color:var(--fg);border:3px solid var(--fg);touch-action:none}
-.ctl button.on{background:var(--acc);color:#1c1712}
+.ctl button *{pointer-events:none}.ctl button.on{background:var(--acc);color:#1c1712}
 p{margin:0;font-size:13px;opacity:.75;text-align:center}
 html.nocur,html.nocur *{cursor:none!important}
 @media (orientation:landscape){
@@ -255,7 +255,7 @@ h1{font-size:23px;letter-spacing:7px}
 #cdn .cdb i{position:relative;width:34px;height:34px;border-radius:50%;background:#2b2e35;box-shadow:inset 0 3px 6px rgba(0,0,0,.65);--c:#ff3b2e}#cdn .cdb i:nth-child(2){--c:#ff9a1a}#cdn .cdb i:nth-child(3){--c:#ffd23d}#cdn .cdb.g i{--c:#46e05a}
 #cdn .cdb i::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fff 0 12%,var(--c) 45%);box-shadow:0 0 16px var(--c),0 0 4px var(--c);opacity:0;transform:scale(.55);transition:opacity .2s ease-out,transform .32s cubic-bezier(.3,1.5,.5,1)}#cdn .cdb i.l::after{opacity:1;transform:scale(1)}
 #cdn{--c1:#fff3b0;--c2:#ffcf3d;--c3:#a87400}#cdn[data-n="3"]{--c1:#ffd2c9;--c2:#ff3b2e;--c3:#9e1208}#cdn[data-n="2"]{--c1:#ffe2b4;--c2:#ff9a1a;--c3:#a35000}#cdn[data-n="1"]{--c1:#fff6c2;--c2:#ffd23d;--c3:#a87a00}#cdn[data-n="0"]{--c1:#dcffd4;--c2:#46e05a;--c3:#127a1d}
-#cdn b{position:relative;display:block;line-height:1;padding-right:.12em;isolation:isolate;color:#15110d;-webkit-text-stroke:11px #15110d;paint-order:stroke fill;text-shadow:0 3px 0 #15110d,0 6px 0 #15110d,0 9px 0 #15110d,0 13px 4px rgba(0,0,0,.5),0 0 34px var(--c2)}
+#cdn b{position:relative;display:block;line-height:1;padding-right:.12em;isolation:isolate;color:#15110d;text-shadow:5.5px 0 0 #15110d,-5.5px 0 0 #15110d,0 5.5px 0 #15110d,0 -5.5px 0 #15110d,3.9px 3.9px 0 #15110d,-3.9px 3.9px 0 #15110d,3.9px -3.9px 0 #15110d,-3.9px -3.9px 0 #15110d,5.5px 4.5px 0 #15110d,-5.5px 4.5px 0 #15110d,5.5px 9px 0 #15110d,-5.5px 9px 0 #15110d,0 14.5px 0 #15110d,3.9px 12.9px 0 #15110d,-3.9px 12.9px 0 #15110d,0 13px 4px rgba(0,0,0,.5),0 0 34px var(--c2)}
 #cdn b::before{content:attr(data-t);position:absolute;left:0;top:0;padding-right:.12em;-webkit-text-stroke:0;text-shadow:none;background:linear-gradient(168deg,transparent 38%,rgba(255,255,255,.6) 43%,transparent 50%),linear-gradient(180deg,#fff 0%,var(--c1) 26%,var(--c2) 58%,var(--c3) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 #cdn b::after{content:"";position:absolute;left:50%;top:50%;width:1.25em;height:1.25em;margin:-.625em 0 0 -.625em;border-radius:50%;border:.07em solid var(--c2);box-shadow:0 0 18px var(--c2);opacity:0;z-index:-1}
 #cdn b.z1{animation:cdz1 .55s both}#cdn b.z2{animation:cdz2 .55s both}#cdn b.z1::after{animation:cdr1 .7s cubic-bezier(.15,.7,.3,1) both}#cdn b.z2::after{animation:cdr2 .7s cubic-bezier(.15,.7,.3,1) both}
@@ -425,11 +425,11 @@ body.p3 .pts,body.p4 .pts{font-size:12px;padding:3px 9px}
 <label>Minimap-Größe <input type="range" id="t13" min=".6" max="2.2" step=".1"><span id="v13"></span></label>
 <label>Schadenszahlen <input type="checkbox" id="tdn"></label>
 </details>
-<div id="pk" data-v="pick"></div><small id="pkh" data-v="pick">Jeder Spieler mit seinem Controller: ↑↓ Feld · ←→ ändern · A oder Start bereit · B zurück · L1/R1 Farbe · L2/R2 Fahrzeug · □/△ Zweitfarbe · Tastatur: P1 WASD+Leertaste, P2 Pfeile+Enter</small><small id="hlp" data-v="main map cars set how stats">Steuerkreuz/Stick: wählen · links/rechts: ändern · A: bestätigen · B: zurück</small><small id="ver" data-v="main" style="display:block;text-align:right;font-size:10px;opacity:.45">v2026-11-13e</small><button id="bk" data-v="mode map cars set how pick stats">◀ Zurück</button></div></div>
+<div id="pk" data-v="pick"></div><small id="pkh" data-v="pick">Jeder Spieler mit seinem Controller: ↑↓ Feld · ←→ ändern · A oder Start bereit · B zurück · L1/R1 Farbe · L2/R2 Fahrzeug · □/△ Zweitfarbe · Tastatur: P1 WASD+Leertaste, P2 Pfeile+Enter</small><small id="hlp" data-v="main map cars set how stats">Steuerkreuz/Stick: wählen · links/rechts: ändern · A: bestätigen · B: zurück</small><small id="ver" data-v="main" style="display:block;text-align:right;font-size:10px;opacity:.45">v2026-11-14</small><button id="bk" data-v="mode map cars set how pick stats">◀ Zurück</button></div></div>
 <div class="ctl"><div><button data-k="l">◀</button><button data-k="r">▶</button></div><button data-k="h">📯</button><button data-k="s" style="display:none">💥</button><div><button data-k="b">▼</button><button data-k="g">▲</button></div></div>
 <p id="hint">Nitro am Handy: Gas halten und Finger nach oben wischen · Zum Spielen zu zweit: Handy quer halten oder an den Fernseher anschließen</p>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="musik.js?v=2026-11-13e"></script>
+<script src="musik.js?v=2026-11-14"></script>
 <script>
 /* Eigene Icons statt Emojis: ICO[name]=[Palette,Pfad(64er-Raster),Ebenen[[Pfad,Farbe 0=dunkel/1=hell/'#..']],evenodd]. Emojis in Texten über EMAP → <em class="ic k-name">; el.iT = textContent mit Icons */
 const ICPAL={hp:['#c8ffb8','#4fe06a','#1f8a35'],nt:['#c8f2ff','#39c6ff','#0f6f9e'],ab:['#e6c4ff','#a64dff','#5a1a9e'],ul:['#fff3a8','#ffc21e','#c27a00'],sh:['#ffffff','#c3cdd8','#5f6b79'],wu:['#ffc2a8','#ff4a3a','#9e1a10'],or:['#ffe6a8','#ff8a1e','#b8360a'],bz:['#ffd8b0','#d0803a','#7a3a10'],gy:['#c8d0d8','#6a737d','#23282e'],pk:['#ffd0ec','#ff4fb0','#a01a6a']};
@@ -1124,8 +1124,8 @@ function shieldFx(c){
   const o=c.o;if(!o.shm){const m=new THREE.Mesh(new THREE.SphereGeometry(1,32,20),new THREE.ShaderMaterial({uniforms:{uT:{value:0},uO:{value:1},uHT:{value:1},uHD:{value:new THREE.Vector3(1,0,0)},uC:{value:new THREE.Color(0x8f9aa8)}},transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide,
     vertexShader:'varying vec3 vN,vV,vP;varying vec2 vU;void main(){vU=uv;vP=position;vN=normalize(normalMatrix*normal);vec4 mv=modelViewMatrix*vec4(position,1.);vV=-mv.xyz;gl_Position=projectionMatrix*mv;}',
     fragmentShader:'uniform float uT,uO,uHT;uniform vec3 uHD,uC;varying vec3 vN,vV,vP;varying vec2 vU;float hx(vec2 p){p=abs(p);return max(dot(p,vec2(.5,.866)),p.x);}void main(){float fr=pow(1.-abs(dot(normalize(vN),normalize(vV))),2.2);vec2 p=vU*vec2(28.,9.)*vec2(1.,1.732);vec2 r=vec2(1.,1.732),h=r*.5,a=mod(p,r)-h,b=mod(p-h,r)-h,g=dot(a,a)<dot(b,b)?a:b;float e=smoothstep(.40,.48,hx(g));float bd=smoothstep(.85,1.,sin(vP.y*5.-uT*.12))*.5;float an=acos(clamp(dot(normalize(vP),uHD),-1.,1.));float rp=smoothstep(.22,0.,abs(an-uHT*2.6))*(1.-uHT);float al=(.03+fr*.75+e*(.10+fr*.4+bd)+rp*(.45+e*.6))*uO;gl_FragColor=vec4(uC+vec3(.35)*(rp+fr*.3),min(al,1.));}'}));
-    m.scale.set(27,16,19);m.position.y=9;o.grp.add(m);o.shm=m}
-  const m=o.shm,U=m.material.uniforms;m.visible=true;if(c.shf===6&&SHDIR[c.shs]){U.uHD.value.fromArray(SHDIR[c.shs]);U.uHT.value=0}if(c.shf>0)c.shf--;U.uHT.value=Math.min(1,U.uHT.value+1/26);U.uT.value=camT;U.uO.value=c.sh<45?(Math.floor(c.sh/4)%2?.25:1):1;{const p=1+.03*Math.sin(camT*.2)+(1-U.uHT.value)*.05;m.scale.set(27*p,16*p,19*p)}
+    m.scale.set(25,17,25);m.position.y=9;o.grp.add(m);o.shm=m}
+  const m=o.shm,U=m.material.uniforms;m.visible=true;if(c.shf===6&&SHDIR[c.shs]){U.uHD.value.fromArray(SHDIR[c.shs]);U.uHT.value=0}if(c.shf>0)c.shf--;U.uHT.value=Math.min(1,U.uHT.value+1/26);U.uT.value=camT;U.uO.value=c.sh<45?(Math.floor(c.sh/4)%2?.25:1):1;{const p=1+.03*Math.sin(camT*.2)+(1-U.uHT.value)*.05;m.scale.set(25*p,17*p,25*p)}
 }
 function ramFx(c){const ca=Math.cos(c.a),sa=Math.sin(c.a),x=c.x-ca*20,y=c.y-sa*20,czo=Math.max(0,(c.z||0)-GH(x,y));for(let i=0;i<2;i++)fx(x+(Math.random()-.5)*8,y+(Math.random()-.5)*8,czo+6,-ca*1.2,-sa*1.2,.1,16,'f',34+Math.random()*14);fx(x,y,czo+6,0,0,0,5,'n',40);if(Math.random()<.6)pxl(x,y,czo+6,-ca*3+(Math.random()-.5)*2,-sa*3+(Math.random()-.5)*2,.4,18,fiM,2,.05)}
 function dashFx(c){fx(c.x,c.y,7,0,0,0,9,'n',34);fx(c.x,c.y,7,0,0,0,6,'n',18);pxl(c.x,c.y,7,-c.vx*.2,-c.vy*.2,.2,14,whM,2,0)}
@@ -1304,8 +1304,8 @@ function inp(i){
   let th=0,st=0,brk=0;
   if((wasd&&keys.w)||(arr&&keys.ArrowUp)||(i===0&&tc.g))th+=1;
   if((wasd&&keys.s)||(arr&&keys.ArrowDown)||(i===0&&tc.b)){th-=.6;brk=1}
-  if((wasd&&keys.d)||(arr&&keys.ArrowRight)||(i===0&&tc.r))st+=1;
-  if((wasd&&keys.a)||(arr&&keys.ArrowLeft)||(i===0&&tc.l))st-=1;
+  if((wasd&&keys.d)||(arr&&keys.ArrowRight)||(i===0&&tc.r&&!(tc.l&&tc.lst==='l')))st+=1;
+  if((wasd&&keys.a)||(arr&&keys.ArrowLeft)||(i===0&&tc.l&&!(tc.r&&tc.lst==='r')))st-=1;
   const nt0=(wasd&&keys[' '])||(arr&&keys.Enter)||(i===0&&(tc.n||tc.sn));const p=pads[i];
   if(p){const b=p.buttons,ax=p.axes[0]||0;
     if(Math.abs(ax)>.15)st+=ax;
@@ -1619,8 +1619,8 @@ addEventListener('keydown',e=>{keys[kn(e)]=1;if(e.key.startsWith('Arrow')||e.key
 addEventListener('keyup',e=>{keys[kn(e)]=0});
 addEventListener('blur',()=>{for(const k in keys)keys[k]=0;bgOff()});addEventListener('focus',()=>{if(!document.hidden)bgOn()});
 document.querySelectorAll('.ctl button').forEach(b=>{
-  const k=b.dataset.k,on=e=>{e.preventDefault();tc[k]=1;b.classList.add('on')},off=e=>{e.preventDefault();tc[k]=0;b.classList.remove('on')};
-  b.addEventListener('pointerdown',on);['pointerup','pointerleave','pointercancel'].forEach(n=>b.addEventListener(n,off));
+  const k=b.dataset.k,on=e=>{e.preventDefault();tc[k]=1;if(k==='l'||k==='r')tc.lst=k;b.classList.add('on')},off=e=>{e.preventDefault();tc[k]=0;b.classList.remove('on')};
+  b.addEventListener('pointerdown',on);if(k==='l'||k==='r'){b.addEventListener('pointerdown',e=>{try{b.releasePointerCapture(e.pointerId)}catch(x){}});b.addEventListener('pointerenter',e=>{if(e.pointerType==='touch'||e.buttons)on(e)})}['pointerup','pointerleave','pointercancel'].forEach(n=>b.addEventListener(n,off));
   b.addEventListener('contextmenu',e=>e.preventDefault());
   if(k==='g'){let y0=0;b.addEventListener('pointerdown',e=>{y0=e.clientY});b.addEventListener('pointermove',e=>{if(tc.g){tc.sn=y0-e.clientY>40?1:0;b.iT=tc.sn?'🔥':'▲';if(tc.sn){$('nh').hidden=true;try{localStorage.setItem('cdn','1')}catch(x){}}}});['pointerup','pointercancel'].forEach(n=>b.addEventListener(n,()=>{tc.sn=0;b.iT='▲'}))}
 });
