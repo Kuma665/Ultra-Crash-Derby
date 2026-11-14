@@ -428,11 +428,11 @@ body.p3 .pts,body.p4 .pts{font-size:12px;padding:3px 9px}
 <label>Minimap-Größe <input type="range" id="t13" min=".6" max="2.2" step=".1"><span id="v13"></span></label>
 <label>Schadenszahlen <input type="checkbox" id="tdn"></label>
 </details>
-<div id="pk" data-v="pick"></div><small id="pkh" data-v="pick">Jeder Spieler mit seinem Controller: ↑↓ Feld · ←→ ändern · A oder Start bereit · B zurück · L1/R1 Farbe · L2/R2 Fahrzeug · □/△ Zweitfarbe · Tastatur: P1 WASD+Leertaste, P2 Pfeile+Enter</small><small id="hlp" data-v="main map cars set how stats">Steuerkreuz/Stick: wählen · links/rechts: ändern · A: bestätigen · B: zurück</small><small id="ver" data-v="main" style="display:block;text-align:right;font-size:10px;opacity:.45">v2026-11-14c</small><button id="bk" data-v="mode map cars set how pick stats">◀ Zurück</button></div></div>
+<div id="pk" data-v="pick"></div><small id="pkh" data-v="pick">Jeder Spieler mit seinem Controller: ↑↓ Feld · ←→ ändern · A oder Start bereit · B zurück · L1/R1 Farbe · L2/R2 Fahrzeug · □/△ Zweitfarbe · Tastatur: P1 WASD+Leertaste, P2 Pfeile+Enter</small><small id="hlp" data-v="main map cars set how stats">Steuerkreuz/Stick: wählen · links/rechts: ändern · A: bestätigen · B: zurück</small><small id="ver" data-v="main" style="display:block;text-align:right;font-size:10px;opacity:.45">v2026-11-14d</small><button id="bk" data-v="mode map cars set how pick stats">◀ Zurück</button></div></div>
 <div class="ctl"><div><button data-k="l">◀</button><button data-k="r">▶</button></div><button data-k="h">📯</button><button data-k="s" style="display:none">💥</button><div><button data-k="b">▼</button><button data-k="g">▲</button></div></div>
 <p id="hint">Nitro am Handy: Gas halten und Finger nach oben wischen · Zum Spielen zu zweit: Handy quer halten oder an den Fernseher anschließen</p>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="musik.js?v=2026-11-14c"></script>
+<script src="musik.js?v=2026-11-14d"></script>
 <script>
 /* Eigene Icons statt Emojis: ICO[name]=[Palette,Pfad(64er-Raster),Ebenen[[Pfad,Farbe 0=dunkel/1=hell/'#..']],evenodd]. Emojis in Texten über EMAP → <em class="ic k-name">; el.iT = textContent mit Icons */
 const ICPAL={hp:['#c8ffb8','#4fe06a','#1f8a35'],nt:['#c8f2ff','#39c6ff','#0f6f9e'],ab:['#e6c4ff','#a64dff','#5a1a9e'],ul:['#fff3a8','#ffc21e','#c27a00'],sh:['#ffffff','#c3cdd8','#5f6b79'],wu:['#ffc2a8','#ff4a3a','#9e1a10'],or:['#ffe6a8','#ff8a1e','#b8360a'],bz:['#ffd8b0','#d0803a','#7a3a10'],gy:['#c8d0d8','#6a737d','#23282e'],pk:['#ffd0ec','#ff4fb0','#a01a6a']};
@@ -1768,8 +1768,8 @@ function dzSvg(k){const P=[[22,3,5,11],[24,0,5,11],[18,6,5,10],[24,1,6,10],[22,1
   for(const[j,R,B]of[[1,0,0],[3,1,0],[0,0,1],[2,1,1]]){const x=R?x1-1.5:x0-ww+1.5,h=k===4?H/2-2:wh,y=k===4?(B?ym+1:y0+1):(B?y1-H*.25:y0+H*.25)-wh/2;s+='<rect data-w="'+j+'" x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+ww+'" height="'+h.toFixed(1)+'" rx="1.5" fill="'+DZC[0]+'"'+S+'/>'}
   s+=pl([x0+t,y0,x1-t,y0,x1,fb-q,x0,fb-q],0)+pl([x0,fb+q,20-q,fb+q,20-q,bb-q,x0,bb-q],1)+pl([20+q,fb+q,x1,fb+q,x1,bb-q,20+q,bb-q],2)
     +pl([x0,bb+q,x1,bb+q,x1-1,y1,x0+1,y1],3);
-  if(k===4)s+='<rect x="18.8" y="'+(y0-6)+'" width="2.4" height="'+(ym-y0+6)+'" rx="1" fill="#000" opacity=".45"/><circle cx="20" cy="'+ym+'" r="'+(w*.27).toFixed(1)+'" fill="#000" opacity=".4"/>';
-  else s+='<rect x="'+(x0+2.5)+'" y="'+(fb+2.5).toFixed(1)+'" width="'+(w-5)+'" height="3.5" rx="1.2" fill="#000" opacity=".32"/><rect x="'+(x0+3)+'" y="'+(bb-5.5).toFixed(1)+'" width="'+(w-6)+'" height="2.6" rx="1" fill="#000" opacity=".28"/>';
+  if(k===4)s+='<circle data-z="4" cx="20" cy="'+ym+'" r="'+(w*.3).toFixed(1)+'" fill="'+DZC[0]+'"'+S+'/><rect x="18.8" y="'+(y0-6)+'" width="2.4" height="'+(ym-y0+6-w*.3).toFixed(1)+'" rx="1" fill="#0b0c0e"/>';
+  else{const rw=Math.max(7,w*.44),ry=fb+5,rh=bb-5.5-ry;s+='<rect x="'+(x0+2.5)+'" y="'+(fb+1.6).toFixed(1)+'" width="'+(w-5)+'" height="2.6" rx="1" fill="#000" opacity=".35"/><rect x="'+(x0+3)+'" y="'+(bb-4.6).toFixed(1)+'" width="'+(w-6)+'" height="2.2" rx="1" fill="#000" opacity=".3"/><rect data-z="4" x="'+(20-rw/2).toFixed(1)+'" y="'+ry.toFixed(1)+'" width="'+rw.toFixed(1)+'" height="'+rh.toFixed(1)+'" rx="2" fill="'+DZC[0]+'"'+S+'/>'}
   if(k===5)s+='<path d="M8 10L32 54M32 10L8 54" stroke="#fff" stroke-width="1.2" opacity=".4"/>';
   return s+'</svg>'}
 const DZE=[0,1,2,3].map(()=>{const d=document.createElement('div');d.className='dzh';d.style.display='none';$('feed').parentNode.appendChild(d);return d});
@@ -1780,7 +1780,7 @@ function dzUpd(){const B=document.body.classList,tch=!B.contains('gp')&&!B.conta
       e.style.right='calc('+((cols-1-col)/cols*100)+'% + 16px'+(col===cols-1?' + env(safe-area-inset-right,0px)':'')+')';e.style.bottom='calc('+((rows-row-1)/rows*100)+'% + 14px'+(row===rows-1?' + env(safe-area-inset-bottom,0px)':'')+')'}}
     if(e.style.display)e.style.display="";e.classList.toggle("sm",NP>1);e.classList.toggle('on',now-(c.dzt||0)<1600);
     const z=c.dz,f=c.dzf,dead=c.hp<=0,set=(el,id,v)=>{if(e._f[id]!==v){e._f[id]=v;el.setAttribute('fill',v)}};
-    e._z.forEach((el,j)=>{const L=dead?1:z?Math.min(1,z[j]/(c.hm*.42)):0;let v=DZC[Math.round(L*8)];if(f&&now-f[j]<200)v="#fff";else if(!dead&&L>=.85)v=pu?'#d6302a':DZC[8];set(el,j,v)});
+    e._z.forEach((el,j)=>{const L=dead?1:j===4?1-Math.max(0,c.hp)/c.hm:z?Math.min(1,z[j]/(c.hm*.42)):0;let v=DZC[Math.round(L*8)];if(f&&now-f[j]<200)v="#fff";else if(!dead&&L>=.85)v=pu?'#d6302a':DZC[8];set(el,j,v)});
     e._w.forEach(el=>{const j=+el.dataset.w,p=c.o&&c.o.ws&&c.o.ws[j],gone=!!(p&&p.parent!==c.o.grp);set(el,"w"+j,gone?"none":dead?DZC[8]:DZC[Math.round(Math.min(1,p?p.d||0:0)*8)]);if(e._f['o'+j]!==gone){e._f['o'+j]=gone;el.setAttribute('stroke-dasharray',gone?'2 1.5':'');el.setAttribute('opacity',gone?'.6':'1')}})})}
 /* Map-Vorschauen kurz nach dem Start im Hintergrund erzeugen (sonst ruckelt das erste Oeffnen der Map-Auswahl) */
 function mpvPre(){if(state!=='idle')return;let n=-1;for(let i=0;i<8;i++)if(!MPV[(i<4?'d':'r')+'-'+(i&3)]){n=i;break}if(n<0)return;if(!mpvB)snapRun([n&3],n<4?0:1);if(SCR==='map')mapSnap();setTimeout(mpvPre,200)}/* eine Map pro Schritt = nur kurze Hänger */
