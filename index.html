@@ -451,7 +451,7 @@ body #feed{gap:2px}body #feed div{font-size:12px;padding:3px 8px;letter-spacing:
 <label>Minimap-Größe <input type="range" id="t13" min=".6" max="2.2" step=".1"><span id="v13"></span></label>
 <label>Schadenszahlen <input type="checkbox" id="tdn"></label>
 </details>
-<div id="pk" data-v="pick"></div><small id="pkh" data-v="pick">Jeder Spieler mit seinem Controller: ↑↓ Feld · ←→ ändern · A oder Start bereit · B zurück · LB/RB Fahrzeug · Y Garage · X Zufall · Tastatur: P1 WASD+Leertaste, P2 Pfeile+Enter</small><small id="hlp" data-v="main map cars">A OK · B Zurück</small><small id="ver" data-v="main" style="display:block;text-align:right;font-size:10px;opacity:.45;cursor:pointer">v2026-11-16k</small><button id="bk" data-v="mode map cars set how pick stats">◀ Zurück<span id="bkg"></span></button></div></div>
+<div id="pk" data-v="pick"></div><small id="pkh" data-v="pick">Jeder Spieler mit seinem Controller: ↑↓ Feld · ←→ ändern · A oder Start bereit · B zurück · LB/RB Fahrzeug · Y Garage · X Zufall · Tastatur: P1 WASD+Leertaste, P2 Pfeile+Enter</small><small id="hlp" data-v="main map cars">A OK · B Zurück</small><small id="ver" data-v="main" style="display:block;text-align:right;font-size:10px;opacity:.45;cursor:pointer">v2026-11-16l</small><button id="bk" data-v="mode map cars set how pick stats">◀ Zurück<span id="bkg"></span></button></div></div>
 <div class="ctl"><div><button data-k="l">◀</button><button data-k="r">▶</button></div><button data-k="h">📯</button><button data-k="s" style="display:none">💥</button><div><button data-k="b">▼</button><button data-k="g">▲</button></div></div>
 <p id="hint">Nitro am Handy: Gas halten und Finger nach oben wischen · Zum Spielen zu zweit: Handy quer halten oder an den Fernseher anschließen</p>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -1011,7 +1011,7 @@ function mkCar(c,human,num,V,c2,cs){
 }
 const spM=new THREE.MeshBasicMaterial({color:0xffc030}),smM=new THREE.MeshBasicMaterial({color:0x333333,transparent:true,opacity:.55}),pG=new THREE.TetrahedronGeometry(1.7);
 
-const MMA=new Audio('menu_music.mp3?v=2026-11-16k');MMA.loop=true;MMA.preload='auto';
+const MMA=new Audio('menu_music.mp3?v=2026-11-16l');MMA.loop=true;MMA.preload='auto';
 let pMt=false,pFs=false,pMm=false,AC=null,rv,mnT=0,mns=0,mg,mus,sfx,nb,ds,ef,eg,eo,eo2,nextT=0,stp=0,muted=false,lc=0,ls=0;
 function audioInit(){
   if(AC){AC.resume();return}
@@ -1034,7 +1034,7 @@ let uiG=null,uiT=0;function uiSw(t,d,f0,f1,g,q){const s=AC.createBufferSource(),
 function uiPg(t,f,d,g){tone(t,f,f*.995,d,g,'sine',uiG);tone(t,f*2.76,f*2.74,d*.45,g*.45,'sine',uiG)}
 function sndUI(k){if(!AC||AC.state!=='running'||muted)return;const n=performance.now();if(n-uiT<60)return;uiT=n;if(!uiG){uiG=AC.createGain();uiG.connect(mg)}uiG.gain.value=TUNE.vs;const t=AC.currentTime;if(k==='m'){tone(t,240,120,.05,.12,'sine',uiG);nz(t,.02,5200,4,.07,'highpass',uiG);uiPg(t+.005,2100,.07,.035)}else if(k==='adj'){nz(t,.015,4500,4,.06,'highpass',uiG);nz(t+.035,.015,5500,4,.06,'highpass',uiG);tone(t,300,180,.04,.08,'sine',uiG);tone(t+.035,360,220,.04,.08,'sine',uiG)}else if(k==='ok'){nz(t,.022,2600,3,.135,'bandpass',uiG);nz(t+.04,.025,3600,3,.1,'bandpass',uiG);uiSw(t,.12,800,4200,.1,1.5);uiPg(t+.025,1320,.25,.06)}else if(k==='bk'){uiSw(t,.18,4200,500,.13,1.5);tone(t,420,160,.14,.12,'sine',uiG);nz(t,.04,900,.7,.08,'lowpass',uiG)}}
 /* Ingame-Musik als MP3: GMU[0]=Musik 1, GMU[1]=Musik 2 (Auswahl TUNE.mt). Gestreamt per Audio-Element, erst bei Bedarf geladen. Lautstärke/Stumm direkt am Element wie Menümusik MMA (kein createMediaElementSource: bleibt bei file:// stumm), folgt mus-Gain (Lautstärke, Ducking) und GMF (Sudden Death). Ladefehler → sichtbare Fehlermeldung + Synth-Ersatz. */
-let GMF=.8;const GMU=['ingame_music.mp3','ingame_music2.mp3'].map((f,i)=>{const a=new Audio();a.loop=true;a.preload='none';a.preservesPitch=false;a.fsrc=f+'?v=2026-11-16k';a.onerror=()=>{if(!a.src||a.mmf)return;a.mmf=1;setTimeout(()=>{throw new Error('Musik '+(i+1)+' lädt nicht (Code '+(a.error?a.error.code:'?')+')')})};return a});
+let GMF=.8;const GMU=['ingame_music.mp3','ingame_music2.mp3'].map((f,i)=>{const a=new Audio();a.loop=true;a.preload='none';a.preservesPitch=false;a.fsrc=f+'?v=2026-11-16l';a.onerror=()=>{if(!a.src||a.mmf)return;a.mmf=1;setTimeout(()=>{throw new Error('Musik '+(i+1)+' lädt nicht (Code '+(a.error?a.error.code:'?')+')')})};return a});
 function gmus(on){const k=TUNE.mt===1?1:0;for(let i=0;i<GMU.length;i++)if((!on||i!==k)&&!GMU[i].paused)GMU[i].pause();if(!on)return false;const a=GMU[k];if(a.mmf)return false;if(!a.src)a.src=a.fsrc;const v=muted?0:Math.min(1,GMF*1.25*(mus?mus.gain.value/.9:TUNE.vm));if(Math.abs(a.volume-v)>.005)a.volume=v;if(a.paused&&!(performance.now()<a.nt)){a.nt=performance.now()+800;a.play().then(()=>{a.nt=0},e=>{if(e&&(e.name==='NotAllowedError'||e.name==='AbortError'))return;a.mmf=1;setTimeout(()=>{throw new Error('Musik '+(k+1)+' spielt nicht ('+(e&&e.name)+')')})})}return true}
 function gt(f,t,d,g){for(const dt of[-14,0,14])for(const m of[1,1.498]){const o=AC.createOscillator(),e=AC.createGain();o.type='sawtooth';o.frequency.value=f*m;o.detune.value=dt;e.gain.setValueAtTime(g,t);e.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(e);e.connect(ds);o.start(t);o.stop(t+d+.02)}tone(t,f/2,f/2,d,.12,'sine',mus)}
 const BR2=[['0.00.00.0.003.1.','0.00.00.00.06.5.','0.00.00.0.003.1.','5.55.55.3.331.0.'],['00.00.00.00.3.31','00.00.00.00.6.65','00.00.00.00.3.31','55.55.55.33.33.1'],['0.......0.0.....','0.......0.0...6.','3.......3.3...1.','0.......0.0.5.6.'],['0000.000.0003311','0000.000.000665.','5555.555.333111.','0000.000.0000.c.']];
@@ -1096,7 +1096,7 @@ function init(n){RDY.forEach(r=>{r.l=0;r.s.visible=false});
     const sx=MAP===2?W/2+Math.cos(a)*HARBOR_X*.68:MAP===3?W/2+Math.cos(a)*QUARRY_EDGE*.62:MAP?W/2+Math.cos(a)*AX*.6:W/2+Math.cos(a)*660,sy=MAP===2?W/2+Math.sin(a)*HARBOR_Y*.68:MAP===3?W/2+Math.sin(a)*QUARRY_EDGE*.62:MAP?W/2+Math.sin(a)*BY*.27:W/2+Math.sin(a)*660,sa0=MAP?Math.atan2(W/2-sy,W/2-sx):a+Math.PI,grid=(TRACK_N-(i*7)%TRACK_N)%TRACK_N,pt=trackPoint(grid),prev=trackPoint(grid-1),next=trackPoint(grid+1),tx=next.x-prev.x,ty=next.y-prev.y,tl=Math.hypot(tx,ty)||1,nx=-ty/tl,ny=tx/tl,lane=(i%2?1:-1)*42,ta=Math.atan2(ty,tx);cars.push({x:RACE?pt.x+nx*lane:sx,y:RACE?pt.y+ny*lane:sy,a:RACE?ta:sa0,prog:0,tIdx:grid,ln:lane,fin:0,vx:0,vy:0,hp:V.hm,hm:V.hm,r:V.r,m:V.m,am:RACE?1+(V.a-1)/5+(V.r>20?.07:0):V.a,tm:RACE?1+(V.t-1)/5:V.t,z:0,vz:0,air:false,pvz:0,vk:VT.indexOf(V),hi:i<n?i:-1,team:GM===1?TA[i]:GM===2?(i<n?0:1):i,stuck:0,rev:0,dn:{f:0,b:0,l:0,r:0},acc:0,w:0,nt:100,rz:0,sc:Math.round(ABCD[VT.indexOf(V)]/2),ul:0,ui:0,p:0,k:0,lh:null,lt:0,pw:(.205+Math.random()*.02)*[.8,.9,1,.95][TUNE.bd|0],o:mkCar(...(MK[i]=[cc,i<n,i+1,V,GM===1?TCD[TA[i]]:i<n?SEL[i].c2:new THREE.Color().setHSL((i*.137+.55)%1,.55,.4).getHex(),i<n?gsOf(i,VT.indexOf(V)).slice():undefined]))});
     cars[i].ca=cars[i].a}
   applyWeather(1);HLS.forEach(l=>S.remove(l));HLS=[];if(WX>=2||(TUNE.wx|0)===6){cars.forEach((c,i)=>{if(i<n){const sp=new THREE.SpotLight(0xfff2c0,1.8,340,.55,.6,1);sp.position.set(17,8,0);sp.target.position.set(90,0,0);c.o.grp.add(sp);c.o.grp.add(sp.target);c.o.sp=sp}});if(WX===2||(TUNE.wx|0)===6&&WXB===2)[[.3,.3],[-.3,.3],[.3,-.3],[-.3,-.3]].forEach(([a,b])=>{const pl2=new THREE.PointLight(0xfff0d0,.9,1100,1);pl2.position.set(a*W,160,b*W);S.add(pl2);HLS.push(pl2)})}if((TUNE.wx|0)===6)wxApply();
-  setRaceWalls();RWL.forEach(m=>m.visible=!!RACE);if(PADM)PADM.visible=!!RACE;if(RSTR)RSTR.visible=!!RACE;OB.forEach((o,i)=>o.m.visible=!RACE&&MAP===0&&(i?TUNE.ob===1:true));CN.forEach(n=>n.m.visible=!RACE&&MAP!==1);applyMap();clearTimeout(cdClr);cdShow(-1);cdT=180;shake=0;kick=0;ITR=ITS&&itrKey()===ITK?0:ITN;ITS=0;ITU=0;finN=0;
+  setRaceWalls();RWL.forEach(m=>m.visible=!!RACE);if(PADM)PADM.visible=!!RACE;if(RSTR)RSTR.visible=!!RACE;OB.forEach((o,i)=>o.m.visible=!RACE&&MAP===0&&(i?TUNE.ob===1:true));CN.forEach(n=>n.m.visible=!RACE&&MAP!==1);applyMap();clearTimeout(cdClr);cdShow(-1);cdT=180;BWT=120;shake=0;kick=0;ITR=ITS&&itrKey()===ITK?0:ITN;ITS=0;ITU=0;finN=0;
   LQ={dm:DM,dmap:DMAP,rmap:RMAP,r:RACE};try{localStorage.setItem('cdl',JSON.stringify(LQ))}catch(x){}
   if(!(RACE&&CUP.on&&CUP.i>0))rollNames();
   SDN=0;if(SDM)SDM.forEach(m=>m.visible=false);
@@ -1473,14 +1473,14 @@ function inp(i){
 }
 function botNit(c,want){if(c.bn>0){c.bn--;return want}c.bc=(c.bc|0)-1;if(want&&c.bc<=0&&c.nt>65){c.bn=30+(Math.random()*30|0);c.bc=[260,260,120,190][TUNE.bd|0]+(Math.random()*[180,180,100,140][TUNE.bd|0]|0);return true}return false}
 function botAb(c,t,d){
-  if(c.sc>0||c.hp<=0)return 0;
+  if(c.sc>0||c.hp<=0||BWT>0)return 0;/* BWT: Bots warten nach LOS kurz mit Fähigkeiten */
   const lv=TUNE.bd|0;if(Math.random()>[.025,.05,.1,.075][lv])return 0;
   if(!t){let bd=1e9;for(const o of cars){if(o===c||o.hp<=0||ally(o,c))continue;const e=Math.hypot(o.x-c.x,o.y-c.y);if(e<bd){bd=e;t=o}}if(!t)return 0;d=nrm(Math.atan2(t.y-c.y,t.x-c.x)-c.a)}
   const dd=Math.hypot(t.x-c.x,t.y-c.y),ad=Math.abs(d);let n=0;
   for(const o of cars){if(o===c||o.hp<=0||ally(o,c))continue;if(Math.hypot(o.x-c.x,o.y-c.y)<150)n++}
   switch(c.vk){
     case 0:{/* Konter: Gegner kommt schnell auf mich zu (oder ich ramme ihn gleich) */const ap=((t.vx-c.vx)*(c.x-t.x)+(t.vy-c.vy)*(c.y-t.y))/(dd||1);return dd<c.r+t.r+[40,55,70,65][lv]&&(ap>2.5||ad<.3&&Math.hypot(c.vx,c.vy)>3)?1:0}
-    case 8:{let hu=0;if(!RACE)for(const o of cars)if(o!==c&&o.hp>0&&ally(o,c)&&o.hp<o.hm*.6&&Math.hypot(o.x-c.x,o.y-c.y)<150){hu=1;break}return hu||dd<150&&(c.hp<c.hm*[.7,.7,.9,.8][lv]||n>1)?1:0}
+    case 8:{let hu=0;if(!RACE)for(const o of cars)if(o!==c&&o.hp>0&&ally(o,c)&&o.hp<o.hm*.6&&Math.hypot(o.x-c.x,o.y-c.y)<150){hu=1;break}return hu||dd<150&&c.hp<c.hm*.97&&(c.hp<c.hm*[.7,.7,.9,.8][lv]||n>1)?1:0}
     case 9:{/* PIT: Gegner nah vor mir, möglichst von hinten/seitlich (gleiche Fahrtrichtung) */const sd=Math.abs(nrm(t.a-c.a));return dd<[120,150,170,160][lv]&&ad<.4&&(sd<1.3||n>1||lv>1)?1:0}
     case 1:return dd<150&&ad<.3?1:0;
     case 2:return dd>90&&dd<220&&ad<.25?1:0;
@@ -1535,7 +1535,7 @@ function control(c){if(state==='play'&&endT>0&&!RACE&&c.hp>0&&aliveCars.length==
 }
 function step(){wxStep();
   for(const c of cars)if(c.hi>=0){const h=c.phi||(c.phi={i:0,b:new Float32Array(64)}),j=(h.i++&15)*4;h.b[j]=c.x;h.b[j+1]=c.y;h.b[j+2]=c.vx;h.b[j+3]=c.vy}
-  itemStep();zoneStep();oilStep();brlStep();lowHp();rspStep();tipStep();skidStep();dustStep();if(RACE&&!(cdT>0)&&state==='play')RCT++;
+  itemStep();zoneStep();oilStep();brlStep();lowHp();rspStep();tipStep();skidStep();dustStep();if(RACE&&!(cdT>0)&&state==='play')RCT++;if(!(cdT>0)&&BWT>0)BWT--;
   if(cdT>0){cdT--;cdShow(cdT>0?Math.ceil(cdT/60):0);
     for(const c of cars){if(c.hi<0||c.hp<=0)continue;const ip0=inp(c.hi),th=ip0[0]>.5;if(ip0[3]&&!c.hh)honk(c);c.hh=ip0[3];/* Hupen auch im Countdown */if(th&&!c.tsf)c.tsf=cdT+1;else if(!th)c.tsf=0;if(!cdT&&c.tsf){const ca=Math.cos(c.a),sa=Math.sin(c.a);if(c.tsf<=40){c.vx+=ca*5*TUNE.spd;c.vy+=sa*5*TUNE.spd;pmsg(c.hi,'🚀 Perfekter Start!','#46e05a');ach('ps');try{const s=JSON.parse(localStorage.getItem('cdst')||'{}');s.ps=(s.ps|0)+1;localStorage.setItem('cdst',JSON.stringify(s))}catch(x){}c.bst=75;boostFx(c,1);for(let q=0;q<(NP>2?6:14);q++)add(c.x-ca*14+(Math.random()-.5)*16,c.y-sa*14+(Math.random()-.5)*16,3,-ca*(1+Math.random()*2)+(Math.random()-.5),-sa*(1+Math.random()*2)+(Math.random()-.5),.3,30,dsM)}else{c.w=(Math.random()-.5)*.08;pmsg(c.hi,'💨 Fehlstart!','#e0a100');for(let q=0;q<(NP>2?5:12);q++)add(c.x-ca*12+(Math.random()-.5)*14,c.y-sa*12+(Math.random()-.5)*14,2,(Math.random()-.5)*1.2,(Math.random()-.5)*1.2,.4,40,dsM)}c.tsf=0}}if(AC&&cdT%60===0)tone(AC.currentTime,cdT?600:900,cdT?600:900,.18,.35,'square');if(!cdT){clearTimeout(cdClr);cdClr=setTimeout(()=>cdShow(-1),550)}}
   for(const c of cars){
@@ -1744,7 +1744,7 @@ function resize(){pzR=1;const caps=NP>3?[.8,1,1.2]:NP>2?[1,1.2,1.4]:[1.5,2,2];R.
 addEventListener('resize',resize);addEventListener('orientationchange',()=>setTimeout(resize,300));document.addEventListener('fullscreenchange',()=>setTimeout(resize,150));if(window.ResizeObserver)new ResizeObserver(resize).observe(cv);
 let HST=0,last=0,acc=0,ts=1,camT=0,pOp=false,pC=false,pLB=false,pRB=false,pCs=[]
 /* Start-Intro: Kamera-Überflug vor dem Countdown (ITR = Frames übrig von ITN), nur „Nochmal starten“ (ITS) mit gleicher Map (ITK) ohne Intro; überspringen per Taste/Tippen/Controller (ITU = Knöpfe einmal losgelassen); ITC = Body-Klasse itr aktiv */
-let ITR=0,ITK=null,ITU=0,ITC=false,ITS=0;const ITN=220,ITD=[700,480,820,850],ITV=new THREE.Vector3(),ITP=new THREE.Vector3(),ITQ=new THREE.Vector3();
+let ITR=0,ITK=null,ITU=0,ITC=false,ITS=0,BWT=0;const ITN=220,ITD=[700,480,820,850],ITV=new THREE.Vector3(),ITP=new THREE.Vector3(),ITQ=new THREE.Vector3();
 function itrA(){return ITR>0&&(state==='play'||state==='paused')}
 function itrKey(){return (RACE?'r':'d')+MAP}
 function itrEnd(){ITR=0;ITK=itrKey()}
