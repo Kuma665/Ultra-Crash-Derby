@@ -454,6 +454,7 @@ body #feed{gap:2px}body #feed div{font-size:12px;padding:3px 8px;letter-spacing:
 <label>Runden <select id="t15"><option value="0">Auto (Strecke)</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></label>
 <label>Items <select id="t14"><option value="0">Aus</option><option value="1">Wenig</option><option value="2">Normal</option><option value="3">Viele</option></select></label>
 <label>Items im Rennen <input type="checkbox" id="t16"></label>
+<label>Feigling-Regel <input type="checkbox" id="tfg"></label>
 <label>Wetter <select id="t6"><option value="0">Tag</option><option value="1">Abend</option><option value="2">Nacht</option><option value="3">Regen</option><option value="4">Sandsturm</option><option value="5">Zufall</option><option value="6">Wechselnd</option></select></label>
 <label>Bot-Namen <select id="tbn"><option value="0">Deutsch</option><option value="1">Aramäisch</option></select></label>
 <div class="sh">🔊 Ton</div>
@@ -472,7 +473,7 @@ body #feed{gap:2px}body #feed div{font-size:12px;padding:3px 8px;letter-spacing:
 <label>Minimap-Größe <input type="range" id="t13" min=".6" max="2.2" step=".1"><span id="v13"></span></label>
 <label>Schadenszahlen <input type="checkbox" id="tdn"></label>
 </details>
-<div id="pk" data-v="pick"></div><small id="pkh" data-v="pick">Jeder Spieler mit seinem Controller: ↑↓ Feld · ←→ ändern · A oder Start bereit · B zurück · LB/RB Fahrzeug · Y Garage · X Zufall · Tastatur: P1 WASD+Leertaste, P2 Pfeile+Enter</small><small id="hlp" data-v="main map cars">A OK · B Zurück</small><small id="ver" data-v="main" style="display:block;text-align:right;font-size:10px;opacity:.45;cursor:pointer">v2026-11-17s</small><button id="bk" data-v="mode map cars set how pick stats">◀ Zurück<span id="bkg"></span></button></div></div>
+<div id="pk" data-v="pick"></div><small id="pkh" data-v="pick">Jeder Spieler mit seinem Controller: ↑↓ Feld · ←→ ändern · A oder Start bereit · B zurück · LB/RB Fahrzeug · Y Garage · X Zufall · Tastatur: P1 WASD+Leertaste, P2 Pfeile+Enter</small><small id="hlp" data-v="main map cars">A OK · B Zurück</small><small id="ver" data-v="main" style="display:block;text-align:right;font-size:10px;opacity:.45;cursor:pointer">v2026-11-17t</small><button id="bk" data-v="mode map cars set how pick stats">◀ Zurück<span id="bkg"></span></button></div></div>
 <div class="ctl"><div><button data-k="l">◀</button><button data-k="r">▶</button></div><button data-k="h">📯</button><button data-k="s" style="display:none">💥</button><div><button data-k="b">▼</button><button data-k="g">▲</button></div></div>
 <p id="hint">Nitro am Handy: Gas halten und Finger nach oben wischen · Zum Spielen zu zweit: Handy quer halten oder an den Fernseher anschließen</p>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -1431,7 +1432,7 @@ function respawn(c){const i=cars.indexOf(c),a=MK[i];if(!a)return;const old=c.o;c
   if(c.hi>=0){pmsg(c.hi,'🔧 Zurück im Spiel!','#46e05a');rumble(c.hi,3)}}
 function rspStep(){if(!RSPM()||state!=='play'||cdT>0)return;for(const c of cars){if(c.hp>0)continue;if(!(c.rsp>0)){c.rsp=180;if(c.hi>=0)pmsg(c.hi,'⏳ Zurück in 3 s','#dddddd');continue}if(--c.rsp===0)respawn(c)}}
 /* Anti-Weglaufen (Derby, GM 0-2): c.sbt = Schritte seit letztem Treffer an einem Gegner; ab SBW Warnung, ab SBM markiert (Minikarte roter Blinkring, +25 % Schaden in hurt, Bots jagen bevorzugt) */
-const SBW=720,SBM=900;let SBC=0;/* SBC = gerade Auto-Auto-Stoß: Markierung nur weg, wenn der Angreifer selbst auf den anderen zufuhr (c.sbv) */function sbStep(){if(RACE||GM>2||state!=='play')return;for(const c of cars){if(cdT>0||c.hp<=0){c.sbt=0;continue}const n=c.sbt=(c.sbt||0)+1;if(n>=SBM)c.sbs=(c.sbs|0)+1;if(n===SBM)sndBoo();if(c.hi>=0){if(n===SBW)pmsg(c.hi,'Angreifen! Sonst wirst du markiert','#ffb020');else if(n===SBM)pmsg(c.hi,'Markiert! Verwundbar, keine Items','#ff3b2a')}}}
+const SBW=720,SBM=900;let SBC=0;/* SBC = gerade Auto-Auto-Stoß: Markierung nur weg, wenn der Angreifer selbst auf den anderen zufuhr (c.sbv) */function sbStep(){if(RACE||GM>2||state!=='play')return;if(TUNE.fg===0){for(const c of cars)c.sbt=0;return}for(const c of cars){if(cdT>0||c.hp<=0){c.sbt=0;continue}const n=c.sbt=(c.sbt||0)+1;if(n>=SBM)c.sbs=(c.sbs|0)+1;if(n===SBM)sndBoo();if(c.hi>=0){if(n===SBW)pmsg(c.hi,'Angreifen! Sonst wirst du markiert','#ffb020');else if(n===SBM)pmsg(c.hi,'Markiert! Verwundbar, keine Items','#ff3b2a')}}}
 function zoneStep(){frStep();sbStep();if(!ZM)return;ZM.visible=GM===4&&state!=='idle';if(GM!==4||state!=='play'||cdT>0)return;
   if(--ZN.t<=0){zMove();feed('👑 Die Zone wandert!','#ffd23d');if(AC){const t=AC.currentTime;tone(t,520,780,.22,.16,'triangle');tone(t+.12,780,1040,.22,.13,'triangle')}}
   const bl=ZN.t<180&&((ZN.t/8|0)&1);ZW.material.opacity=bl?.05:.17+.05*Math.sin(ZN.f*.1);ZB.material.opacity=bl?.15:.5;ZG.opacity=bl?.25:.75;
@@ -1820,7 +1821,7 @@ $('mb').onclick=()=>{TUNE.mm=TUNE.mm===0?1:0;$('t11').checked=TUNE.mm!==0;try{lo
 {const e=$('taa');e.checked=TUNE.aa!==0;e.onchange=()=>{TUNE.aa=e.checked?1:0;try{localStorage.setItem('cdt',JSON.stringify(TUNE))}catch(x){}location.reload()}}
 {const e=$('tq');e.value=TUNE.q===undefined?2:TUNE.q|0;e.onchange=()=>{TUNE.q=+e.value;txApply();if(TUNE.q===3){AQ=2;qCool=240}try{localStorage.setItem('cdt',JSON.stringify(TUNE))}catch(x){}PQ=NP>2?[.08,.12,.2][QQ()]:NP>1?.75:1;sun.castShadow=NP<3&&TUNE.sh!==0&&(TUNE.q===3||QQ()>0);RSC=1;resize()}}
 {const e=$('tsh');e.checked=TUNE.sh!==0;e.onchange=()=>{TUNE.sh=e.checked?1:0;sun.castShadow=NP<3&&TUNE.sh!==0&&QQ()>0;try{localStorage.setItem('cdt',JSON.stringify(TUNE))}catch(x){}}}
-{const e=$('tdn');e.checked=TUNE.dn!==0;e.onchange=()=>{TUNE.dn=e.checked?1:0;try{localStorage.setItem('cdt',JSON.stringify(TUNE))}catch(x){}}}{const e=$('t11');e.checked=TUNE.mm!==0;e.onchange=()=>{TUNE.mm=e.checked?1:0;try{localStorage.setItem('cdt',JSON.stringify(TUNE))}catch(x){}}}
+{const e=$('tfg');e.checked=TUNE.fg!==0;e.onchange=()=>{TUNE.fg=e.checked?1:0;try{localStorage.setItem('cdt',JSON.stringify(TUNE))}catch(x){}}}{const e=$('tdn');e.checked=TUNE.dn!==0;e.onchange=()=>{TUNE.dn=e.checked?1:0;try{localStorage.setItem('cdt',JSON.stringify(TUNE))}catch(x){}}}{const e=$('t11');e.checked=TUNE.mm!==0;e.onchange=()=>{TUNE.mm=e.checked?1:0;try{localStorage.setItem('cdt',JSON.stringify(TUNE))}catch(x){}}}
 {const e=$('t10');e.value=TUNE.vib;$('v10').textContent=Math.round(TUNE.vib*100)+'%';e.oninput=()=>{TUNE.vib=+e.value;$('v10').textContent=Math.round(TUNE.vib*100)+'%';rumble(0,6);try{localStorage.setItem('cdt',JSON.stringify(TUNE))}catch(x){}}}
 {const e=$('t16');e.checked=TUNE.ri!==0;e.onchange=()=>{TUNE.ri=e.checked?1:0;try{localStorage.setItem('cdt',JSON.stringify(TUNE))}catch(x){}}}
 {const e=$('t14');e.value=TUNE.iq|0;e.onchange=()=>{TUNE.iq=+e.value;try{localStorage.setItem('cdt',JSON.stringify(TUNE))}catch(x){}}}
