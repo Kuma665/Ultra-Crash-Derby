@@ -472,7 +472,7 @@ body #feed{gap:2px}body #feed div{font-size:12px;padding:3px 8px;letter-spacing:
 <label>Minimap-Größe <input type="range" id="t13" min=".6" max="2.2" step=".1"><span id="v13"></span></label>
 <label>Schadenszahlen <input type="checkbox" id="tdn"></label>
 </details>
-<div id="pk" data-v="pick"></div><small id="pkh" data-v="pick">Jeder Spieler mit seinem Controller: ↑↓ Feld · ←→ ändern · A oder Start bereit · B zurück · LB/RB Fahrzeug · Y Garage · X Zufall · Tastatur: P1 WASD+Leertaste, P2 Pfeile+Enter</small><small id="hlp" data-v="main map cars">A OK · B Zurück</small><small id="ver" data-v="main" style="display:block;text-align:right;font-size:10px;opacity:.45;cursor:pointer">v2026-11-17i</small><button id="bk" data-v="mode map cars set how pick stats">◀ Zurück<span id="bkg"></span></button></div></div>
+<div id="pk" data-v="pick"></div><small id="pkh" data-v="pick">Jeder Spieler mit seinem Controller: ↑↓ Feld · ←→ ändern · A oder Start bereit · B zurück · LB/RB Fahrzeug · Y Garage · X Zufall · Tastatur: P1 WASD+Leertaste, P2 Pfeile+Enter</small><small id="hlp" data-v="main map cars">A OK · B Zurück</small><small id="ver" data-v="main" style="display:block;text-align:right;font-size:10px;opacity:.45;cursor:pointer">v2026-11-17j</small><button id="bk" data-v="mode map cars set how pick stats">◀ Zurück<span id="bkg"></span></button></div></div>
 <div class="ctl"><div><button data-k="l">◀</button><button data-k="r">▶</button></div><button data-k="h">📯</button><button data-k="s" style="display:none">💥</button><div><button data-k="b">▼</button><button data-k="g">▲</button></div></div>
 <p id="hint">Nitro am Handy: Gas halten und Finger nach oben wischen · Zum Spielen zu zweit: Handy quer halten oder an den Fernseher anschließen</p>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -1422,7 +1422,7 @@ function respawn(c){const i=cars.indexOf(c),a=MK[i];if(!a)return;const old=c.o;c
   if(c.hi>=0){pmsg(c.hi,'🔧 Zurück im Spiel!','#46e05a');rumble(c.hi,3)}}
 function rspStep(){if(!RSPM()||state!=='play'||cdT>0)return;for(const c of cars){if(c.hp>0)continue;if(!(c.rsp>0)){c.rsp=180;if(c.hi>=0)pmsg(c.hi,'⏳ Zurück in 3 s','#dddddd');continue}if(--c.rsp===0)respawn(c)}}
 /* Anti-Weglaufen (Derby, GM 0-2): c.sbt = Schritte seit letztem Treffer an einem Gegner; ab SBW Warnung, ab SBM markiert (Minikarte roter Blinkring, +25 % Schaden in hurt, Bots jagen bevorzugt) */
-const SBW=720,SBM=900;function sbStep(){if(RACE||GM>2||state!=='play')return;for(const c of cars){if(cdT>0||c.hp<=0){c.sbt=0;continue}const n=c.sbt=(c.sbt||0)+1;if(c.hi>=0){if(n===SBW)pmsg(c.hi,'Angreifen! Sonst wirst du markiert','#ffb020');else if(n===SBM)pmsg(c.hi,'Markiert! Mehr Schaden, keine Items','#ff3b2a')}}}
+const SBW=720,SBM=900;function sbStep(){if(RACE||GM>2||state!=='play')return;for(const c of cars){if(cdT>0||c.hp<=0){c.sbt=0;continue}const n=c.sbt=(c.sbt||0)+1;if(c.hi>=0){if(n===SBW)pmsg(c.hi,'Angreifen! Sonst wirst du markiert','#ffb020');else if(n===SBM)pmsg(c.hi,'Markiert! Verwundbar, keine Items','#ff3b2a')}}}
 function zoneStep(){frStep();sbStep();if(!ZM)return;ZM.visible=GM===4&&state!=='idle';if(GM!==4||state!=='play'||cdT>0)return;
   if(--ZN.t<=0){zMove();feed('👑 Die Zone wandert!','#ffd23d');if(AC){const t=AC.currentTime;tone(t,520,780,.22,.16,'triangle');tone(t+.12,780,1040,.22,.13,'triangle')}}
   const bl=ZN.t<180&&((ZN.t/8|0)&1);ZW.material.opacity=bl?.05:.17+.05*Math.sin(ZN.f*.1);ZB.material.opacity=bl?.15:.5;ZG.opacity=bl?.25:.75;
