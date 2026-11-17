@@ -466,11 +466,10 @@ body.p2 #feed{max-width:44%}body.p2 #feed div{white-space:normal;text-align:cent
 <label>Feuerring <select id="tfr"><option value="0">Aus</option><option value="-1">Sofort</option><option value="60">Nach 1 Min</option><option value="90">Nach 1:30 Min</option><option value="120">Nach 2 Min</option><option value="180">Nach 3 Min</option></select></label>
 <label>Wetter <select id="t6"><option value="0">Tag</option><option value="1">Abend</option><option value="2">Nacht</option><option value="3">Regen</option><option value="4">Sandsturm</option><option value="5">Zufall</option><option value="6">Wechselnd</option></select></label>
 <label>Bot-Namen <select id="tbn"><option value="0">Deutsch</option><option value="1">Aramäisch</option></select></label>
-<div class="sh">🔊 Ton</div>
+<div class="sh">🔊 Ton &amp; Vibration</div>
 <label>Musik <input type="range" id="t7" min="0" max="1" step=".05"><span id="v7"></span></label>
 <label>Soundeffekte <input type="range" id="t8" min="0" max="1" step=".05"><span id="v8"></span></label>
 <label id="mtRow">Musik <select id="t12"><option value="0">Musik 1</option><option value="1">Musik 2</option></select></label>
-<div class="sh">🕹 Steuerung</div>
 <label>Vibration <input type="range" id="t10" min="0" max="2" step=".1"><span id="v10"></span></label>
 <div class="sh">🖼 Grafik &amp; Anzeige</div>
 <label>Grafikqualität <select id="tq"><option value="0">Niedrig</option><option value="1">Mittel</option><option value="2">Hoch</option><option value="3">Auto</option></select></label>
@@ -481,7 +480,7 @@ body.p2 #feed{max-width:44%}body.p2 #feed div{white-space:normal;text-align:cent
 <label>Schadenszahlen <input type="checkbox" id="tdn"></label>
 <button id="trs">↺ Alles auf Standard zurücksetzen</button>
 </details>
-<div id="pk" data-v="pick"></div><small id="pkh" data-v="pick">Jeder Spieler mit seinem Controller: ↑↓ Feld · ←→ ändern · A oder Start bereit · B zurück · LB/RB Fahrzeug · Y Garage · X Zufall · Tastatur: P1 WASD+Leertaste, P2 Pfeile+Enter</small><small id="hlp" data-v="main map cars">A OK · B Zurück</small><small id="ver" data-v="main" style="display:block;text-align:right;font-size:10px;opacity:.45;cursor:pointer">v2026-11-18c</small><button id="bk" data-v="mode map cars set how pick stats">◀ Zurück<span id="bkg"></span></button></div></div>
+<div id="pk" data-v="pick"></div><small id="pkh" data-v="pick">Jeder Spieler mit seinem Controller: ↑↓ Feld · ←→ ändern · A oder Start bereit · B zurück · LB/RB Fahrzeug · Y Garage · X Zufall · Tastatur: P1 WASD+Leertaste, P2 Pfeile+Enter</small><small id="hlp" data-v="main map cars">A OK · B Zurück</small><small id="ver" data-v="main" style="display:block;text-align:right;font-size:10px;opacity:.45;cursor:pointer">v2026-11-18d</small><button id="bk" data-v="mode map cars set how pick stats">◀ Zurück<span id="bkg"></span></button></div></div>
 <div class="ctl"><div><button data-k="l">◀</button><button data-k="r">▶</button></div><button data-k="h">📯</button><button data-k="s" style="display:none">💥</button><div><button data-k="b">▼</button><button data-k="g">▲</button></div></div>
 <p id="hint">Nitro am Handy: Gas halten und Finger nach oben wischen · Zum Spielen zu zweit: Handy quer halten oder an den Fernseher anschließen</p>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -1068,7 +1067,7 @@ function mkCar(c,human,num,V,c2,cs){
 }
 const spM=new THREE.MeshBasicMaterial({color:0xffc030}),smM=new THREE.MeshBasicMaterial({color:0x333333,transparent:true,opacity:.55}),pG=new THREE.TetrahedronGeometry(1.7);
 
-const MMA=new Audio('menu_music.mp3?v=2026-11-18c');MMA.loop=true;MMA.preload='auto';
+const MMA=new Audio('menu_music.mp3?v=2026-11-18d');MMA.loop=true;MMA.preload='auto';
 let pMt=false,pFs=false,pMm=false,AC=null,rv,mnT=0,mns=0,mg,mus,sfx,nb,ds,ef,eg,eo,eo2,nextT=0,stp=0,muted=false,lc=0,ls=0;
 function audioInit(){
   if(AC){AC.resume();return}
@@ -1091,7 +1090,7 @@ let uiG=null,uiT=0;function uiSw(t,d,f0,f1,g,q){const s=AC.createBufferSource(),
 function uiPg(t,f,d,g){tone(t,f,f*.995,d,g,'sine',uiG);tone(t,f*2.76,f*2.74,d*.45,g*.45,'sine',uiG)}
 function sndUI(k){if(!AC||AC.state!=='running'||muted)return;const n=performance.now();if(n-uiT<60)return;uiT=n;if(!uiG){uiG=AC.createGain();uiG.connect(mg)}uiG.gain.value=TUNE.vs;const t=AC.currentTime;if(k==='m'){tone(t,240,120,.05,.12,'sine',uiG);nz(t,.02,5200,4,.07,'highpass',uiG);uiPg(t+.005,2100,.07,.035)}else if(k==='adj'){nz(t,.015,4500,4,.06,'highpass',uiG);nz(t+.035,.015,5500,4,.06,'highpass',uiG);tone(t,300,180,.04,.08,'sine',uiG);tone(t+.035,360,220,.04,.08,'sine',uiG)}else if(k==='ok'){nz(t,.022,2600,3,.135,'bandpass',uiG);nz(t+.04,.025,3600,3,.1,'bandpass',uiG);uiSw(t,.12,800,4200,.1,1.5);uiPg(t+.025,1320,.25,.06)}else if(k==='bk'){uiSw(t,.18,4200,500,.13,1.5);tone(t,420,160,.14,.12,'sine',uiG);nz(t,.04,900,.7,.08,'lowpass',uiG)}}
 /* Ingame-Musik als MP3: GMU[0]=Musik 1, GMU[1]=Musik 2 (Auswahl TUNE.mt). Gestreamt per Audio-Element, erst bei Bedarf geladen. Lautstärke/Stumm direkt am Element wie Menümusik MMA (kein createMediaElementSource: bleibt bei file:// stumm), folgt mus-Gain (Lautstärke, Ducking) und GMF (Sudden Death). Ladefehler → sichtbare Fehlermeldung + Synth-Ersatz. */
-let GMF=.8;const GMU=['ingame_music.mp3','ingame_music2.mp3'].map((f,i)=>{const a=new Audio();a.loop=true;a.preload='none';a.preservesPitch=false;a.fsrc=f+'?v=2026-11-18c';a.onerror=()=>{if(!a.src||a.mmf)return;a.mmf=1;setTimeout(()=>{throw new Error('Musik '+(i+1)+' lädt nicht (Code '+(a.error?a.error.code:'?')+')')})};return a});
+let GMF=.8;const GMU=['ingame_music.mp3','ingame_music2.mp3'].map((f,i)=>{const a=new Audio();a.loop=true;a.preload='none';a.preservesPitch=false;a.fsrc=f+'?v=2026-11-18d';a.onerror=()=>{if(!a.src||a.mmf)return;a.mmf=1;setTimeout(()=>{throw new Error('Musik '+(i+1)+' lädt nicht (Code '+(a.error?a.error.code:'?')+')')})};return a});
 function gmus(on){const k=TUNE.mt===1?1:0;for(let i=0;i<GMU.length;i++)if((!on||i!==k)&&!GMU[i].paused)GMU[i].pause();if(!on)return false;const a=GMU[k];if(a.mmf)return false;if(!a.src)a.src=a.fsrc;const v=muted?0:Math.min(1,GMF*1.25*(mus?mus.gain.value/.9:TUNE.vm));if(Math.abs(a.volume-v)>.005)a.volume=v;if(a.paused&&!(performance.now()<a.nt)){a.nt=performance.now()+800;a.play().then(()=>{a.nt=0},e=>{if(e&&(e.name==='NotAllowedError'||e.name==='AbortError'))return;a.mmf=1;setTimeout(()=>{throw new Error('Musik '+(k+1)+' spielt nicht ('+(e&&e.name)+')')})})}return true}
 function gt(f,t,d,g){for(const dt of[-14,0,14])for(const m of[1,1.498]){const o=AC.createOscillator(),e=AC.createGain();o.type='sawtooth';o.frequency.value=f*m;o.detune.value=dt;e.gain.setValueAtTime(g,t);e.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(e);e.connect(ds);o.start(t);o.stop(t+d+.02)}tone(t,f/2,f/2,d,.12,'sine',mus)}
 const BR2=[['0.00.00.0.003.1.','0.00.00.00.06.5.','0.00.00.0.003.1.','5.55.55.3.331.0.'],['00.00.00.00.3.31','00.00.00.00.6.65','00.00.00.00.3.31','55.55.55.33.33.1'],['0.......0.0.....','0.......0.0...6.','3.......3.3...1.','0.......0.0.5.6.'],['0000.000.0003311','0000.000.000665.','5555.555.333111.','0000.000.0000.c.']];
