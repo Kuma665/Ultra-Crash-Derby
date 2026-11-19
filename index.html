@@ -486,7 +486,7 @@ body.p2 #feed{max-width:44%}body.p2 #feed div{white-space:normal;text-align:cent
 <label>Schadenszahlen <input type="checkbox" id="tdn"></label>
 <button id="trs">↺ Alles auf Standard zurücksetzen</button>
 </details>
-<div id="pk" data-v="pick"></div><small id="pkh" data-v="pick">Jeder Spieler mit seinem Controller: ↑↓ Feld · ←→ ändern · A oder Start bereit · B zurück · LB/RB Fahrzeug · Y Garage · X Zufall · Tastatur: P1 WASD+Leertaste, P2 Pfeile+Enter</small><small id="hlp" data-v="main map cars">A OK · B Zurück</small><small id="ver" data-v="main" style="display:block;text-align:right;font-size:10px;opacity:.45;cursor:pointer">v2026-11-19zg</small><button id="bk" data-v="mode map cars set how pick stats">◀ Zurück<span id="bkg"></span></button></div></div>
+<div id="pk" data-v="pick"></div><small id="pkh" data-v="pick">Jeder Spieler mit seinem Controller: ↑↓ Feld · ←→ ändern · A oder Start bereit · B zurück · LB/RB Fahrzeug · Y Garage · X Zufall · Tastatur: P1 WASD+Leertaste, P2 Pfeile+Enter</small><small id="hlp" data-v="main map cars">A OK · B Zurück</small><small id="ver" data-v="main" style="display:block;text-align:right;font-size:10px;opacity:.45;cursor:pointer">v2026-11-19zh</small><button id="bk" data-v="mode map cars set how pick stats">◀ Zurück<span id="bkg"></span></button></div></div>
 <div class="ctl"><div><button data-k="l">◀</button><button data-k="r">▶</button></div><button data-k="h">📯</button><button data-k="s" style="display:none">💥</button><div><button data-k="b">▼</button><button data-k="g">▲</button></div></div>
 <p id="hint">Nitro am Handy: Gas halten und Finger nach oben wischen · Zum Spielen zu zweit: Handy quer halten oder an den Fernseher anschließen</p>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -733,27 +733,52 @@ const TY=[],TYS=[],TYH=6.8,TYO=new THREE.Object3D(),TYM=(()=>{const g=new THREE.
 {const C=[new THREE.Color(0x1b1b1b),new THREE.Color(0xd8352a),new THREE.Color(0xeeeeee)],PAT=[[1,2,1],[0,0,0],[0,2,0],[0,0,0]],e=24,g=21,P=[];
  [.25,.5,.75].forEach(t=>[-1,0,1].forEach(j=>{const u=t*W+j*g;P.push([u,e],[u,W-e],[e,u],[W-e,u])}));
  [[e,e,1,1],[W-e,e,-1,1],[e,W-e,1,-1],[W-e,W-e,-1,-1]].forEach(([x,y,a,b])=>P.push([x,y],[x+a*g,y],[x,y+b*g]));
- P.forEach(([x,y],s)=>{const L=[];for(let k=0;k<3;k++){const i=TY.length;L.push(i);TY.push({s,k,sx:x,sy:y,x,y,h:0,vx:0,vy:0,vh:0,rx:0,rz:0,sr:0,wr:0,st:0});TYM.setColorAt(i,C[PAT[s%4][k]])}TYS.push(L)});TYM.instanceColor.needsUpdate=true}
-function tyM(i,x,y,h,rx,rz){TYO.position.set(x-W/2,h+GH(x,y)+3.4,y-W/2);TYO.rotation.set(rx,0,rz);TYO.updateMatrix();TYM.setMatrixAt(i,TYO.matrix)}
-function tyReset(){TYM.visible=!RACE&&MAP===0;TY.forEach((t,i)=>{t.x=t.sx;t.y=t.sy;t.h=t.k*TYH;t.vx=t.vy=t.vh=t.rx=t.rz=t.sr=t.wr=0;t.st=0;tyM(i,t.x,t.y,t.h,0,0)});TYM.instanceMatrix.needsUpdate=true;tyRI=-1}
+ P.forEach(([x,y],s)=>{const L=[];for(let k=0;k<3;k++){const i=TY.length;L.push(i);TY.push({s,k,sx:x,sy:y,x,y,h:0,vx:0,vy:0,vh:0,th:0,sp:0,ps:0,wt:0,ws:0,md:0,w0:0,st:0});TYM.setColorAt(i,C[PAT[s%4][k]])}TYS.push(L)});TYM.instanceColor.needsUpdate=true}
+/* Reifen-Lage: th Kippwinkel (0 flach, PI/2 aufrecht), sp Drehung um die eigene Achse, ps Richtung (Rollrichtung bzw. Kipprichtung beim Austrudeln) */const TYQ=new THREE.Quaternion(),TYX=new THREE.Vector3(1,0,0);
+function tyM(i,x,y,h,th,sp,ps){TYO.position.set(x-W/2,h+GH(x,y)+3.4+6.4*Math.abs(Math.sin(th)),y-W/2);TYO.quaternion.setFromAxisAngle(YA,-ps);TYQ.setFromAxisAngle(TYX,th);TYO.quaternion.multiply(TYQ);TYQ.setFromAxisAngle(YA,sp);TYO.quaternion.multiply(TYQ);TYO.updateMatrix();TYM.setMatrixAt(i,TYO.matrix)}
+function tyReset(){TYM.visible=!RACE&&MAP===0;TY.forEach((t,i)=>{t.x=t.sx;t.y=t.sy;t.h=t.k*TYH;t.vx=t.vy=t.vh=t.th=t.sp=t.ps=t.wt=t.ws=t.md=t.w0=0;t.st=0;tyM(i,t.x,t.y,t.h,0,0,0)});TYM.instanceMatrix.needsUpdate=true;tyRI=-1}
 function tyHit(x,y,sp,n){for(let i=0;i<(NP>2?1:n);i++)fx(x,y,4,(Math.random()-.5)*1.4,(Math.random()-.5)*1.4,.3+Math.random()*.4,22,'d',9);if(AC&&AC.currentTime-tyT>.09){tyT=AC.currentTime;tone(tyT,140+Math.random()*40,55,.13,Math.min(.26,.07+sp*.02),'triangle');if(n>1)tone(tyT,70+Math.random()*15,40,.18,Math.min(.3,.1+sp*.02),'sine')}}
-function tyKick(t,c,nx,ny,f,k){/* Stoss entlang der Kontaktnormale (Auto->Reifen); Lage k: unten geschoben, oben kippt hoeher weg; Ueberschlag quer zur Flugrichtung (wr um X, sr um Z) */t.st=1;const vn=Math.max(0,c.vx*nx+c.vy*ny),vt=-c.vx*ny+c.vy*nx,q=f*(1-k*.18),p=vn*1.45+1;t.vx=(nx*p-ny*vt*.35)*q+(Math.random()-.5)*.9;t.vy=(ny*p+nx*vt*.35)*q+(Math.random()-.5)*.9;t.vh=.5+vn*.11+k*.55+Math.random()*.5;const s=(.018+k*.01)*(.7+Math.random()*.6);t.wr=t.vy*s;t.sr=-t.vx*s}
-function tyStep(){if(!TYM.visible)return;let mv=false;
- for(let i=0;i<TY.length;i++){const t=TY[i];
-  if(t.st!==1)for(const c of cars){if((c.z||0)-GH(t.x,t.y)>t.h+TYH*3)continue;/* Hoehe relativ zum Boden (Oberrang, Huegel) */const dx=t.x-c.x,dy=t.y-c.y,rr=c.r+10;if(dx*dx+dy*dy>rr*rr)continue;const sp=Math.hypot(c.vx,c.vy);if(sp<=1)continue;const d=Math.sqrt(dx*dx+dy*dy)||1,nx=dx/d,ny=dy/d;
-   if(t.st===0){for(const j of TYS[t.s])tyKick(TY[j],c,nx,ny,1,TY[j].k);const b=.9-Math.min(.08,sp*.006);c.vx*=b;c.vy*=b;c.sqv=(c.sqv||0)-.06;if(c.hi>=0){shake=Math.max(shake,2+Math.min(4,sp*.35));rumble(c.hi,1.5+sp*.25)}tyHit(t.x,t.y,sp,4)}else{t.h=0;tyKick(t,c,nx,ny,.8,0);c.vx*=.96;c.vy*=.96;c.sqv=(c.sqv||0)-.035;if(c.hi>=0){shake=Math.max(shake,1.5);rumble(c.hi,1.2)}tyHit(t.x,t.y,sp*.6,1)}break}
-  if(t.st!==1)continue;mv=true;
-  {const g0=GH(t.x,t.y);t.x+=t.vx;t.y+=t.vy;t.h+=t.vh+g0-GH(t.x,t.y)}t.vh-=.22;if(t.h>0){t.vx*=.98;t.vy*=.98}t.rx+=t.wr||0;t.rz+=t.sr;
+
+function tyKick(t,c,nx,ny,f,k){/* Stoss entlang der Kontaktnormale (c = Auto oder Reifen); Lage k: unten geschoben, oben kippt hoeher weg; md 0 = fliegt/rutscht und ueberschlaegt sich */t.st=1;t.md=0;const vn=Math.max(0,c.vx*nx+c.vy*ny),vt=-c.vx*ny+c.vy*nx,q=f*(1-k*.18),p=vn*1.45+1;t.vx=(nx*p-ny*vt*.35)*q+(Math.random()-.5)*.9;t.vy=(ny*p+nx*vt*.35)*q+(Math.random()-.5)*.9;t.vh=.5+vn*.11+k*.55+Math.random()*.5;t.ps=Math.atan2(t.vy,t.vx);t.wt=(.05+k*.03+Math.hypot(t.vx,t.vy)*.012)*(.6+Math.random()*.8)*(Math.random()<.5?-1:1);t.ws=(Math.random()-.5)*.3}
+/* md: 0 fliegt/rutscht, 1 rollt aufrecht (wird langsamer -> neigt sich -> Kurve -> faellt), 2 trudelt aus wie eine Muenze (th sinkt, ps kreist immer schneller) */
+function tyFall(t,a){t.md=2;t.th=t.w0=Math.max(.06,a)}
+function tyStep(){if(!TYM.visible)return;let mv=false;const N=TY.length;
+ for(let i=0;i<N;i++){const t=TY[i];
+  if(t.st!==1){for(const c of cars){if((c.z||0)-GH(t.x,t.y)>t.h+TYH*3)continue;/* Hoehe relativ zum Boden (Oberrang, Huegel) */const dx=t.x-c.x,dy=t.y-c.y,rr=c.r+10;if(dx*dx+dy*dy>rr*rr)continue;const sp=Math.hypot(c.vx,c.vy);if(sp<=1)continue;const d=Math.sqrt(dx*dx+dy*dy)||1,nx=dx/d,ny=dy/d;
+    if(t.st===0){for(const j of TYS[t.s])tyKick(TY[j],c,nx,ny,1,TY[j].k);const b=.9-Math.min(.08,sp*.006);c.vx*=b;c.vy*=b;c.sqv=(c.sqv||0)-.06;if(c.hi>=0){shake=Math.max(shake,2+Math.min(4,sp*.35));rumble(c.hi,1.5+sp*.25)}tyHit(t.x,t.y,sp,4)}else{t.h=0;tyKick(t,c,nx,ny,.8,0);c.vx*=.96;c.vy*=.96;c.sqv=(c.sqv||0)-.035;if(c.hi>=0){shake=Math.max(shake,1.5);rumble(c.hi,1.2)}tyHit(t.x,t.y,sp*.6,1)}break}
+   continue}
+  mv=true;let ha=GH(t.x,t.y)+t.h;
+  /* fliegender/rollender Reifen prallt an Autos ab (Auto schwer: bekommt nur einen kleinen Teil) */
+  for(const c of cars){const dx=t.x-c.x,dy=t.y-c.y,rr=c.r+8,d2=dx*dx+dy*dy;if(d2>rr*rr)continue;const cz=c.z||0;if(ha>cz+22||ha+6<cz)continue;const d=Math.sqrt(d2)||1,nx=dx/d,ny=dy/d,rv=(t.vx-c.vx)*nx+(t.vy-c.vy)*ny;t.x=c.x+nx*rr;t.y=c.y+ny*rr;
+   if(rv<0){t.vx-=1.5*rv*nx;t.vy-=1.5*rv*ny;c.vx+=rv*nx*.03;c.vy+=rv*ny*.03;if(rv<-1.5){t.vh=Math.max(t.vh,.4-rv*.15);t.md=0;t.wt+=(Math.random()-.5)*.25;tyHit(t.x,t.y,-rv*.5,1);if(c.hi>=0&&rv<-3)rumble(c.hi,1)}}}
+  /* Reifen untereinander: gleiche Masse, Stoss entlang der Verbindung; Stapel wird angeschoben; bewegte Paare nur einmal (j>i) */
+  for(let j=0;j<N;j++){if(j===i)continue;const u=TY[j];if(u.st===1&&j<i)continue;const dx=u.x-t.x;if(dx>16||dx<-16)continue;const dy=u.y-t.y;if(dy>16||dy<-16)continue;const d2=dx*dx+dy*dy;if(d2>256)continue;if(Math.abs(GH(u.x,u.y)+u.h-ha)>9)continue;
+   const d=Math.sqrt(d2)||1,nx=dx/d,ny=dy/d,rv=(t.vx-u.vx)*nx+(t.vy-u.vy)*ny,ov=16-d;
+   if(u.st===0){if(rv>2.2){for(const k of TYS[u.s])tyKick(TY[k],t,nx,ny,.55,TY[k].k);t.vx*=.5;t.vy*=.5;tyHit(u.x,u.y,rv,2)}else{t.x-=nx*ov;t.y-=ny*ov;if(rv>0){t.vx-=1.4*rv*nx;t.vy-=1.4*rv*ny}}continue}
+   if(u.st===2&&rv<=.3){t.x-=nx*ov;t.y-=ny*ov;if(rv>0){t.vx-=rv*nx;t.vy-=rv*ny}continue}/* ruhender Reifen wird nur bei echtem Stoss geweckt (sonst nie Ruhe im Haufen) */
+   t.x-=nx*ov*.5;t.y-=ny*ov*.5;u.x+=nx*ov*.5;u.y+=ny*ov*.5;
+   if(rv>0){const m=rv*.75;t.vx-=m*nx;t.vy-=m*ny;u.vx+=m*nx;u.vy+=m*ny;if(u.st===2){u.st=1;u.md=0;u.ps=Math.atan2(ny,nx);u.wt=(Math.random()-.5)*.1;u.ws=0;if(m>1){u.vh=.3+m*.12;u.wt=(Math.random()-.5)*.25}}if(m>1.5)tyHit(u.x,u.y,m,1)}}
+  /* Bewegung; am Boden zieht der Hang (Oberrang, Huegel) */
+  if(t.h<=.01&&t.vh<=0){const gx=(GH(t.x+3,t.y)-GH(t.x-3,t.y))/6,gy=(GH(t.x,t.y+3)-GH(t.x,t.y-3))/6,k=t.md===1?.35:.18;t.vx-=gx*k;t.vy-=gy*k}
+  {const g0=GH(t.x,t.y);t.x+=t.vx;t.y+=t.vy;t.h+=t.vh+g0-GH(t.x,t.y)}t.vh-=.22;
   if(t.x<12){t.x=12;t.vx=-t.vx*.55}else if(t.x>W-12){t.x=W-12;t.vx=-t.vx*.55}if(t.y<12){t.y=12;t.vy=-t.vy*.55}else if(t.y>W-12){t.y=W-12;t.vy=-t.vy*.55}
-  if(t.h<=0){t.h=0;if(t.vh<-.6){t.vh=-t.vh*.35;t.vx*=.8;t.vy*=.8;t.wr*=.7;t.sr*=.7}else{t.vh=0;t.vx*=.85;t.vy*=.85;t.sr*=.6;t.wr*=.6;const ax=Math.round(t.rx/Math.PI)*Math.PI,az=Math.round(t.rz/Math.PI)*Math.PI;t.rx-=(t.rx-ax)*.3;t.rz-=(t.rz-az)*.3;if(Math.abs(t.vx)+Math.abs(t.vy)<.05&&Math.abs(t.rx-ax)+Math.abs(t.rz-az)<.02){t.rx=ax;t.rz=az;t.vx=t.vy=0;t.st=2}}}
-  tyM(i,t.x,t.y,t.h,t.rx,t.rz)}
+  if(t.h>0){t.vx*=.99;t.vy*=.99;if(t.md===0){t.th+=t.wt;t.sp+=t.ws}else if(t.md===1)t.sp-=Math.hypot(t.vx,t.vy)/9.8}
+  else{t.h=0;if(t.vh<-1.2){t.vh=-t.vh*.35;t.vx*=.85;t.vy*=.85;t.wt*=.6;t.ws*=.7}else t.vh=0;
+   const v=Math.hypot(t.vx,t.vy);
+   if(t.md===0){const s=Math.abs(Math.sin(t.th));
+    if(s>.75&&v>1.4){t.md=1;t.th=Math.PI/2+(Math.random()-.5)*.15;t.wt=0;t.ps=Math.atan2(t.vy,t.vx)}/* aufrecht gelandet -> rollt weiter */
+    else if(t.vh===0){t.vx*=.86;t.vy*=.86;t.ws*=.8;const a=Math.asin(Math.min(1,s));if(a>.05)tyFall(t,a);else{t.th=0;if(v<.05){t.vx=t.vy=0;t.st=2}}}}
+   else if(t.md===1){/* rollen: langsamer -> Neigung waechst -> Kurve zur geneigten Seite -> umfallen */t.vx*=.985;t.vy*=.985;let l=t.th-Math.PI/2;l+=l*(.02+.05/(v+.5))+(Math.random()-.5)*.004;const an=Math.atan2(t.vy,t.vx)+l*.03,v2=Math.hypot(t.vx,t.vy);t.vx=Math.cos(an)*v2;t.vy=Math.sin(an)*v2;t.ps=an;t.th=Math.PI/2+l;t.sp-=v2/9.8;
+    if(Math.abs(l)>.9||v2<.35)tyFall(t,Math.PI/2-Math.min(Math.PI/2,Math.abs(l)))}
+   else{/* austrudeln */t.vx*=.85;t.vy*=.85;t.th*=.955;t.ps+=.07+.45*(1-t.th/t.w0);if(t.th<.015){t.th=0;t.md=0;if(v<.05){t.vx=t.vy=0;t.st=2}}}}
+  tyM(i,t.x,t.y,t.h,t.th,t.sp,t.ps)}
  if(mv)TYM.instanceMatrix.needsUpdate=true}
-/* Replay: fliegende Reifen je Frame als [i,x,y,h,rx,rz] in f.t; tyRp setzt den Stand vor dem ersten Eintrag und spielt die Frames bis i0 nach */
-function tyRec(){if(!TYM.visible)return null;let o=null;for(let i=0;i<TY.length;i++){const t=TY[i];if(t.st===1)(o||(o=[])).push(i,t.x,t.y,t.h,t.rx,t.rz)}return o}
-function tyRp(i0,i1,fr){if(!TYM.visible)return;const ap=T=>{for(let j=0;j<T.length;j+=6)tyM(T[j],T[j+1],T[j+2],T[j+3],T[j+4],T[j+5])};
- if(tyRI<0||i0<tyRI){tyRS.fill(0);for(const f of REC)if(f.t)for(let j=0;j<f.t.length;j+=6){const i=f.t[j];if(!tyRS[i]){tyRS[i]=1;tyM(i,f.t[j+1],f.t[j+2],f.t[j+3],f.t[j+4],f.t[j+5])}}tyRI=-1}
+/* Replay: bewegte Reifen je Frame als [i,x,y,h,th,sp,ps] in f.t; tyRp setzt den Stand vor dem ersten Eintrag und spielt die Frames bis i0 nach */
+function tyRec(){if(!TYM.visible)return null;let o=null;for(let i=0;i<TY.length;i++){const t=TY[i];if(t.st===1)(o||(o=[])).push(i,t.x,t.y,t.h,t.th,t.sp,t.ps)}return o}
+function tyRp(i0,i1,fr){if(!TYM.visible)return;const ap=T=>{for(let j=0;j<T.length;j+=7)tyM(T[j],T[j+1],T[j+2],T[j+3],T[j+4],T[j+5],T[j+6])};
+ if(tyRI<0||i0<tyRI){tyRS.fill(0);for(const f of REC)if(f.t)for(let j=0;j<f.t.length;j+=7){const i=f.t[j];if(!tyRS[i]){tyRS[i]=1;tyM(i,f.t[j+1],f.t[j+2],f.t[j+3],f.t[j+4],f.t[j+5],f.t[j+6])}}tyRI=-1}
  for(let k=tyRI+1;k<=i0;k++)if(REC[k].t)ap(REC[k].t);tyRI=i0;
- const A=REC[i0].t,B=REC[i1]&&REC[i1].t;if(A&&B&&fr>0)for(let j=0;j<A.length;j+=6)for(let q=0;q<B.length;q+=6)if(B[q]===A[j]){const l=(a,b)=>a+(b-a)*fr;tyM(A[j],l(A[j+1],B[q+1]),l(A[j+2],B[q+2]),l(A[j+3],B[q+3]),l(A[j+4],B[q+4]),l(A[j+5],B[q+5]));break}
+ const A=REC[i0].t,B=REC[i1]&&REC[i1].t;if(A&&B&&fr>0)for(let j=0;j<A.length;j+=7)for(let q=0;q<B.length;q+=7)if(B[q]===A[j]){const l=(a,b)=>a+(b-a)*fr,la=(a,b)=>a+nrm(b-a)*fr;tyM(A[j],l(A[j+1],B[q+1]),l(A[j+2],B[q+2]),l(A[j+3],B[q+3]),la(A[j+4],B[q+4]),la(A[j+5],B[q+5]),la(A[j+6],B[q+6]));break}
  TYM.instanceMatrix.needsUpdate=true}
 /* Himmel je Wetter (WX 0-4), Horizont ~ Nebelfarbe */const SKYS=[[[0,'#2a63b0'],[.3,'#4f8fd4'],[.44,'#8cbde0'],[.5,'#b5d3e2'],[.56,'#8fb3c9'],[1,'#7f8f90']],[[0,'#1f2456'],[.25,'#4a3c7a'],[.38,'#a0587a'],[.46,'#ec8a5c'],[.5,'#ffb877'],[.56,'#c89070'],[1,'#5a3a30']],[[0,'#02040f'],[.35,'#081030'],[.47,'#14204e'],[.5,'#1e2b5c'],[.56,'#0a1030'],[1,'#05070f']],[[0,'#3e454d'],[.35,'#59616a'],[.5,'#7c858d'],[.56,'#6a737c'],[1,'#4a4f54']],[[0,'#8a5a30'],[.3,'#b07a44'],[.46,'#d4a468'],[.5,'#dcb276'],[.56,'#c09a60'],[1,'#806040']]].map(s=>tex(8,256,(g,w,h)=>{const gr=g.createLinearGradient(0,0,0,h);s.forEach(([o,c])=>gr.addColorStop(o,c));g.fillStyle=gr;g.fillRect(0,0,w,h)})),skyT=SKYS[0];
 const skyM=new THREE.MeshBasicMaterial({map:skyT,side:THREE.BackSide,fog:false});S.add(new THREE.Mesh(new THREE.SphereGeometry(Math.max(2800,W*.98),32,20),skyM));
@@ -1082,7 +1107,7 @@ function mkCar(c,human,num,V,c2,cs){
 }
 const spM=new THREE.MeshBasicMaterial({color:0xffc030}),smM=new THREE.MeshBasicMaterial({color:0x333333,transparent:true,opacity:.55}),pG=new THREE.TetrahedronGeometry(1.7);
 
-const MMA=new Audio('menu_music.mp3?v=2026-11-19zg');MMA.loop=true;MMA.preload='auto';
+const MMA=new Audio('menu_music.mp3?v=2026-11-19zh');MMA.loop=true;MMA.preload='auto';
 let pMt=false,pFs=false,pMm=false,AC=null,rv,mnT=0,mns=0,mg,mus,sfx,nb,ds,ef,eg,eo,eo2,nextT=0,stp=0,muted=false,lc=0,ls=0;
 function audioInit(){
   if(AC){AC.resume();return}
@@ -1105,7 +1130,7 @@ let uiG=null,uiT=0;function uiSw(t,d,f0,f1,g,q){const s=AC.createBufferSource(),
 function uiPg(t,f,d,g){tone(t,f,f*.995,d,g,'sine',uiG);tone(t,f*2.76,f*2.74,d*.45,g*.45,'sine',uiG)}
 function sndUI(k){if(!AC||AC.state!=='running'||muted)return;const n=performance.now();if(n-uiT<60)return;uiT=n;if(!uiG){uiG=AC.createGain();uiG.connect(mg)}uiG.gain.value=TUNE.vs;const t=AC.currentTime;if(k==='m'){tone(t,240,120,.05,.12,'sine',uiG);nz(t,.02,5200,4,.07,'highpass',uiG);uiPg(t+.005,2100,.07,.035)}else if(k==='adj'){nz(t,.015,4500,4,.06,'highpass',uiG);nz(t+.035,.015,5500,4,.06,'highpass',uiG);tone(t,300,180,.04,.08,'sine',uiG);tone(t+.035,360,220,.04,.08,'sine',uiG)}else if(k==='ok'){nz(t,.022,2600,3,.135,'bandpass',uiG);nz(t+.04,.025,3600,3,.1,'bandpass',uiG);uiSw(t,.12,800,4200,.1,1.5);uiPg(t+.025,1320,.25,.06)}else if(k==='bk'){uiSw(t,.18,4200,500,.13,1.5);tone(t,420,160,.14,.12,'sine',uiG);nz(t,.04,900,.7,.08,'lowpass',uiG)}}
 /* Ingame-Musik als MP3: GMU[0]=Musik 1, GMU[1]=Musik 2 (Auswahl TUNE.mt). Gestreamt per Audio-Element, erst bei Bedarf geladen. Lautstärke/Stumm direkt am Element wie Menümusik MMA (kein createMediaElementSource: bleibt bei file:// stumm), folgt mus-Gain (Lautstärke, Ducking) und GMF (Sudden Death). Ladefehler → sichtbare Fehlermeldung + Synth-Ersatz. */
-let GMF=.8;const GMU=['ingame_music.mp3','ingame_music2.mp3'].map((f,i)=>{const a=new Audio();a.loop=true;a.preload='none';a.preservesPitch=false;a.fsrc=f+'?v=2026-11-19zg';a.onerror=()=>{if(!a.src||a.mmf)return;a.mmf=1;setTimeout(()=>{throw new Error('Musik '+(i+1)+' lädt nicht (Code '+(a.error?a.error.code:'?')+')')})};return a});
+let GMF=.8;const GMU=['ingame_music.mp3','ingame_music2.mp3'].map((f,i)=>{const a=new Audio();a.loop=true;a.preload='none';a.preservesPitch=false;a.fsrc=f+'?v=2026-11-19zh';a.onerror=()=>{if(!a.src||a.mmf)return;a.mmf=1;setTimeout(()=>{throw new Error('Musik '+(i+1)+' lädt nicht (Code '+(a.error?a.error.code:'?')+')')})};return a});
 function gmus(on){const k=TUNE.mt===1?1:0;for(let i=0;i<GMU.length;i++)if((!on||i!==k)&&!GMU[i].paused)GMU[i].pause();if(!on)return false;const a=GMU[k];if(a.mmf)return false;if(!a.src)a.src=a.fsrc;const v=muted?0:Math.min(1,GMF*1.25*(mus?mus.gain.value/.9:TUNE.vm));if(Math.abs(a.volume-v)>.005)a.volume=v;if(a.paused&&!(performance.now()<a.nt)){a.nt=performance.now()+800;a.play().then(()=>{a.nt=0},e=>{if(e&&(e.name==='NotAllowedError'||e.name==='AbortError'))return;a.mmf=1;setTimeout(()=>{throw new Error('Musik '+(k+1)+' spielt nicht ('+(e&&e.name)+')')})})}return true}
 function gt(f,t,d,g){for(const dt of[-14,0,14])for(const m of[1,1.498]){const o=AC.createOscillator(),e=AC.createGain();o.type='sawtooth';o.frequency.value=f*m;o.detune.value=dt;e.gain.setValueAtTime(g,t);e.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(e);e.connect(ds);o.start(t);o.stop(t+d+.02)}tone(t,f/2,f/2,d,.12,'sine',mus)}
 const BR2=[['0.00.00.0.003.1.','0.00.00.00.06.5.','0.00.00.0.003.1.','5.55.55.3.331.0.'],['00.00.00.00.3.31','00.00.00.00.6.65','00.00.00.00.3.31','55.55.55.33.33.1'],['0.......0.0.....','0.......0.0...6.','3.......3.3...1.','0.......0.0.5.6.'],['0000.000.0003311','0000.000.000665.','5555.555.333111.','0000.000.0000.c.']];
