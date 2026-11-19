@@ -486,7 +486,7 @@ body.p2 #feed{max-width:44%}body.p2 #feed div{white-space:normal;text-align:cent
 <label>Schadenszahlen <input type="checkbox" id="tdn"></label>
 <button id="trs">↺ Alles auf Standard zurücksetzen</button>
 </details>
-<div id="pk" data-v="pick"></div><small id="pkh" data-v="pick">Jeder Spieler mit seinem Controller: ↑↓ Feld · ←→ ändern · A oder Start bereit · B zurück · LB/RB Fahrzeug · Y Garage · X Zufall · Tastatur: P1 WASD+Leertaste, P2 Pfeile+Enter</small><small id="hlp" data-v="main map cars">A OK · B Zurück</small><small id="ver" data-v="main" style="display:block;text-align:right;font-size:10px;opacity:.45;cursor:pointer">v2026-11-19zk</small><button id="bk" data-v="mode map cars set how pick stats">◀ Zurück<span id="bkg"></span></button></div></div>
+<div id="pk" data-v="pick"></div><small id="pkh" data-v="pick">Jeder Spieler mit seinem Controller: ↑↓ Feld · ←→ ändern · A oder Start bereit · B zurück · LB/RB Fahrzeug · Y Garage · X Zufall · Tastatur: P1 WASD+Leertaste, P2 Pfeile+Enter</small><small id="hlp" data-v="main map cars">A OK · B Zurück</small><small id="ver" data-v="main" style="display:block;text-align:right;font-size:10px;opacity:.45;cursor:pointer">v2026-11-19zl</small><button id="bk" data-v="mode map cars set how pick stats">◀ Zurück<span id="bkg"></span></button></div></div>
 <div class="ctl"><div><button data-k="l">◀</button><button data-k="r">▶</button></div><button data-k="h">📯</button><button data-k="s" style="display:none">💥</button><div><button data-k="b">▼</button><button data-k="g">▲</button></div></div>
 <p id="hint">Nitro am Handy: Gas halten und Finger nach oben wischen · Zum Spielen zu zweit: Handy quer halten oder an den Fernseher anschließen</p>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -1107,7 +1107,7 @@ function mkCar(c,human,num,V,c2,cs){
 }
 const spM=new THREE.MeshBasicMaterial({color:0xffc030}),smM=new THREE.MeshBasicMaterial({color:0x333333,transparent:true,opacity:.55}),pG=new THREE.TetrahedronGeometry(1.7);
 
-const MMA=new Audio('menu_music.mp3?v=2026-11-19zk');MMA.loop=true;MMA.preload='auto';
+const MMA=new Audio('menu_music.mp3?v=2026-11-19zl');MMA.loop=true;MMA.preload='auto';
 let pMt=false,pFs=false,pMm=false,AC=null,rv,mnT=0,mns=0,mg,mus,sfx,nb,ds,ef,eg,eo,eo2,nextT=0,stp=0,muted=false,lc=0,ls=0;
 function audioInit(){
   if(AC){AC.resume();return}
@@ -1130,7 +1130,7 @@ let uiG=null,uiT=0;function uiSw(t,d,f0,f1,g,q){const s=AC.createBufferSource(),
 function uiPg(t,f,d,g){tone(t,f,f*.995,d,g,'sine',uiG);tone(t,f*2.76,f*2.74,d*.45,g*.45,'sine',uiG)}
 function sndUI(k){if(!AC||AC.state!=='running'||muted)return;const n=performance.now();if(n-uiT<60)return;uiT=n;if(!uiG){uiG=AC.createGain();uiG.connect(mg)}uiG.gain.value=TUNE.vs;const t=AC.currentTime;if(k==='m'){tone(t,240,120,.05,.12,'sine',uiG);nz(t,.02,5200,4,.07,'highpass',uiG);uiPg(t+.005,2100,.07,.035)}else if(k==='adj'){nz(t,.015,4500,4,.06,'highpass',uiG);nz(t+.035,.015,5500,4,.06,'highpass',uiG);tone(t,300,180,.04,.08,'sine',uiG);tone(t+.035,360,220,.04,.08,'sine',uiG)}else if(k==='ok'){nz(t,.022,2600,3,.135,'bandpass',uiG);nz(t+.04,.025,3600,3,.1,'bandpass',uiG);uiSw(t,.12,800,4200,.1,1.5);uiPg(t+.025,1320,.25,.06)}else if(k==='bk'){uiSw(t,.18,4200,500,.13,1.5);tone(t,420,160,.14,.12,'sine',uiG);nz(t,.04,900,.7,.08,'lowpass',uiG)}}
 /* Ingame-Musik als MP3: GMU[0]=Musik 1, GMU[1]=Musik 2 (Auswahl TUNE.mt). Gestreamt per Audio-Element, erst bei Bedarf geladen. Lautstärke/Stumm direkt am Element wie Menümusik MMA (kein createMediaElementSource: bleibt bei file:// stumm), folgt mus-Gain (Lautstärke, Ducking) und GMF (Sudden Death). Ladefehler → sichtbare Fehlermeldung + Synth-Ersatz. */
-let GMF=.8;const GMU=['ingame_music.mp3','ingame_music2.mp3'].map((f,i)=>{const a=new Audio();a.loop=true;a.preload='none';a.preservesPitch=false;a.fsrc=f+'?v=2026-11-19zk';a.onerror=()=>{if(!a.src||a.mmf)return;a.mmf=1;setTimeout(()=>{throw new Error('Musik '+(i+1)+' lädt nicht (Code '+(a.error?a.error.code:'?')+')')})};return a});
+let GMF=.8;const GMU=['ingame_music.mp3','ingame_music2.mp3'].map((f,i)=>{const a=new Audio();a.loop=true;a.preload='none';a.preservesPitch=false;a.fsrc=f+'?v=2026-11-19zl';a.onerror=()=>{if(!a.src||a.mmf)return;a.mmf=1;setTimeout(()=>{throw new Error('Musik '+(i+1)+' lädt nicht (Code '+(a.error?a.error.code:'?')+')')})};return a});
 function gmus(on){const k=TUNE.mt===1?1:0;for(let i=0;i<GMU.length;i++)if((!on||i!==k)&&!GMU[i].paused)GMU[i].pause();if(!on)return false;const a=GMU[k];if(a.mmf)return false;if(!a.src)a.src=a.fsrc;const v=muted?0:Math.min(1,GMF*1.25*(mus?mus.gain.value/.9:TUNE.vm));if(Math.abs(a.volume-v)>.005)a.volume=v;if(a.paused&&!(performance.now()<a.nt)){a.nt=performance.now()+800;a.play().then(()=>{a.nt=0},e=>{if(e&&(e.name==='NotAllowedError'||e.name==='AbortError'))return;a.mmf=1;setTimeout(()=>{throw new Error('Musik '+(k+1)+' spielt nicht ('+(e&&e.name)+')')})})}return true}
 function gt(f,t,d,g){for(const dt of[-14,0,14])for(const m of[1,1.498]){const o=AC.createOscillator(),e=AC.createGain();o.type='sawtooth';o.frequency.value=f*m;o.detune.value=dt;e.gain.setValueAtTime(g,t);e.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(e);e.connect(ds);o.start(t);o.stop(t+d+.02)}tone(t,f/2,f/2,d,.12,'sine',mus)}
 const BR2=[['0.00.00.0.003.1.','0.00.00.00.06.5.','0.00.00.0.003.1.','5.55.55.3.331.0.'],['00.00.00.00.3.31','00.00.00.00.6.65','00.00.00.00.3.31','55.55.55.33.33.1'],['0.......0.0.....','0.......0.0...6.','3.......3.3...1.','0.......0.0.5.6.'],['0000.000.0003311','0000.000.000665.','5555.555.333111.','0000.000.0000.c.']];
@@ -1319,14 +1319,14 @@ function hrOff(c){const m=c.hrm;if(!m)return;if(m.parent)m.parent.remove(m);m.sc
 function sndHarp(){if(!AC)return;const t=AC.currentTime;nz(t,.16,2600,.6,.5,'highpass');tone(t,1100,260,.14,.22,'square')}
 function sndHarpHit(){if(!AC)return;const t=AC.currentTime;tone(t,200,90,.3,.3,'sawtooth');nz(t,.12,900,.8,.5,'bandpass')}
 function fireHarp(c,tg){/* Start direkt aus dem Autozustand (Mesh-Matrix kann einen Frame alt sein) */const px=c.x+Math.cos(c.a)*c.r*.75,py=c.y+Math.sin(c.a)*c.r*.75,ph=(c.z||0)+12;hrOff(c);c.hrA=0;
-  const ca=Math.cos(c.a),sa=Math.sin(c.a),m=HRP.pop()||new THREE.Mesh(hrG,hrM),rp=HRQ.pop()||new THREE.Mesh(hsG,hsM),s={o:c,tg,x:px,y:py,h:ph,z0:c.z||0,vx:ca*HRV+c.vx*.5,vy:sa*HRV+c.vy*.5,l:Math.ceil(HRR*1.2/HRV),st:0,t:0,r:0,m,rp};
+  const ca=Math.cos(c.a),sa=Math.sin(c.a),m=HRP.pop()||new THREE.Mesh(hrG,hrM),rp=HRQ.pop()||new THREE.Mesh(hsG,hsM),s={o:c,tg,x:px,y:py,h:ph,z0:c.z||0,vx:ca*HRV+c.vx*.5,vy:sa*HRV+c.vy*.5,l:Math.ceil(HRR*1.2/HRV),st:0,t:0,r:0,m,rp,gp:RACE?0:gH(px,py)};
   m.rotation.set(0,0,0);m.scale.set(.8,.8,.8);m.visible=rp.visible=true;S.add(m);S.add(rp);HRS.push(s);spark(px,py,5);sndHarp();if(c.hi>=0){shake=Math.max(shake,3);rumble(c.hi,2.5)}}
-function hrTick(c){if(c.hp<=0){c.hrA=0;hrOff(c);return}if(c.hrA>1)c.hrA--;if(HRA-c.hrA<30)return;const t=rkTgt(c,HRC,HRR);if(t)fireHarp(c,t)}
+function hrTick(c){if(c.hp<=0){c.hrA=0;hrOff(c);return}if(c.hrA>1)c.hrA--;if(HRA-c.hrA<30)return;const t=rkTgt(c,HRC,HRR);if(t&&!t.air)fireHarp(c,t)/* Ziel in der Luft: warten, bis es landet (Pfeil fliegt bodennah) */}
 /* Seil-Ansatz vorn am Schuetzen bzw. Einschlagpunkt am Ziel (Seite zum Schuetzen) */
 function hrRel(s){const c=s.o,t=s.tg,dx=c.x-t.x,dy=c.y-t.y,d=Math.hypot(dx,dy)||1;s.x=t.x+dx/d*t.r*.8;s.y=t.y+dy/d*t.r*.8;s.h=(t.z||0)+11;s.st=2;s.r=0}
 function hrStep(){for(const s of HRS){const c=s.o,tg=s.tg;s.t++;
   if(s.st===0){if(c.hp<=0){s.st=2;continue}if(tg&&tg.hp>0){const cu=Math.atan2(s.vy,s.vx),r=cu+cl(nrm(Math.atan2(tg.y-s.y,tg.x-s.x)-cu),-HRT,HRT),sp=Math.hypot(s.vx,s.vy);s.vx=Math.cos(r)*sp;s.vy=Math.sin(r)*sp}
-    s.x+=s.vx;s.y+=s.vy;s.l--;if(!RACE){const g=gH(s.x,s.y);if(g>s.h-6){s.st=2;spark(s.x,s.y,4);continue}s.h+=(g+12-s.h)*.35}
+    s.x+=s.vx;s.y+=s.vy;s.l--;if(!RACE){/* gleitet uebers Gelaende (Hang/Huegel/Rampe hoch und runter); Einschlag nur an echter Kante (Boden springt in einem Schritt >20) */const g=gH(s.x,s.y);if(g-s.gp>20&&g>s.h-6){s.st=2;spark(s.x,s.y,4);continue}s.gp=g;s.h=Math.max(s.h+(g+12-s.h)*.35,g+6)}
     let hit=null;for(const o of cars){if(o===c||o.hp<=0||ally(o,c)||Math.abs((o.z||0)-(RACE?s.z0:s.h-12))>16)continue;if(Math.hypot(o.x-s.x,o.y-s.y)<o.r+6){hit=o;break}}
     if(hit){const sp=Math.hypot(s.vx,s.vy)||1,ux=s.vx/sp,uy=s.vy/sp;if(hit.sh>0){/* Schild: Pfeil prallt ab */hit.shf=6;spark(s.x,s.y,10);sndCrash(3);s.st=2;s.r=0;continue}
       s.tg=hit;s.st=1;s.t=0;hrJerk(c,hit);hit.lh=c;hit.lt=performance.now();hurt(hit,HRD,sd(hit,-ux,-uy));c.p+=15;spark(s.x,s.y,8);sndHarpHit();if(hit.hi>=0){shake=Math.max(shake,8);rumble(hit.hi,4)}if(c.hi>=0){shake=Math.max(shake,4);rumble(c.hi,3)}continue}
@@ -1334,7 +1334,7 @@ function hrStep(){for(const s of HRS){const c=s.o,tg=s.tg;s.t++;
     if(s.st===0&&(s.l<=0||(RACE?Math.abs(trackInfo(s.x,s.y).off)>TRACK_HALF:outsideArena(s.x,s.y,6))))s.st=2;
   }else if(s.st===1){if(tg.hp<=0||c.hp<=0){hrRel(s);continue}
     const dx=c.x-tg.x,dy=c.y-tg.y,d=Math.hypot(dx,dy)||1,ux=dx/d,uy=dy/d,vr=(tg.vx-c.vx)*ux+(tg.vy-c.vy)*uy;
-    if(d<c.r+tg.r+6){hrSlam(s,ux,uy,cl(12+vr*1.3,14,24),0);continue}/* angekommen: Aufprall */
+    if(d<c.r+tg.r+6&&Math.abs((c.z||0)-(tg.z||0))<22){hrSlam(s,ux,uy,cl(12+vr*1.3,14,24),0);continue}/* angekommen: Aufprall */
     if(s.t>HRL){hrSlam(s,ux,uy,9,1);continue}/* Seil laeuft ab (vorbeigefahren): Ruck */
     if(d>HRR*1.4){hrRel(s);continue}/* vr = Annaeherung; Zug nur bis HRX, Ziel-Anteil sinkt mit seinem Gewicht */
     if(vr<HRX){const f=HRF*Math.min(1,(HRX-vr)/3),ms=c.m||1,mt=tg.m||1,w=hrW(c,tg);tg.vx+=ux*f*w;tg.vy+=uy*f*w;c.vx-=ux*f*(1-w);c.vy-=uy*f*(1-w)}
