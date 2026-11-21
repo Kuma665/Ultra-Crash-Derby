@@ -553,7 +553,7 @@ body.p2 #feed{max-width:44%}body.p2 #feed div{white-space:normal;text-align:cent
 <label>Schadenszahlen <input type="checkbox" id="tdn"></label>
 <button id="trs">↺ Alles auf Standard zurücksetzen</button>
 </details>
-<div id="pk" data-v="pick"></div><small id="pkh" data-v="pick">Jeder Spieler mit seinem Controller: ↑↓ Feld · ←→ ändern · A oder Start bereit · B zurück · LB/RB Fahrzeug · Y Garage · X Zufall · Tastatur: P1 WASD+Leertaste, P2 Pfeile+Enter</small><small id="hlp" data-v="main map cars">A OK · B Zurück</small><small id="ver" data-v="main" style="display:block;text-align:right;font-size:10px;opacity:.45;cursor:pointer">v2026-11-21s</small><button id="bk" data-v="mode map cars set how pick stats">◀ Zurück<span id="bkg"></span></button></div></div>
+<div id="pk" data-v="pick"></div><small id="pkh" data-v="pick">Jeder Spieler mit seinem Controller: ↑↓ Feld · ←→ ändern · A oder Start bereit · B zurück · LB/RB Fahrzeug · Y Garage · X Zufall · Tastatur: P1 WASD+Leertaste, P2 Pfeile+Enter</small><small id="hlp" data-v="main map cars">A OK · B Zurück</small><small id="ver" data-v="main" style="display:block;text-align:right;font-size:10px;opacity:.45;cursor:pointer">v2026-11-21t</small><button id="bk" data-v="mode map cars set how pick stats">◀ Zurück<span id="bkg"></span></button></div></div>
 <div class="ctl"><div><button data-k="l">◀</button><button data-k="r">▶</button></div><button data-k="h">📯</button><button data-k="s" style="display:none">💥</button><div><button data-k="b">▼</button><button data-k="g">▲</button></div></div>
 <p id="hint">Nitro am Handy: Gas halten und Finger nach oben wischen · Zum Spielen zu zweit: Handy quer halten oder an den Fernseher anschließen</p>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -688,7 +688,7 @@ function filletTrack(C,D){const n=C.length,P=[];for(let i=0;i<n;i++){const A=C[(
 mkTrack(filletTrack(HCTRL,300));mkTrack(roundTrack(QUARRY_PTS,190,220));
 const BKW=450,BKS=230,BKT=BKW-BKS,BKH=70;/* Klassik-Derby Oberrang: Hang ringsum (BKS breit), oben eben (BKT breit), Hoehe BKH */const MHR=480,MHH=70;/* Mittelhuegel Klassik-Derby: Radius MHR, Hoehe MHH, Kosinus-Profil (steilste Stelle ca. .16) */function bkH(x,y){const d=Math.min(x,W-x,y,W-y),u=x-W/2,v=y-W/2,q=u*u+v*v;if(q<MHR*MHR)return MHH*(.5+.5*Math.cos(Math.PI*Math.sqrt(q)/MHR));return d>=BKW?0:d<=BKT?BKH:BKH*(BKW-d)/BKS}
 function syStart(a){/* Schrottplatz-Startplatz auf einer Ellipse um den Berg, weg von Rampen und Wrackstapeln */for(const k of[.74,.66,.82,.6]){const x=W/2+Math.cos(a)*SYA*k,y=W/2+Math.sin(a)*SYB*k;if(SYR.some(r=>Math.hypot(x-r.x,y-r.y)<r.a+60)||WK.some(t=>Math.hypot(x-t.sx,y-t.sy)<90)||prIn(x,y,80))continue;return[x,y]}return[W/2+Math.cos(a)*SYA*.45,W/2+Math.sin(a)*SYB*.45]}
-function syH(x,y){if(Math.abs(x-W/2)>=PRU&&Math.abs(x-W/2)<=PRV&&Math.abs(y-W/2)<=PRW/2){const p=PRS[x>W/2?0:1];if(p&&p.op)return -PRZ}/* offene Falltuer = Grube */const u=(x-W/2)/SYHX,v=(y-W/2)/SYHY,q=u*u+v*v;let h=q<1?SYHH*(.5+.5*Math.cos(Math.PI*Math.sqrt(q))):0;for(const rp of SYR)h=Math.max(h,rpH(rp,x,y));return h}/* Schrottplatz-Hoehe: Schrottberg + Rampen (nur Derby MAP 1) */
+function syH(x,y){if(Math.abs(x-W/2)>=PRU+6&&Math.abs(x-W/2)<=PRV-6&&Math.abs(y-W/2)<=PRW/2-6){const p=PRS[x>W/2?0:1];if(p&&p.op)return -PRZ}/* offene Falltuer = Grube */const u=(x-W/2)/SYHX,v=(y-W/2)/SYHY,q=u*u+v*v;let h=q<1?SYHH*(.5+.5*Math.cos(Math.PI*Math.sqrt(q))):0;for(const rp of SYR)h=Math.max(h,rpH(rp,x,y));return h}/* Schrottplatz-Hoehe: Schrottberg + Rampen (nur Derby MAP 1) */
 function mapH(x,y){if(MAP===0)return RACE?0:bkH(x,y);if(MAP===1&&!RACE)return syH(x,y);if(MAP===3&&!RACE)return hillH(x,y);if(MAP===2&&!RACE)return deckH(x,y);let h=0;if(MAP===1){if(y<PY1)h=PH;for(const r of RACE?[]:RMP){const u=rampAt(r,x,y);if(u!==null)h=Math.max(h,PH*Math.min(1,(u+r.L/2)/(r.L-60)))}}return h}
 function outsidePoly(pts,x,y,pad=0){return pts.some((p,i)=>{const q=pts[(i+1)%pts.length],ex=q[0]-p[0],ey=q[1]-p[1];return(ex*(y-p[1])-ey*(x-p[0]))/Math.hypot(ex,ey)<pad})}
 function outsideArena(x,y,pad=0){const dx=x-W/2,dy=y-W/2;if(MAP===1&&!RACE)return Math.abs(dx)>SYA-pad||Math.abs(dy)>SYB-pad;if(MAP===1){const ex=AX-pad,ey=BY-pad;return dx*dx/(ex*ex)+dy*dy/(ey*ey)>1}if(MAP===2)return outsidePoly(HARBOR_PTS,dx,dy,pad);if(MAP===3)return outsidePoly(QUARRY_PTS,dx,dy,pad);return x<pad||x>W-pad||y<pad||y>W-pad}
@@ -1166,7 +1166,7 @@ function prStep(){if(!SYG.visible||cdT>0||(state!=='play'&&state!=='idle'))retur
    if(p.ph===0){prWk(p,0);const q=NP>2?.5:1;for(const s of[-.4,0,.4])spark(mx,W/2+s*PRW,Math.round(4*q));if(snd){const v=prVol(p);if(v>.05)sndCrash(4*v)}}}
   const f=1-p.t/PRT[p.ph];
   p.an=p.ph===2?PRA*f*f:p.ph===3?PRA*(1-.07*Math.sin(Math.min(1,(PRT[3]-p.t)/14)*Math.PI)):p.ph===4?PRA*(1-f*f*(3-2*f)):p.ph===1&&p.t<30?.012*Math.abs(Math.sin(p.t*1.1)):0;
-  p.op=p.ph===3||(p.ph===2&&f>.3)||(p.ph===4&&f<.85)?1:0;
+  p.op=p.an>.4?1:0;/* Loch erst ab sichtbar ca. 23 Grad offener Klappe (vorher fiel man schon bei 6-7 Grad durch) */
   if(p.ph>=2){p.rr+=.09;rl=true}
   p.lm.opacity=p.ph===1?((p.t>>3)&1?1:.2):p.ph===2||p.ph===3?1:p.ph===4?.55:.2;
   p.gm.opacity=p.ph===1?(.22+.36*f)*(.65+.35*Math.sin(p.t*.45)):0;p.gl.visible=p.gm.opacity>.01;
