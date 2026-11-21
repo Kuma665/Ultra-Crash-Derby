@@ -553,7 +553,7 @@ body.p2 #feed{max-width:44%}body.p2 #feed div{white-space:normal;text-align:cent
 <label>Schadenszahlen <input type="checkbox" id="tdn"></label>
 <button id="trs">↺ Alles auf Standard zurücksetzen</button>
 </details>
-<div id="pk" data-v="pick"></div><small id="pkh" data-v="pick">Jeder Spieler mit seinem Controller: ↑↓ Feld · ←→ ändern · A oder Start bereit · B zurück · LB/RB Fahrzeug · Y Garage · X Zufall · Tastatur: P1 WASD+Leertaste, P2 Pfeile+Enter</small><small id="hlp" data-v="main map cars">A OK · B Zurück</small><small id="ver" data-v="main" style="display:block;text-align:right;font-size:10px;opacity:.45;cursor:pointer">v2026-11-21t</small><button id="bk" data-v="mode map cars set how pick stats">◀ Zurück<span id="bkg"></span></button></div></div>
+<div id="pk" data-v="pick"></div><small id="pkh" data-v="pick">Jeder Spieler mit seinem Controller: ↑↓ Feld · ←→ ändern · A oder Start bereit · B zurück · LB/RB Fahrzeug · Y Garage · X Zufall · Tastatur: P1 WASD+Leertaste, P2 Pfeile+Enter</small><small id="hlp" data-v="main map cars">A OK · B Zurück</small><small id="ver" data-v="main" style="display:block;text-align:right;font-size:10px;opacity:.45;cursor:pointer">v2026-11-21u</small><button id="bk" data-v="mode map cars set how pick stats">◀ Zurück<span id="bkg"></span></button></div></div>
 <div class="ctl"><div><button data-k="l">◀</button><button data-k="r">▶</button></div><button data-k="h">📯</button><button data-k="s" style="display:none">💥</button><div><button data-k="b">▼</button><button data-k="g">▲</button></div></div>
 <p id="hint">Nitro am Handy: Gas halten und Finger nach oben wischen · Zum Spielen zu zweit: Handy quer halten oder an den Fernseher anschließen</p>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -1093,23 +1093,23 @@ const SYG=new THREE.Group(),SYO=[],WK=[],WKS=[],WKH=8.6,WKO=new THREE.Object3D()
    /* Klappen-Oberseite: Riffelblech mit Rost, Warnstreifen-Rahmen */
    dT=tex(256,256,(g,w,h)=>{g.fillStyle='#64605a';g.fillRect(0,0,w,h);g.fillStyle='rgba(255,255,255,.13)';for(let y=6;y<h;y+=12)for(let x=((y/12)&1)*6+3;x<w;x+=12){g.save();g.translate(x,y);g.rotate(((x/6+y/12)&1)?.7:-.7);g.fillRect(-4,-1,8,2);g.restore()}for(let i=0;i<26;i++){const x=R()*w,y=R()*h,r=8+R()*26,gr=g.createRadialGradient(x,y,0,x,y,r);gr.addColorStop(0,'rgba(120,60,24,.45)');gr.addColorStop(1,'rgba(120,60,24,0)');g.fillStyle=gr;g.fillRect(x-r,y-r,2*r,2*r)}const b=22;g.save();g.beginPath();g.rect(0,0,w,h);g.rect(b,b,w-2*b,h-2*b);g.clip('evenodd');g.fillStyle='#e0ac00';g.fillRect(0,0,w,h);g.fillStyle='#1c1814';for(let k=-h;k<w+h;k+=32){g.beginPath();g.moveTo(k,0);g.lineTo(k+16,0);g.lineTo(k+16+h,h);g.lineTo(k+h,h);g.fill()}g.restore();g.strokeStyle='rgba(0,0,0,.5)';g.lineWidth=3;g.strokeRect(b,b,w-2*b,h-2*b);g.fillStyle='rgba(20,18,16,.8)';for(const[x,y]of[[11,11],[w-11,11],[11,h-11],[w-11,h-11],[w/2,11],[w/2,h-11]]){g.beginPath();g.arc(x,y,4,0,7);g.fill()}}),
    B1=new THREE.BoxGeometry(1,1,1),sM=new THREE.MeshLambertMaterial({map:pT}),hM=new THREE.MeshLambertMaterial({map:hT}),pwM=new THREE.MeshLambertMaterial({map:pT,color:0x4a4440}),dM=new THREE.MeshLambertMaterial({map:dT}),
-   hz=new THREE.InstancedMesh(B1,hM,8),pw=new THREE.InstancedMesh(B1,pwM,10),
-   fG=new THREE.BoxGeometry(PRD/2-2,5,PRW-4),fM=[sM,sM,dM,sM,sM,sM],lG=new THREE.BoxGeometry(14,10,14),glG=new THREE.PlaneGeometry(PRD,PRW).rotateX(-Math.PI/2),pgG=new THREE.PlaneGeometry(PRD-10,PRW-10).rotateX(-Math.PI/2),
+   pw=new THREE.InstancedMesh(B1,pwM,10),
+   fG=new THREE.BoxGeometry(PRD/2-2,5,PRW-4),fM=[sM,sM,dM,sM,sM,sM],lG=new THREE.BoxGeometry(14,3,14),glG=new THREE.PlaneGeometry(PRD,PRW).rotateX(-Math.PI/2),pgG=new THREE.PlaneGeometry(PRD-10,PRW-10).rotateX(-Math.PI/2),
    /* Schredder-Walze: Zylinder mit Zaehnen (jede zweite Kante weiter aussen), Achse entlang Z */
    rG=(()=>{const g=new THREE.CylinderGeometry(30,30,PRW-14,16,1),a=g.attributes.position;for(let i=0;i<a.count;i++){const x=a.getX(i),z=a.getZ(i),r=Math.hypot(x,z);if(r<1)continue;const k=Math.round(Math.atan2(z,x)/(Math.PI/8));if(k&1){a.setX(i,x*1.4);a.setZ(i,z*1.4)}}g.rotateX(Math.PI/2);g.computeVertexNormals();return g})();
-   let nb=0,nh=0,nw=0;const ab=(m,x,y,z,sx,sy,sz)=>{E.set(0,0,0);Q.setFromEuler(E);P.set(x,y,z);Sc.set(sx,sy,sz);M.compose(P,Q,Sc);m.setMatrixAt(m===hz?nh++:nw++,M)};
+   let nb=0,nh=0,nw=0;const ab=(m,x,y,z,sx,sy,sz)=>{E.set(0,0,0);Q.setFromEuler(E);P.set(x,y,z);Sc.set(sx,sy,sz);M.compose(P,Q,Sc);m.setMatrixAt(nw++,M)};
    PRRM=new THREE.InstancedMesh(rG,new THREE.MeshLambertMaterial({map:pT,color:0x55504a,flatShading:true}),4);
    [1,-1].forEach((sg,k)=>{const uc=PRU+PRD/2,yb=-PRZ/2-1.2,hh=PRZ+1.8;
     /* Grube: Waende ragen 6 ueber den Lochrand hinaus (keine Spalte), Boden */
     ab(pw,sg*(PRU-5),yb,0,12,hh,PRW+24);ab(pw,sg*(PRV+5),yb,0,12,hh,PRW+24);[-1,1].forEach(j=>ab(pw,sg*uc,yb,j*(PRW/2+5),PRD+24,hh,12));ab(pw,sg*uc,-PRZ-2,0,PRD+24,4,PRW+24);
     /* Klappen: fa am inneren Rand (PRU), fb am aeusseren (PRV), treffen sich in der Mitte; da/db = Richtung vom Gelenk zur Mitte */
     const fl2=(hx,d)=>{const g=new THREE.Group(),m=new THREE.Mesh(fG,fM);m.position.set(d*PRD/4,-2.2,0);m.receiveShadow=true;g.add(m);g.position.set(hx,0,0);SYG.add(g);return g},fa=fl2(sg*PRU,sg),fb=fl2(sg*PRV,-sg);
-    /* 4 Warnpfosten an den Ecken (Hindernisse in SYO) mit Blinklampe obendrauf */
-    const lm=new THREE.MeshBasicMaterial({color:0xff7a10,transparent:true,opacity:.2}),lp=new THREE.InstancedMesh(lG,lm,4);let n=0;for(const ex of[PRU-26,PRV+26])for(const j of[-1,1]){const X=sg*ex,Z=j*(PRW/2+26);ab(hz,X,17,Z,9,34,9);SYO.push({x:W/2+X,y:W/2+Z,w:11,d:11,h:34,a:0,r:8,rect:true,m:SYG});E.set(0,0,0);Q.setFromEuler(E);P.set(X,39,Z);Sc.set(1,1,1);M.compose(P,Q,Sc);lp.setMatrixAt(n++,M)}sgA(lp);
+    /* 4 flache Blinklampen im Boden an den Ecken (keine Hindernisse) */
+    const lm=new THREE.MeshBasicMaterial({color:0xff7a10,transparent:true,opacity:.2}),lp=new THREE.InstancedMesh(lG,lm,4);let n=0;for(const ex of[PRU-8,PRV+8])for(const j of[-1,1]){const X=sg*ex,Z=j*(PRW/2+8);E.set(0,0,0);Q.setFromEuler(E);P.set(X,1,Z);Sc.set(1,1,1);M.compose(P,Q,Sc);lp.setMatrixAt(n++,M)}sgA(lp);
     const gm=new THREE.MeshBasicMaterial({color:0xff3a10,transparent:true,opacity:0,depthWrite:false}),gl=new THREE.Mesh(glG,gm);gl.position.set(sg*uc,1.2,0);gl.visible=false;SYG.add(gl);
     const pm=new THREE.MeshBasicMaterial({color:0xff5a14,transparent:true,opacity:0,depthWrite:false}),pg=new THREE.Mesh(pgG,pm);pg.position.set(sg*uc,-PRZ+1,0);pg.visible=false;SYG.add(pg);
     PRS.push({sg,fa,fb,da:sg,db:-sg,lm,lp,gm,gl,pm,pg,ph:0,t:0,an:0,an0:0,op:0,rr:0,ms:0})});
-   hz.castShadow=true;sgA(hz);sgA(pw);sgA(PRRM)}
+   sgA(pw);sgA(PRRM)}
 }
 function wkM(i,x,y,h,ya,th){const g=GH(x,y),c=Math.abs(Math.cos(th)),s=Math.abs(Math.sin(th));WKO.position.set(x-W/2,g+h+4.85*c+10*s,y-W/2);if(h<.5&&g>.5){const e=12,hx=(GH(x+e,y)-GH(x-e,y))/(2*e),hy=(GH(x,y+e)-GH(x,y-e))/(2*e);WKN.set(-hx,1,-hy).normalize();WKO.quaternion.setFromUnitVectors(YA,WKN)}else WKO.quaternion.identity();WKQ.setFromAxisAngle(YA,-ya);WKO.quaternion.multiply(WKQ);WKQ.setFromAxisAngle(WKX,th);WKO.quaternion.multiply(WKQ);WKO.updateMatrix();WKM.setMatrixAt(i,WKO.matrix)}
 function wkReset(){WK.forEach((t,i)=>{t.x=t.sx;t.y=t.sy;t.ya=t.sa;t.h=t.k*WKH;t.vx=t.vy=t.vh=t.th=t.wt=t.ws=0;t.st=0;wkM(i,t.x,t.y,t.h,t.ya,0)});WKM.instanceMatrix.needsUpdate=true;wkRI=-1}
