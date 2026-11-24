@@ -553,7 +553,7 @@ body.p2 #feed{max-width:44%}body.p2 #feed div{white-space:normal;text-align:cent
 <label>Schadenszahlen <input type="checkbox" id="tdn"></label>
 <button id="trs">↺ Alles auf Standard zurücksetzen</button>
 </details>
-<div id="pk" data-v="pick"></div><small id="pkh" data-v="pick">Jeder Spieler mit seinem Controller: ↑↓ Feld · ←→ ändern · A oder Start bereit · B zurück · LB/RB Fahrzeug · Y Garage · X Zufall · Tastatur: P1 WASD+Leertaste, P2 Pfeile+Enter</small><small id="hlp" data-v="main map cars">A OK · B Zurück</small><small id="ver" data-v="main" style="display:block;text-align:right;font-size:10px;opacity:.45;cursor:pointer">v2026-11-24g-r187</small><button id="bk" data-v="mode map cars set how pick stats">◀ Zurück<span id="bkg"></span></button></div></div>
+<div id="pk" data-v="pick"></div><small id="pkh" data-v="pick">Jeder Spieler mit seinem Controller: ↑↓ Feld · ←→ ändern · A oder Start bereit · B zurück · LB/RB Fahrzeug · Y Garage · X Zufall · Tastatur: P1 WASD+Leertaste, P2 Pfeile+Enter</small><small id="hlp" data-v="main map cars">A OK · B Zurück</small><small id="ver" data-v="main" style="display:block;text-align:right;font-size:10px;opacity:.45;cursor:pointer">v2026-11-24h-r187</small><button id="bk" data-v="mode map cars set how pick stats">◀ Zurück<span id="bkg"></span></button></div></div>
 <div class="ctl"><div><button data-k="l">◀</button><button data-k="r">▶</button></div><button data-k="h">📯</button><button data-k="s" style="display:none">💥</button><div><button data-k="b">▼</button><button data-k="g">▲</button></div></div>
 <p id="hint">Nitro am Handy: Gas halten und Finger nach oben wischen · Zum Spielen zu zweit: Handy quer halten oder an den Fernseher anschließen</p>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.min.js","https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.core.js":"https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.core.min.js"}}</script><link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.min.js"><link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.core.min.js">
@@ -1111,6 +1111,32 @@ const SYG=new THREE.Group(),SYO=[],WK=[],WKS=[],WKH=8.6,WKO=new THREE.Object3D()
     const pm=new THREE.MeshBasicMaterial({color:0xff5a14,transparent:true,opacity:0,depthWrite:false}),pg=new THREE.Mesh(pgG,pm);pg.position.set(sg*uc,-PRZ+1,0);pg.visible=false;SYG.add(pg);
     PRS.push({sg,fa,fb,da:sg,db:-sg,lm,lp,gm,gl,pm,pg,ph:0,t:0,an:0,an0:0,op:0,rr:0,ms:0})});
    sgA(pw);sgA(PRRM)}
+ /* Wahrzeichen hinter dem Zaun (nur Optik, 8 Drawcalls): Tuerme aus gepressten Autowuerfeln (Langseiten), Presse-Halle mit Schornstein (rechts), Umschlagbagger mit Wrack im Greifer (links) */
+ {const mB=L=>{const Pp=[],N=[],U=[];for(const g0 of L){const g=g0.index?g0.toNonIndexed():g0;for(const v of g.attributes.position.array)Pp.push(v);for(const v of g.attributes.normal.array)N.push(v);for(const v of g.attributes.uv.array)U.push(v);if(g!==g0)g.dispose();g0.dispose()}const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(Pp,3));g.setAttribute('normal',new THREE.Float32BufferAttribute(N,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(U,2));return g},
+   bx=(w,h,d,x,y,z,rz,ry)=>{const g=new THREE.BoxGeometry(w,h,d);if(rz)g.rotateZ(rz);if(ry)g.rotateY(ry);return g.translate(x,y,z)},
+   sg=(x0,y0,x1,y1,t,d,z)=>bx(Math.hypot(x1-x0,y1-y0),t,d,(x0+x1)/2,(y0+y1)/2,z,Math.atan2(y1-y0,x1-x0)),
+   LM=c=>new THREE.MeshLambertMaterial(c);
+  /* gepresste Autowuerfel: Falten, Glas-/Chromreste, Rost; Grundfarbe je Instanz */
+  const cT=tex(128,128,(g,w,h)=>{g.fillStyle='#d8d8d8';g.fillRect(0,0,w,h);for(let y=0;y<h;y+=6+R()*8){g.fillStyle='rgba(40,30,25,'+(.25+R()*.35)+')';g.beginPath();g.moveTo(0,y);for(let x=0;x<=w;x+=8)g.lineTo(x,y+(R()-.5)*5);g.lineTo(w,y+3);g.lineTo(0,y+3);g.fill()}for(let i=0;i<10;i++){g.fillStyle=R()<.5?'rgba(30,45,60,.85)':'rgba(230,230,235,.7)';g.fillRect(R()*w,R()*h,6+R()*18,3+R()*6)}for(let i=0;i<18;i++){const x=R()*w,y=R()*h,r=4+R()*14,gr=g.createRadialGradient(x,y,0,x,y,r);gr.addColorStop(0,'rgba(120,58,22,.7)');gr.addColorStop(1,'rgba(120,58,22,0)');g.fillStyle=gr;g.fillRect(x-r,y-r,2*r,2*r)}}),
+   CC=[0xc0392b,0x2e86c1,0xd4ac0d,0x27ae60,0x8e44ad,0xd35400,0xbdc3c7,0x1abc9c,0x7f8c8d,0xa04000],TW=[];
+  [[-1350,1],[-800,-1],[-250,1],[350,-1],[950,1],[1450,-1],[-1050,-1],[650,1]].forEach(([x,j])=>{const ns=2+(R()*2|0);for(let s=0;s<ns;s++){const sx=x+(s-(ns-1)/2)*44+(R()-.5)*8,sz=j*(SYB+170+R()*90),n=2+(R()*5|0);for(let k=0;k<n;k++)TW.push([sx+(R()-.5)*5,13+k*25,sz+(R()-.5)*5,(R()-.5)*.25])}});
+  const cm=new THREE.InstancedMesh(new THREE.BoxGeometry(40,24,32),LM({map:cT}),TW.length);TW.forEach(([x,y,z,a],i)=>{E.set(0,a,(R()-.5)*.04);Q.setFromEuler(E);P.set(x,y,z);Sc.set(1,.94+R()*.1,1);M.compose(P,Q,Sc);cm.setMatrixAt(i,M);cm.setColorAt(i,C(CC[(i*7)%CC.length]))});sgA(cm);
+  /* Presse-Halle: Wellblech-Waende, Satteldach (Dreiecksprisma), Rolltor mit Warnstreifen zur Arena, Schornstein mit rot-weisser Spitze */
+  const hx=SYA+230,hz=-380,hw=220,hd=420,hh=130,rs=50/1.5;
+  sgA(new THREE.Mesh(bx(hw,hh,hd,hx,hh/2,hz),LM({map:fT,color:0xc8d2d8})));
+  sgA(new THREE.Mesh(new THREE.CylinderGeometry(1,1,1,3).rotateX(Math.PI/2).rotateZ(Math.PI).scale((hw+16)/1.732,rs,hd+16).translate(hx,hh+rs*.5,hz),LM({map:fT,color:0x7a5a48})));
+  const dT=tex(64,64,(g,w,h)=>{g.fillStyle='#4a4743';g.fillRect(0,0,w,h);g.fillStyle='rgba(0,0,0,.45)';for(let y=12;y<h;y+=4)g.fillRect(0,y,w,1.5);g.fillStyle='#e0ac00';g.fillRect(0,0,w,10);g.fillStyle='#1c1814';for(let x=-10;x<w+10;x+=10){g.beginPath();g.moveTo(x,10);g.lineTo(x+5,10);g.lineTo(x+10,0);g.lineTo(x+5,0);g.fill()}});
+  sgA(new THREE.Mesh(bx(4,112,170,hx-hw/2-1,56,hz),LM({map:dT})));
+  const kT=tex(32,128,(g,w,h)=>{g.fillStyle='#8a8580';g.fillRect(0,0,w,h);g.fillStyle='rgba(40,35,30,.25)';for(let y=40;y<h;y+=6)g.fillRect(0,y,w,1);for(let i=0;i<5;i++){g.fillStyle=i&1?'#f2f2f2':'#c0281e';g.fillRect(0,i*7,w,7)}g.fillStyle='#2a2624';g.fillRect(0,0,w,3)});
+  sgA(new THREE.Mesh(new THREE.CylinderGeometry(14,22,300,12).translate(hx+60,150,hz+250),LM({map:kT})));
+  /* Umschlagbagger (lokal Blick +x, als Gruppe 45 Grad schraeg zur Arena gedreht und 1,4x gross): Ketten, Oberwagen, Kabine, Ausleger, Stiel, Hydraulik, Greifer mit 4 Zinken; Wrack im Greifer ueber dem Zaun */
+  const ex=0,ez=0,yl=[],dk=[],bg=new THREE.Group();bg.position.set(-(SYA+220),0,420);bg.rotation.y=.785;bg.scale.setScalar(1.4);SYG.add(bg);
+  dk.push(bx(100,18,22,ex,9,ez-30),bx(100,18,22,ex,9,ez+30),bx(60,10,50,ex,23,ez),bx(29,15,22,ex+17,77,ez-15));
+  yl.push(bx(76,30,58,ex-8,43,ez),bx(22,28,58,ex-52,42,ez),bx(28,30,26,ex+16,73,ez-15),sg(ex+20,52,ex+125,185,15,14,ez),sg(ex+125,185,ex+170,118,12,12,ez));
+  dk.push(sg(ex+30,46,ex+92,130,5,5,ez+9),sg(ex+30,46,ex+92,130,5,5,ez-9),sg(ex+110,190,ex+160,140,4,4,ez+8),bx(14,10,14,ex+170,112,ez));
+  for(let i=0;i<4;i++){const a=i*Math.PI/2+.785,t=.4,tx=-20*Math.sin(t)*Math.cos(a),ty=20*Math.cos(t),tz=20*Math.sin(t)*Math.sin(a);dk.push(bx(4,40,4,ex+170-tx,106-ty,ez-tz,t,a))}
+  bg.add(new THREE.Mesh(mB(yl),LM({color:0xe0a020})),new THREE.Mesh(mB(dk),LM({color:0x2c2a28})));
+  const wk=new THREE.InstancedMesh(wG,wM,1);E.set(.15,.6,.25);Q.setFromEuler(E);P.set(ex+170,86,ez);Sc.set(1,1,1);M.compose(P,Q,Sc);wk.setMatrixAt(0,M);wk.setColorAt(0,C(0x2f6a8a));wk.instanceMatrix.needsUpdate=true;wk.instanceColor.needsUpdate=true;wk.frustumCulled=false;bg.add(wk)}
 }
 function wkM(i,x,y,h,ya,th){const g=GH(x,y),c=Math.abs(Math.cos(th)),s=Math.abs(Math.sin(th));WKO.position.set(x-W/2,g+h+4.85*c+10*s,y-W/2);if(h<.5&&g>.5){const e=12,hx=(GH(x+e,y)-GH(x-e,y))/(2*e),hy=(GH(x,y+e)-GH(x,y-e))/(2*e);WKN.set(-hx,1,-hy).normalize();WKO.quaternion.setFromUnitVectors(YA,WKN)}else WKO.quaternion.identity();WKQ.setFromAxisAngle(YA,-ya);WKO.quaternion.multiply(WKQ);WKQ.setFromAxisAngle(WKX,th);WKO.quaternion.multiply(WKQ);WKO.updateMatrix();WKM.setMatrixAt(i,WKO.matrix)}
 function wkReset(){WK.forEach((t,i)=>{t.x=t.sx;t.y=t.sy;t.ya=t.sa;t.h=t.k*WKH;t.vx=t.vy=t.vh=t.th=t.wt=t.ws=0;t.st=0;wkM(i,t.x,t.y,t.h,t.ya,0)});WKM.instanceMatrix.needsUpdate=true;wkRI=-1}
