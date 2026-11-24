@@ -553,7 +553,7 @@ body.p2 #feed{max-width:44%}body.p2 #feed div{white-space:normal;text-align:cent
 <label>Schadenszahlen <input type="checkbox" id="tdn"></label>
 <button id="trs">↺ Alles auf Standard zurücksetzen</button>
 </details>
-<div id="pk" data-v="pick"></div><small id="pkh" data-v="pick">Jeder Spieler mit seinem Controller: ↑↓ Feld · ←→ ändern · A oder Start bereit · B zurück · LB/RB Fahrzeug · Y Garage · X Zufall · Tastatur: P1 WASD+Leertaste, P2 Pfeile+Enter</small><small id="hlp" data-v="main map cars">A OK · B Zurück</small><small id="ver" data-v="main" style="display:block;text-align:right;font-size:10px;opacity:.45;cursor:pointer">v2026-11-24c-r187</small><button id="bk" data-v="mode map cars set how pick stats">◀ Zurück<span id="bkg"></span></button></div></div>
+<div id="pk" data-v="pick"></div><small id="pkh" data-v="pick">Jeder Spieler mit seinem Controller: ↑↓ Feld · ←→ ändern · A oder Start bereit · B zurück · LB/RB Fahrzeug · Y Garage · X Zufall · Tastatur: P1 WASD+Leertaste, P2 Pfeile+Enter</small><small id="hlp" data-v="main map cars">A OK · B Zurück</small><small id="ver" data-v="main" style="display:block;text-align:right;font-size:10px;opacity:.45;cursor:pointer">v2026-11-24d-r187</small><button id="bk" data-v="mode map cars set how pick stats">◀ Zurück<span id="bkg"></span></button></div></div>
 <div class="ctl"><div><button data-k="l">◀</button><button data-k="r">▶</button></div><button data-k="h">📯</button><button data-k="s" style="display:none">💥</button><div><button data-k="b">▼</button><button data-k="g">▲</button></div></div>
 <p id="hint">Nitro am Handy: Gas halten und Finger nach oben wischen · Zum Spielen zu zweit: Handy quer halten oder an den Fernseher anschließen</p>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.min.js","https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.core.js":"https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.core.min.js"}}</script><link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.min.js"><link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.core.min.js">
@@ -945,7 +945,7 @@ function rpOk(x,y){return x>60&&y>60&&x<W-60&&y<W-60&&!(MAP&&!RACE&&outsideArena
 function rpPt(px,py,an,dd,sm){const b=sm?RPW:0;for(let k=0;k<4;k++){for(const o of RPOF){const g=an+b+o;if(rpOk(px+Math.cos(g)*dd,py+Math.sin(g)*dd)){if(sm)RPW+=(b+o-RPW)*.12;const a=sm?an+RPW:g;RQX=px+Math.cos(a)*dd;RQY=py+Math.sin(a)*dd;return dd}}if(k<3)dd*=.8}RQX=px+Math.cos(an+b)*dd;RQY=py+Math.sin(an+b)*dd;return dd}
 /* Geschosse (0: aus Szene nehmen, wenn weg), Fässer/Öl (1: ausblenden), Pylonen (2: liegen lassen) – je Eintrag 12 Werte [m,art,pos,rot,scale,opacity] */
 function rpMsRec(){let o=null;const P=(m,k)=>{const p=m.position,r=m.rotation,s=m.scale;(o||(o=[])).push(m,k,p.x,p.y,p.z,r.x,r.y,r.z,s.x,s.y,s.z,m.material&&m.material.opacity!==undefined?m.material.opacity:1)};
- for(const s of shells)if(s.m.parent)P(s.m,0);for(const b of BRL)if(b.m.visible)P(b.m,1);for(const q of OIL)if(q.m.visible)P(q.m,1);for(const n of CN)if(n.m.visible&&(n.vh||n.h>0||Math.abs(n.vx)+Math.abs(n.vy)>.01))P(n.m,2);if(SYG.visible)for(const p of PRS){P(p.fa,2);P(p.fb,2);P(p.gl,1);P(p.lp,1);P(p.pg,1)}if(SYG.visible&&CRG){for(const m of[CRG.br,CRG.tr,CRG.cb,CRG.mg])P(m,2);if(CRG.cn.visible){P(CRG.cn,2);P(CRG.sp,2)}P(CRG.b1,1);if(CRG.wr.visible){P(CRG.wr,1);P(CRG.wf,1)}}return o}
+ for(const s of shells)if(s.m.parent)P(s.m,0);for(const b of BRL)if(b.m.visible)P(b.m,1);for(const q of OIL)if(q.m.visible)P(q.m,1);for(const n of CN)if(n.m.visible&&(n.vh||n.h>0||Math.abs(n.vx)+Math.abs(n.vy)>.01))P(n.m,2);if(SYG.visible)for(const p of PRS){P(p.fa,2);P(p.fb,2);P(p.gl,1);P(p.lp,1);P(p.pg,1)}if(SYG.visible&&CRG){for(const m of[CRG.br,CRG.tr,CRG.cb,CRG.mg])P(m,2);if(CRG.cn.visible)P(CRG.cn,2);P(CRG.sp,1);P(CRG.b1,1);if(CRG.wr.visible){P(CRG.wr,1);P(CRG.wf,1)}}return o}
 function rpMesh(i0,i1,fr){const A=REC[i0].m,B=REC[i1].m;RPMS++;if(A)for(let j=0;j<A.length;j+=12){const m=A[j],k=A[j+1];let x=A[j+2],y=A[j+3],z=A[j+4];if(B&&fr>0)for(let q=0;q<B.length;q+=12)if(B[q]===m){x+=(B[q+2]-x)*fr;y+=(B[q+3]-y)*fr;z+=(B[q+4]-z)*fr;break}
   if(k===0&&m.parent!==S)S.add(m);m.visible=true;m.position.set(x,y,z);m.rotation.set(A[j+5],A[j+6],A[j+7]);m.scale.set(A[j+8],A[j+9],A[j+10]);if(k===1&&m.material)m.material.opacity=A[j+11];m.userData.rps=RPMS;m.userData.rpk=k;RPMV.add(m)}
  for(const m of RPMV)if(m.userData.rps!==RPMS){if(m.userData.rpk===0)S.remove(m);else if(m.userData.rpk===1)m.visible=false;RPMV.delete(m)}tyRp(i0,i1,fr);wkRp(i0,i1,fr)}
@@ -1187,10 +1187,10 @@ function prBot(c,t,tx,ty){/* Bots: Falltuer meiden (Warnung, offen, schliesst, k
   if(prIn(tx,ty,70)===p){out(tx,ty,180);return true}}
  return false}
 /* ===== Brueckenkran mit Magnet (nur Schrottplatz-Derby, SYG): Bruecke faehrt auf Schienen an den Langseiten (x), Laufkatze quer (y), Magnet am Seil, Flutlicht. Nur Optik + Magnet-Logik, keine Kollision mit dem Geruest.
- CR.ph: 0 Pause (CR.t bis zur naechsten Wahl), 1 anfahren (still), 2 Warnung (Kreis folgt dem Ziel), 3 Absenken (Kreis steht), 4 Heben, 5 Tragen (Kreis folgt dem Abwurf-Ziel), 6 Fallen/zurueck. Laengen CRT.
- Zielwahl austauschbar (spaeter Roguelike-Boss): CR.pk(Liste) -> Auto, CR.pd(gehaltenes Auto, Liste) -> Abwurf-Ziel oder null. Autofeld c.mgh = haengt am Magnet (Physik in step uebersprungen, crStep setzt die Position). */
-const CRH=260,CRZ=SYB+40,CRR=85,CRC=120,CRM=200,CRV=6.5,CRF=26,CRT=[0,150,120,8,40,150,70],/* Hoehe Bruecke, Schienen-Abstand, Warnkreis-Radius, Traghoehe, Magnet-Ruhehoehe, Folgetempo (Vollgas ~7,9), Fallzeit, Phasenlaengen */
- CR={ph:0,t:600,x:W/2,y:W/2,x0:W/2,y0:W/2,h:CRM,h0:CRM,hs:CRM,vx:0,vy:0,rx:W/2,ry:W/2,ln:0,tc:null,lc:null,dc:null,dt:null,fc:null,hit:null,wv:0,wx:W/2,wy:W/2,wx0:W/2,wy0:W/2,esc:0,f:0,cx:0,cy:0,cz:0,pk:null,pd:null};
+ CR.ph: 0 Ruhe (Licht weiss, harmlos, CR.t bis hungrig), 1 hungrig (Licht orange, jagt langsam CR.tc; wer ins Licht faehrt -> rot), 2 rot (Kran steht, 1 s zum Rausfahren), 3 Magnet schlaegt runter (greift das Auto im Licht, das der Mitte am naechsten ist), 4 Heben, 5 Tragen (Kreis = Landepunkt), 6 Fallen/zurueck. Laengen CRT.
+ Zielwahl austauschbar (spaeter Roguelike-Boss): CR.pk(Liste) -> gejagtes Auto, CR.pd(gehaltenes Auto, Liste) -> Abwurf-Ziel oder null. Autofelder c.mgh = haengt am Magnet (Physik in step uebersprungen, crStep setzt die Position), c.mge = Bot flieht aus dem roten Licht (beim Rotwerden gewuerfelt). */
+const CRH=260,CRZ=SYB+40,CRR=100,CRC=120,CRM=200,CRV=4.5,CRF=26,CRT=[0,900,60,8,40,150,70],/* Hoehe Bruecke, Schienen-Abstand, Licht-/Warnkreis-Radius, Traghoehe, Magnet-Ruhehoehe, Jagdtempo (Vollgas ~7,9), Fallzeit, Phasenlaengen (1 = Ziel neu waehlen nach) */
+ CR={ph:0,t:600,ms:0,x:W/2,y:W/2,x0:W/2,y0:W/2,h:CRM,h0:CRM,hs:CRM,vx:0,vy:0,rx:W/2,ry:W/2,ln:0,tc:null,lc:null,dc:null,dt:null,fc:null,hit:null,wv:0,wx:W/2,wy:W/2,wx0:W/2,wy0:W/2,esc:0,f:0,cx:0,cy:0,cz:0,pk:null,pd:null};
 let CRG=null;
 {const V=THREE,mg=L=>{/* Geometrien zu einer zusammenfuegen (1 Drawcall) */const P=[],N=[],U=[];for(const g0 of L){const g=g0.index?g0.toNonIndexed():g0;for(const v of g.attributes.position.array)P.push(v);for(const v of g.attributes.normal.array)N.push(v);for(const v of g.attributes.uv.array)U.push(v);if(g!==g0)g.dispose();g0.dispose()}const g=new V.BufferGeometry();g.setAttribute('position',new V.Float32BufferAttribute(P,3));g.setAttribute('normal',new V.Float32BufferAttribute(N,3));g.setAttribute('uv',new V.Float32BufferAttribute(U,2));return g},
   bx=(w,h,d,x,y,z,rx,rz)=>{const g=new V.BoxGeometry(w,h,d);if(rx)g.rotateX(rx);if(rz)g.rotateZ(rz);return g.translate(x,y,z)},
@@ -1239,20 +1239,28 @@ function crLand(f,pl){const R=Math.random,q=NP>2?.5:1;if(pl&&f.hp>0){f.lh=null;f
  for(let i=0;i<Math.round(10*q);i++){const a=R()*6.283;fx(f.x+Math.cos(a)*20,f.y+Math.sin(a)*20,3,Math.cos(a)*(1+R()*1.5),Math.sin(a)*(1+R()*1.5),.6+R()*.6,34,'d',16)}ring(f.x,f.y,f.z||0,20,130,0xd8c098,26,.6);
  if(!pl)return;if(AC){const v=f.hi>=0||(CR.hit&&CR.hit.hi>=0)?1:crVol(f.x,f.y);if(v>.05){sndCrash(9*v);if(v>.3)sndBang()}}let near=1e9;for(const o of cars)if(o.hi>=0)near=Math.min(near,Math.hypot(o.x-f.x,o.y-f.y));if(near<700)shake=Math.max(shake,10*(1-near/700));if(f.hi>=0)rumble(f.hi,7)}
 function crReset(){const R=Math.random;Object.assign(CR,{ph:0,t:540+R()*240|0,x:W/2-SYA*.5,y:W/2,vx:0,vy:0,h:CRM,ln:0,tc:null,lc:null,dc:null,dt:null,fc:null,hit:null,wv:0,f:0});CR.x0=CR.x;CR.y0=CR.y;CR.h0=CR.h;CR.wx0=CR.wx;CR.wy0=CR.wy;for(const c of cars)c.mgh=0;
- if(!CRG)return;CRG.cn.visible=CRG.sp.visible=NP<3;CRG.wr.visible=CRG.wf.visible=false;CRG.mm.emissive.setHex(0);CRG.bc.opacity=.22;crVis(1)}
+ if(!CRG)return;CRG.cn.visible=NP<3;CRG.sp.visible=true;CRG.wr.visible=CRG.wf.visible=false;CRG.mm.emissive.setHex(0);CRG.bc.opacity=.22;crLt();crVis(1)}
+/* Lichtfarbe je Phase: weiss (Ruhe/zurueck), orange (hungrig), rot (Zugriff), orangerot (Tragen) */
+function crLt(){const p=CR.ph,k=p===1?1:p===2||p===3?2:p===4||p===5?3:0,col=[0xfff0c8,0xff9a30,0xff3020,0xff6a20][k],op=[.35,.75,p===3?1:.75+.25*((CR.f>>2)&1),.6][k];CRG.sp.material.color.setHex(col);CRG.sp.material.opacity=op;CRG.cn.material.color.setHex(col);CRG.cn.material.opacity=k?.08:.05}
 function crStep(){if(!SYG.visible||!CRG)return;const pl=state==='play',snd=pl&&AC,R=Math.random;
  CR.x0=CR.x;CR.y0=CR.y;CR.h0=CR.h;CR.wx0=CR.wx;CR.wy0=CR.wy;
  if(cdT>0||(!pl&&state!=='idle')){if(CR.dc)crLet();return}
  CR.f++;CR.t--;let c=CR.tc;
- if(CR.ph===0){if(--CR.ln<=0){CR.ln=180+R()*240|0;CR.rx=W/2+(R()-.5)*SYA*1.3;CR.ry=W/2+(R()-.5)*SYB*1.3}crMv(CR.rx,CR.ry,2.2);CR.h+=(CRM-CR.h)*.05;
-  if(CR.t<=0){const L=cars.filter(o=>o!==CR.lc&&crOk(o));if(L.length&&!(endT>0)&&cars.filter(o=>o.hp>0).length>1){CR.tc=CR.pk(L);CR.ph=1;CR.t=CRT[1]}else CR.t=90}}
- else if(CR.ph<=3&&!crOk(c,1))crAb();
- else if(CR.ph===1){crMv(c.x+c.vx*20,c.y+c.vy*20,11,c.vx,c.vy);if(CR.t<=0||Math.hypot(c.x-CR.x,c.y-CR.y)<70){CR.ph=2;CR.t=CRT[2];CR.wv=1;CR.wx=CR.wx0=CR.x;CR.wy=CR.wy0=CR.y;CR.esc=crEsc(c);if(pl&&c.hi>=0)pmsg(c.hi,TXT.mgW,'#ff3b2a')}}
- else if(CR.ph===2){/* Kreis = Schatten des Magneten; folgt nur mit CRV (langsamer als Vollgas -> wer wegfaehrt, entkommt) */crMv(c.x,c.y,CRV,c.vx,c.vy);CR.wx=CR.x;CR.wy=CR.y;CR.h+=(CRM-40-CR.h)*.04;
-  if(snd&&CR.t%(CR.t<40?7:14)===0){const v=c.hi>=0?1:crVol(c.x,c.y),fq=(CR.t/7)&1?990:740;if(v>.05)tone(AC.currentTime,fq,fq*.9,.08,.13*v,'square')}
+ const roam=()=>{if(--CR.ln<=0){CR.ln=180+R()*240|0;CR.rx=W/2+(R()-.5)*SYA*1.3;CR.ry=W/2+(R()-.5)*SYB*1.3}crMv(CR.rx,CR.ry,2.2)},live=!(endT>0)&&cars.filter(o=>o.hp>0).length>1,inL=o=>Math.hypot(o.x-CR.wx,o.y-CR.wy)<CRR;
+ if(CR.ph===0){roam();CR.h+=(CRM-CR.h)*.05;
+  if(CR.t<=0){if(live){CR.ph=1;CR.t=0;CR.tc=null;CR.wv=1;CR.wx=CR.wx0=CR.x;CR.wy=CR.wy0=CR.y;if(snd){const v=crVol(CR.x,CR.y);if(v>.05)tone(AC.currentTime,330,440,.25,.08*v,'triangle')}}else CR.t=90}}
+ else if(CR.ph===1){/* hungrig: jagt langsam ein Auto (nie das zuletzt gegriffene), Licht folgt dem Kran */
+  if(!live){CR.tc=null;CR.wv=0;CR.ph=0;CR.t=300}
+  else{if(!crOk(c,1)||CR.t<=0){const L=cars.filter(o=>o!==CR.lc&&o!==c&&crOk(o));c=CR.tc=L.length?CR.pk(L):crOk(c,1)?c:null;CR.esc=c?crEsc(c):0;CR.t=CRT[1]}
+   if(c)crMv(c.x,c.y,CRV,c.vx,c.vy);else roam();CR.wx=CR.x;CR.wy=CR.y;CR.h+=(CRM-30-CR.h)*.04;
+   for(const o of cars)if(crOk(o)&&inL(o)){/* jemand im Licht -> rot */CR.ph=2;CR.t=CRT[2];CR.ms=0;for(const q of cars)q.mge=Math.hypot(q.x-CR.wx,q.y-CR.wy)<CRR+10?crEsc(q):1;break}}}
+ else if(CR.ph===2){/* rot: Kran steht, wer rausfaehrt, entkommt */CR.vx=CR.vy=0;CR.h+=(CRM-50-CR.h)*.08;let me=0;
+  for(const o of cars)if(o.hi>=0&&o.hp>0&&inL(o)){me=1;if(pl&&!(CR.ms>>o.hi&1)){CR.ms|=1<<o.hi;pmsg(o.hi,TXT.mgW,'#ff3b2a')}}
+  if(snd&&CR.t%7===0){const v=me?1:crVol(CR.wx,CR.wy),fq=(CR.t/7)&1?990:740;if(v>.05)tone(AC.currentTime,fq,fq*.9,.08,.13*v,'square')}
   if(CR.t<=0){CR.ph=3;CR.t=CRT[3];CR.hs=CR.h}}
  else if(CR.ph===3){CR.vx=CR.vy=0;const u=1-CR.t/CRT[3];CR.h=CR.hs+(gH(CR.x,CR.y)+30-CR.hs)*u*u;
-  if(CR.t<=0){if(Math.hypot(c.x-CR.wx,c.y-CR.wy)<CRR&&(c.z||0)-gH(c.x,c.y)<25)crGrab(c);
+  if(CR.t<=0){let b=null,bd=CRR;for(const o of cars){if(!crOk(o,1)||(o.z||0)-gH(o.x,o.y)>=25)continue;const d=Math.hypot(o.x-CR.wx,o.y-CR.wy);if(d<bd){bd=d;b=o}}
+   if(b)crGrab(b);
    else{/* entkommen: Magnet schlaegt leer auf */crAb();const q=NP>2?.5:1;for(let i=0;i<Math.round(6*q);i++)fx(CR.x+(R()-.5)*50,CR.y+(R()-.5)*50,3,(R()-.5)*1.4,(R()-.5)*1.4,.5+R()*.5,28,'d',12);if(snd){const v=crVol(CR.x,CR.y);if(v>.05)nz(AC.currentTime,.25,500,.8,.25*v,'lowpass')}}}}
  else if(CR.ph===4||CR.ph===5){c=CR.dc;if(!c||c.hp<=0)crLet();else{if(CR.dt&&!crOk(CR.dt,1))CR.dt=null;const t=CR.dt;/* Kreis = vorausberechneter Landepunkt (Kranschwung x Fallzeit CRF) */CR.wx=CR.x+CR.vx*CRF;CR.wy=CR.y+CR.vy*CRF;
   if(CR.ph===4){CR.vx*=.85;CR.vy*=.85;CR.x+=CR.vx;CR.y+=CR.vy;const u=1-CR.t/CRT[4],e=u*u*(3-2*u),k=Math.min(1,u*2.5);CR.h=CR.cz+30+(CRC-CR.cz)*e;crHd(c,CR.cx+(CR.x-CR.cx)*k,CR.cy+(CR.y-CR.cy)*k,CR.h-30);if(CR.t<=0){CR.ph=5;CR.t=CRT[5]}}
@@ -1263,16 +1271,18 @@ function crStep(){if(!SYG.visible||!CRG)return;const pl=state==='play',snd=pl&&A
    if(!f.air||CR.t<-60){crLand(f,pl);CR.fc=null}}
   if(CR.t<=0&&!CR.fc){CR.ph=0;CR.t=900+R()*300|0}}
  /* Optik (Standbild in der Pause: alles am Schrittzaehler CR.f) */
- const on=CR.ph>=2&&CR.ph<=5;CRG.bc.opacity=on?((CR.f>>3)&1?1:.3):.22;CRG.mm.emissive.setHex(CR.ph>=3&&CR.ph<=5?0x5a1808:CR.ph===2&&(CR.f>>2)&1?0x401006:0);
- CRG.wr.visible=CRG.wf.visible=!!CR.wv;if(CR.wv){const lk=CR.ph===3;CRG.wr.material.opacity=lk?.95:.5+.4*Math.abs(Math.sin(CR.f*(CR.ph===2&&CR.t<40?.4:.2)));CRG.wf.material.opacity=lk?.3:.14}
+ const on=CR.ph>=2&&CR.ph<=5;CRG.bc.opacity=on?((CR.f>>3)&1?1:.3):CR.ph===1?.6:.22;CRG.mm.emissive.setHex(CR.ph>=3&&CR.ph<=5?0x5a1808:CR.ph===2&&(CR.f>>2)&1?0x401006:0);crLt();
+ CRG.wr.visible=CRG.wf.visible=!!CR.wv;if(CR.wv){const p=CR.ph,o=p===1;CRG.wr.material.color.setHex(o?0xff8a1a:0xff2a1a);CRG.wf.material.color.setHex(o?0xff8a1a:0xff2a1a);CRG.wr.material.opacity=p===3?1:o?.6+.15*Math.sin(CR.f*.08):.5+.45*Math.abs(Math.sin(CR.f*(p===2?.45:.2)));CRG.wf.material.opacity=p===3?.32:p===2?.22:o?.1:.14}
  crVis(1)/* Meshes auf Schrittstand (fuers Replay-Mitschneiden), render ueberblendet danach */}
 function crVis(al){if(!CRG)return;const L=(a,b)=>a+(b-a)*al,x=L(CR.x0,CR.x),y=L(CR.y0,CR.y),h=L(CR.h0,CR.h),X=x-W/2,Z=y-W/2;CRG.br.position.x=X;CRG.tr.position.set(X,CRH+26,Z);CRG.cb.position.set(X,CRH+5,Z);CRG.cb.scale.y=Math.max(1,CRH-h);CRG.mg.position.set(X,h,Z);
- if(CRG.cn.visible){const g=gH(x,y);CRG.cn.position.set(X,CRH-2,Z);CRG.cn.scale.y=Math.max(1,CRH-2-g);const u=gTq(CRG.sp,x,y,40,0,1);CRG.sp.position.set(X,g+1.5+u,Z)}
+ {const g=gH(x,y);if(CRG.cn.visible){CRG.cn.position.set(X,CRH-2,Z);CRG.cn.scale.y=Math.max(1,CRH-2-g)}const u=gTq(CRG.sp,x,y,40,0,1);CRG.sp.position.set(X,g+1.5+u,Z)}
  if(CRG.wr.visible)crRg(L(CR.wx0,CR.wx),L(CR.wy0,CR.wy))}
 function crRg(x,y){const g=gH(x,y);for(const m of[CRG.wr,CRG.wf]){m.position.set(x-W/2,g,y-W/2);rgCf(m,1,m===CRG.wr?2.6:2.2)}}
 function crRp(){if(CRG&&CRG.wr.visible)crRg(CRG.wr.position.x+W/2,CRG.wr.position.z+W/2)}/* Replay: Warnkreis ans Gelaende */
-function crBot(c,tx,ty){/* Bots meiden den Warnkreis (Ziel-Bot nur, wenn CR.esc); Ziel in PRX/PRY */if(!CR.wv)return false;const me=c===CR.tc||c===CR.dt;if(me&&!CR.esc)return false;
- const Rr=CRR+70,dx=c.x-CR.wx,dy=c.y-CR.wy,d=Math.hypot(dx,dy),to=(ux,uy,k)=>{PRX=cl(CR.wx+ux*k,W/2-SYA+90,W/2+SYA-90);PRY=cl(CR.wy+uy*k,W/2-SYB+90,W/2+SYB-90);return true};
+function crBot(c,tx,ty){/* Bots meiden oranges/rotes Licht und den Landepunkt; gejagtes Ziel / Abwurf-Ziel nur mit CR.esc, im roten Licht nur mit c.mge; Ziel in PRX/PRY */if(!CR.wv)return false;
+ if((c===CR.tc&&CR.ph===1||c===CR.dt)&&!CR.esc)return false;
+ const Rr=CRR+60,dx=c.x-CR.wx,dy=c.y-CR.wy,d=Math.hypot(dx,dy),to=(ux,uy,k)=>{PRX=cl(CR.wx+ux*k,W/2-SYA+90,W/2+SYA-90);PRY=cl(CR.wy+uy*k,W/2-SYB+90,W/2+SYB-90);return true};
+ if((CR.ph===2||CR.ph===3)&&d<CRR+10&&!c.mge)return false;
  if(d<Rr)return d>1?to(dx/d,dy/d,Rr+220):to(Math.cos(c.a),Math.sin(c.a),Rr+220);
  const ex=tx-CR.wx,ey=ty-CR.wy,e=Math.hypot(ex,ey);if(e<Rr)return e>1?to(ex/e,ey/e,Rr+120):to(dx/d,dy/d,Rr+120);return false}
 wkReset();prReset();crReset();
@@ -2303,7 +2313,7 @@ function mmap(){const on=TUNE.mm!==0&&(state==='play'||state==='replay');mmc.sty
   mx.lineJoin='round';OB.forEach(o=>{if(o.m&&o.m.visible===false)return;mx.fillStyle='#e0a100';mx.beginPath();mx.arc(o.x*s,o.y*s,Math.max(3,o.r*s),0,7);mx.fill();mx.strokeStyle='rgba(0,0,0,.6)';mx.lineWidth=1.5;mx.stroke()});
   if(SYG.visible){mx.fillStyle='#8a6448';for(const t of WK)if(t.k===0||t.st)mx.fillRect(t.x*s-2,t.y*s-2,4,4)}
   if(SYG.visible&&state==='play'){/* Kran: Bruecke als Linie, Laufkatze als Quadrat, Warnkreis rot pulsierend */const bx=CR.x*s,by=CR.y*s;mx.strokeStyle='rgba(240,180,30,.55)';mx.lineWidth=3;mx.beginPath();mx.moveTo(bx,(W/2-SYB)*s);mx.lineTo(bx,(W/2+SYB)*s);mx.stroke();mx.fillStyle='#f0b41e';mx.fillRect(bx-4,by-4,8,8);mx.strokeStyle='rgba(0,0,0,.7)';mx.lineWidth=1.5;mx.strokeRect(bx-4,by-4,8,8);
-   if(CR.wv){mx.globalAlpha=CR.ph===3?1:.55+.4*Math.sin(CR.f*.5);mx.strokeStyle='#ff3b2a';mx.lineWidth=3;mx.beginPath();mx.arc(CR.wx*s,CR.wy*s,Math.max(6,CRR*s),0,7);mx.stroke();mx.globalAlpha=1}}
+   if(CR.wv){mx.globalAlpha=CR.ph===3?1:CR.ph===1?.8:.55+.4*Math.sin(CR.f*.5);mx.strokeStyle=CR.ph===1?'#ff8a1a':'#ff3b2a';mx.lineWidth=3;mx.beginPath();mx.arc(CR.wx*s,CR.wy*s,Math.max(6,CRR*s),0,7);mx.stroke();mx.globalAlpha=1}}
    for(const q of OIL)if(q.l>0){mx.fillStyle='rgba(10,14,10,.85)';mx.beginPath();mx.arc(q.x*s,q.y*s,Math.max(3,q.r*s),0,7);mx.fill()}
   if(frOn()&&FRM&&FRM.visible){mx.strokeStyle='#ff6a20';mx.lineWidth=4;mx.beginPath();mx.arc(FR.x*s,FR.y*s,FR.r*s,0,7);mx.stroke();mx.fillStyle='rgba(255,80,20,.22)';mx.beginPath();mx.rect(-400,-400,1040,1040);mx.moveTo(FR.x*s+FR.r*s,FR.y*s);mx.arc(FR.x*s,FR.y*s,FR.r*s,0,Math.PI*2,true);mx.fill()}
   if(GM===4&&ZM&&ZM.visible){mx.strokeStyle=ZG.color.getStyle();mx.lineWidth=3;mx.globalAlpha=ZN.t<180&&((ZN.t/8|0)&1)?.3:.9;mx.beginPath();mx.arc(ZN.x*s,ZN.y*s,ZR*s,0,7);mx.stroke();mx.globalAlpha=.18;mx.fillStyle=mx.strokeStyle;mx.fill();mx.globalAlpha=1}
