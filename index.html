@@ -553,7 +553,7 @@ body.p2 #feed{max-width:44%}body.p2 #feed div{white-space:normal;text-align:cent
 <label>Schadenszahlen <input type="checkbox" id="tdn"></label>
 <button id="trs">↺ Alles auf Standard zurücksetzen</button>
 </details>
-<div id="pk" data-v="pick"></div><small id="pkh" data-v="pick">Jeder Spieler mit seinem Controller: ↑↓ Feld · ←→ ändern · A oder Start bereit · B zurück · LB/RB Fahrzeug · Y Garage · X Zufall · Tastatur: P1 WASD+Leertaste, P2 Pfeile+Enter</small><small id="hlp" data-v="main map cars">A OK · B Zurück</small><small id="ver" data-v="main" style="display:block;text-align:right;font-size:10px;opacity:.45;cursor:pointer">v2026-11-24h-r187</small><button id="bk" data-v="mode map cars set how pick stats">◀ Zurück<span id="bkg"></span></button></div></div>
+<div id="pk" data-v="pick"></div><small id="pkh" data-v="pick">Jeder Spieler mit seinem Controller: ↑↓ Feld · ←→ ändern · A oder Start bereit · B zurück · LB/RB Fahrzeug · Y Garage · X Zufall · Tastatur: P1 WASD+Leertaste, P2 Pfeile+Enter</small><small id="hlp" data-v="main map cars">A OK · B Zurück</small><small id="ver" data-v="main" style="display:block;text-align:right;font-size:10px;opacity:.45;cursor:pointer">v2026-11-24i-r187</small><button id="bk" data-v="mode map cars set how pick stats">◀ Zurück<span id="bkg"></span></button></div></div>
 <div class="ctl"><div><button data-k="l">◀</button><button data-k="r">▶</button></div><button data-k="h">📯</button><button data-k="s" style="display:none">💥</button><div><button data-k="b">▼</button><button data-k="g">▲</button></div></div>
 <p id="hint">Nitro am Handy: Gas halten und Finger nach oben wischen · Zum Spielen zu zweit: Handy quer halten oder an den Fernseher anschließen</p>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.min.js","https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.core.js":"https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.core.min.js"}}</script><link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.min.js"><link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.core.min.js">
@@ -1137,6 +1137,20 @@ const SYG=new THREE.Group(),SYO=[],WK=[],WKS=[],WKH=8.6,WKO=new THREE.Object3D()
   for(let i=0;i<4;i++){const a=i*Math.PI/2+.785,t=.4,tx=-20*Math.sin(t)*Math.cos(a),ty=20*Math.cos(t),tz=20*Math.sin(t)*Math.sin(a);dk.push(bx(4,40,4,ex+170-tx,106-ty,ez-tz,t,a))}
   bg.add(new THREE.Mesh(mB(yl),LM({color:0xe0a020})),new THREE.Mesh(mB(dk),LM({color:0x2c2a28})));
   const wk=new THREE.InstancedMesh(wG,wM,1);E.set(.15,.6,.25);Q.setFromEuler(E);P.set(ex+170,86,ez);Sc.set(1,1,1);M.compose(P,Q,Sc);wk.setMatrixAt(0,M);wk.setColorAt(0,C(0x2f6a8a));wk.instanceMatrix.needsUpdate=true;wk.instanceColor.needsUpdate=true;wk.frustumCulled=false;bg.add(wk)}
+ /* Grosse Teile auf dem Schrottberg (seit v2026-11-24i, 5 Drawcalls): Bus-Wrack (Ost), schraeger Container (West), Traktorreifen-Turm (Sued), senkrecht steckendes Auto am Gipfel = feste Hindernisse in SYO; bunte Tueren/Hauben verstreut (ohne Kollision). Lage am Hang ueber nrmQ, Drehung -a wie die festen Wracks */
+ {const Q2=new THREE.Quaternion(),E2=new THREE.Euler(),pl=(m,x,z,a,lift,ex)=>{const X=W/2+x,Y=W/2+z;nrmQ(X,Y,30);WKQ.setFromAxisAngle(YA,-a);Q.multiply(WKQ);if(ex){E2.set(ex[0],0,ex[1]);Q2.setFromEuler(E2);Q.multiply(Q2)}m.position.set(x,syH(X,Y)+lift,z);m.quaternion.copy(Q);SYG.add(m);return[X,Y]},
+   ob=(X,Y,w,d,h,a)=>SYO.push({x:X,y:Y,w,d,h,a,r:Math.hypot(w,d)/2,rect:true,m:SYG});
+  /* Bus: senffarben, Fensterband, Russ und Rost; liegt halb eingesunken radial am Osthang */
+  const bT=tex(128,64,(g,w,h)=>{g.fillStyle='#d4a020';g.fillRect(0,0,w,h);g.fillStyle='#1b2026';g.fillRect(0,14,w,16);g.fillStyle='#d4a020';for(let x=0;x<w;x+=16)g.fillRect(x,14,3,16);g.fillStyle='#24201c';g.fillRect(0,h-8,w,8);for(let i=0;i<22;i++){const x=R()*w,y=R()*h,r=5+R()*16,gr=g.createRadialGradient(x,y,0,x,y,r);gr.addColorStop(0,R()<.5?'rgba(30,22,16,.75)':'rgba(130,60,22,.7)');gr.addColorStop(1,'rgba(30,22,16,0)');g.fillStyle=gr;g.fillRect(x-r,y-r,2*r,2*r)}});
+  const bA=.15,[bX,bY]=pl(new THREE.Mesh(new THREE.BoxGeometry(110,36,34),new THREE.MeshLambertMaterial({map:bT})),SYHX*.52,-20,bA,9,[.12,0]);ob(bX,bY,110,34,30,bA);
+  /* Container: rostrot, Riffelung (fT), ein Ende eingegraben, das andere ragt schraeg hoch */
+  const cA=Math.PI+.4,[cX,cY]=pl(new THREE.Mesh(new THREE.BoxGeometry(120,48,48),new THREE.MeshLambertMaterial({map:fT,color:0xb4442e})),-SYHX*.5,30,cA,14,[0,.32]);ob(cX,cY,116,48,40,cA);
+  /* Traktorreifen-Turm: 9 grosse Reifen leicht versetzt uebereinander */
+  {const tz=SYHY*.5,ty=syH(W/2,W/2+tz),tg=new THREE.TorusGeometry(12,5.5,6,14).rotateX(Math.PI/2),tm=new THREE.InstancedMesh(tg,new THREE.MeshLambertMaterial({color:0x222020}),9);for(let k=0;k<9;k++){E.set((R()-.5)*.12,R()*6.28,(R()-.5)*.12);Q.setFromEuler(E);P.set((R()-.5)*3,ty+4+k*10.5,tz+(R()-.5)*3);Sc.set(1,1,1);M.compose(P,Q,Sc);tm.setMatrixAt(k,M)}sgA(tm);ob(W/2,W/2+tz,36,36,90,0)}
+  /* Auto steckt senkrecht (Nase unten) neben dem Gipfel-Wrack */
+  {const vx=-48,vz=26,vh=syH(W/2+vx,W/2+vz),vm=new THREE.InstancedMesh(wG,wM,1);E.set(.1,.7,Math.PI/2-.18,'YXZ');Q.setFromEuler(E);P.set(vx,vh+19,vz);Sc.set(1,1,1);M.compose(P,Q,Sc);vm.setMatrixAt(0,M);vm.setColorAt(0,C(0xc0392b));sgA(vm);ob(W/2+vx,W/2+vz,14,20,40,.7)}
+  /* bunte Tueren/Hauben flach am Hang */
+  {const n=36,dm=new THREE.InstancedMesh(new THREE.BoxGeometry(1,1,1),new THREE.MeshLambertMaterial({map:wT}),n),CL=[0xd63a2a,0x2f7fd0,0xe0b020,0x2ea35a,0x9a4ad0,0xe06a1a,0xe8e8e8,0x20b0a0];for(let k=0;k<n;k++){const a=R()*6.28,r=.15+Math.sqrt(R())*.75,x=Math.cos(a)*SYHX*r,z=Math.sin(a)*SYHY*r,X=W/2+x,Y=W/2+z;nrmQ(X,Y,14);WKQ.setFromAxisAngle(YA,R()*6.28);Q.multiply(WKQ);E.set((R()-.5)*.3,0,(R()-.5)*.3);Q2.setFromEuler(E);Q.multiply(Q2);P.set(x,syH(X,Y)+1.4,z);Sc.set(14+R()*10,1.2,10+R()*6);M.compose(P,Q,Sc);dm.setMatrixAt(k,M);dm.setColorAt(k,C(CL[k%CL.length]))}sgA(dm)}}
 }
 function wkM(i,x,y,h,ya,th){const g=GH(x,y),c=Math.abs(Math.cos(th)),s=Math.abs(Math.sin(th));WKO.position.set(x-W/2,g+h+4.85*c+10*s,y-W/2);if(h<.5&&g>.5){const e=12,hx=(GH(x+e,y)-GH(x-e,y))/(2*e),hy=(GH(x,y+e)-GH(x,y-e))/(2*e);WKN.set(-hx,1,-hy).normalize();WKO.quaternion.setFromUnitVectors(YA,WKN)}else WKO.quaternion.identity();WKQ.setFromAxisAngle(YA,-ya);WKO.quaternion.multiply(WKQ);WKQ.setFromAxisAngle(WKX,th);WKO.quaternion.multiply(WKQ);WKO.updateMatrix();WKM.setMatrixAt(i,WKO.matrix)}
 function wkReset(){WK.forEach((t,i)=>{t.x=t.sx;t.y=t.sy;t.ya=t.sa;t.h=t.k*WKH;t.vx=t.vy=t.vh=t.th=t.wt=t.ws=0;t.st=0;wkM(i,t.x,t.y,t.h,t.ya,0)});WKM.instanceMatrix.needsUpdate=true;wkRI=-1}
@@ -1185,15 +1199,15 @@ function prVis(){const al=Math.min(1,acc/16.67);for(const p of PRS)prFlap(p,p.an
 function prWk(p,o){/* Wrackteile im Feld: beim Oeffnen fallen sie rein, beim Schliessen spuckt die Presse sie wieder aus */for(const t of WK){if(t.st===1&&!o)continue;if(prIn(t.x,t.y,10)===p){t.st=1;if(o){t.vx=(Math.random()-.5)*.6;t.vy=(Math.random()-.5)*.6;t.vh=0}else{t.vx=-p.sg*(3+Math.random()*2);t.vy=(Math.random()-.5)*2;t.vh=1.5+Math.random()}t.wt=(Math.random()-.5)*.12;t.ws=(Math.random()-.5)*.1}}}
 function prFall(p,c,pl){/* Auto faellt in die Grube: sofort zerstoert (Kill zaehlt fuer c.lh, wer reingeschoben hat) */c.pit=1;if(c.hp<=0||!pl)return;c.hp=Math.min(c.hp,.01);const s0=c.sh;c.sh=0;hurt(c,60,Math.random()<.5?'l':'r');c.sh=s0;if(c.hp>0){c.hp=0;kill(c);boomV(c.x,c.y)}
  if(c.hi>=0)pmsg(c.hi,'🕳️ Ab in die Presse!','#ff7a10');const q=NP>2?.5:1;spark(c.x,c.y,Math.round(10*q));for(let i=0;i<Math.round(6*q);i++)fx(c.x+(Math.random()-.5)*40,c.y+(Math.random()-.5)*40,-20,(Math.random()-.5)*1.2,(Math.random()-.5)*1.2,.6+Math.random()*.6,30,'d',14);
- if(AC){const v=prVol(p);if(v>.05){sndCrash(7*v);sndBang()}}let near=1e9;for(const o of cars)if(o.hi>=0)near=Math.min(near,Math.hypot(o.x-c.x,o.y-c.y));if(near<700)shake=Math.max(shake,8*(1-near/700))}
+ if(AC){const v=prVol(p);if(v>.05){sndCrash(7*v);sndBang();sndPrShred(v)}}let near=1e9;for(const o of cars)if(o.hi>=0)near=Math.min(near,Math.hypot(o.x-c.x,o.y-c.y));if(near<700)shake=Math.max(shake,8*(1-near/700))}
 function prStep(){if(!SYG.visible||cdT>0||(state!=='play'&&state!=='idle'))return;const pl=state==='play',snd=pl&&AC;let rl=false;
  for(const p of PRS){p.an0=p.an;p.f=(p.f|0)+1;const mx=W/2+p.sg*(PRU+PRD/2);
   /* zu: loest aus, sobald ein Auto auf dem Feld steht (nach Sperrzeit p.t); danach Warnung 1 s -> oeffnen -> offen -> schliessen -> Sperre */
   if(p.ph===0){if(p.t>0)p.t--;else if(prTrig(p)){p.ph=1;p.t=PRT[1];p.ms=0}}
   else if(--p.t<=0){p.ph=(p.ph+1)%5;p.t=PRT[p.ph];
-   if(p.ph===2){prWk(p,1);if(snd){const v=prVol(p);if(v>.05){nz(AC.currentTime,.4,600,.6,.22*v,'lowpass');sndClang()}}}
-   if(p.ph===4&&snd){const v=prVol(p);if(v>.05)nz(AC.currentTime,.9,900,.5,.1*v,'bandpass')}
-   if(p.ph===0){prWk(p,0);const q=NP>2?.5:1;for(const s of[-.4,0,.4])spark(mx,W/2+s*PRW,Math.round(4*q));if(snd){const v=prVol(p);if(v>.05)sndCrash(4*v)}}}
+   if(p.ph===2){prWk(p,1);if(snd){const v=prVol(p);if(v>.05)sndPrOpen(v)}}
+   if(p.ph===4&&snd){const v=prVol(p);if(v>.05)sndPrClose(v)}
+   if(p.ph===0){prWk(p,0);const q=NP>2?.5:1;for(const s of[-.4,0,.4])spark(mx,W/2+s*PRW,Math.round(4*q));if(snd){const v=prVol(p);if(v>.05){sndCrash(4*v);sndPrShut(v)}}}}
   const f=1-p.t/PRT[p.ph];
   p.an=p.ph===2?PRA*f*f:p.ph===3?PRA*(1-.07*Math.sin(Math.min(1,(PRT[3]-p.t)/14)*Math.PI)):p.ph===4?PRA*(1-f*f*(3-2*f)):p.ph===1&&p.t<30?.012*Math.abs(Math.sin(p.t*1.1)):0;
   p.op=p.an>.4?1:0;/* Loch erst ab sichtbar ca. 23 Grad offener Klappe (vorher fiel man schon bei 6-7 Grad durch) */
@@ -1201,7 +1215,7 @@ function prStep(){if(!SYG.visible||cdT>0||(state!=='play'&&state!=='idle'))retur
   p.lm.opacity=p.ph===1?((p.t>>2)&1?1:.2):p.ph===2||p.ph===3?1:p.ph===4?.55:p.t>0?.1:.18+.22*(.5+.5*Math.sin(p.f*.07));/* zu + bereit: Lampen glimmen langsam */
   p.gm.opacity=p.ph===1?(.22+.36*f)*(.65+.35*Math.sin(p.t*.45)):0;p.gl.visible=p.gm.opacity>.01;
   p.pm.opacity=p.ph===2?.45*f:p.ph===3?.45:p.ph===4?.45*(1-f):0;p.pg.visible=p.pm.opacity>.01;
-  if(p.ph===1){if(snd&&p.t%10===0){const v=prVol(p),fq=(p.t/10)&1?880:660;if(v>.05)tone(AC.currentTime,fq,fq,.09,.12*v,'square')}
+  if(p.ph===1){if(snd&&p.t%30===0){const v=prVol(p);if(v>.05)sndPrWarn(v)}
    if(pl&&p.t%10===0)for(const c of cars)if(c.hi>=0&&c.hp>0&&!(p.ms>>c.hi&1)&&prIn(c.x,c.y,30)===p){p.ms|=1<<c.hi;pmsg(c.hi,'⚠️ Falltür!','#ff7a10')}}
   if(p.ph===3&&p.t%10===0)spark(mx+(Math.random()-.5)*PRD*.5,W/2+(Math.random()-.5)*PRW*.8,NP>2?1:2)}
  if(rl)prRoll();
@@ -1262,9 +1276,9 @@ function crGrab(c){const pl=state==='play',R=Math.random;CR.dc=c;CR.tc=null;CR.l
  CR.rx=cl(CR.x+(R()-.5)*900,W/2-SYA+200,W/2+SYA-200);CR.ry=cl(CR.y+(R()-.5)*700,W/2-SYB+200,W/2+SYB-200);
  const L=cars.filter(o=>o!==c&&crOk(o));CR.dt=L.length?CR.pd(c,L):null;CR.wv=1;
  if(CR.dt){CR.wx=CR.wx0=CR.dt.x;CR.wy=CR.wy0=CR.dt.y;CR.esc=crEsc(CR.dt);if(pl&&CR.dt.hi>=0)pmsg(CR.dt.hi,TXT.mgD,'#ff3b2a')}
- spark(c.x,c.y,NP>2?4:8);if(pl&&c.hi>=0){rumble(c.hi,4);shake=Math.max(shake,4)}if(pl&&AC){const v=c.hi>=0?1:crVol(c.x,c.y);if(v>.05)nz(AC.currentTime,.5,220,1,.22*v,'lowpass');if(v>.3)sndClang()}}
+ spark(c.x,c.y,NP>2?4:8);if(pl&&c.hi>=0){rumble(c.hi,4);shake=Math.max(shake,4)}if(pl&&AC){const v=c.hi>=0?1:crVol(c.x,c.y);if(v>.05)sndCrGrab(v)}}
 function crLet(){/* Magnet laesst los: Auto faellt mit dem Schwung des Krans */const c=CR.dc;CR.dc=null;CR.dt=null;CR.wv=0;CR.ph=6;CR.t=CRT[6];if(!c)return;c.mgh=0;c.air=true;c.vz=-2.5;c.vx=CR.vx;c.vy=CR.vy;c.at=0;c.px=c.x;c.py=c.y;CR.fc=c;CR.hit=null;
- if(state==='play'&&AC){const v=c.hi>=0?1:crVol(c.x,c.y);if(v>.05)tone(AC.currentTime,520,260,.14,.1*v,'triangle')}}
+ if(state==='play'&&AC){const v=c.hi>=0?1:crVol(c.x,c.y);if(v>.05)sndCrLet(v)}}
 function crImp(o,f,pl){/* fallendes Auto trifft o: 30 % Schaden, Kill zaehlt fuer niemanden */if(pl){o.lh=null;o.lt=0;hurt(o,.3*o.hm/.38,SD[Math.random()*4|0])}const d=Math.hypot(o.x-f.x,o.y-f.y)||1;o.vx+=(o.x-f.x)/d*2.5;o.vy+=(o.y-f.y)/d*2.5;o.sqv=(o.sqv||0)-.08;spark(o.x,o.y,NP>2?8:16);if(pl&&o.hi>=0){rumble(o.hi,8);shake=Math.max(shake,12)}}
 function crLand(f,pl){const R=Math.random,q=NP>2?.5:1;if(pl&&f.hp>0){f.lh=null;f.lt=0;hurt(f,.3*f.hm/.38,SD[R()*4|0])}spark(f.x,f.y,Math.round(12*q));
  for(let i=0;i<Math.round(10*q);i++){const a=R()*6.283;fx(f.x+Math.cos(a)*20,f.y+Math.sin(a)*20,3,Math.cos(a)*(1+R()*1.5),Math.sin(a)*(1+R()*1.5),.6+R()*.6,34,'d',16)}ring(f.x,f.y,f.z||0,20,130,0xd8c098,26,.6);
@@ -1273,7 +1287,7 @@ function crReset(){const R=Math.random;Object.assign(CR,{ph:0,t:300+R()*180|0,x:
  if(!CRG)return;CRG.wr.visible=CRG.wf.visible=false;CRG.mm.emissive.setHex(0);CRG.bc.opacity=.22;crLt();crVis(1)}
 /* Licht je Phase: weiss (faehrt ziellos, greift trotzdem), orange (jagt), rot (Zugriff); aus beim Tragen/Fallen und CRO Schritte danach. Kegel nur bei NP<3 */
 function crLt(){const p=CR.ph,lit=p<4&&!(CR.off>0),k=p===1?1:p===2||p===3?2:0,col=[0xfff0c8,0xff9a30,0xff3020][k];CRG.sp.visible=lit;CRG.cn.visible=lit&&NP<3;if(!lit)return;CRG.sp.material.color.setHex(col);CRG.sp.material.opacity=[.45,.75,p===3?1:.75+.25*((CR.f>>2)&1)][k];CRG.cn.material.color.setHex(col);CRG.cn.material.opacity=k?.08:.06}
-function crRed(inL){/* jemand im Licht -> rot: Kran bleibt stehen, Bots im Licht wuerfeln, ob sie fliehen (c.mge) */for(const o of cars)if(crOk(o)&&inL(o)){CR.ph=2;CR.t=CRT[2];CR.ms=0;for(const q of cars)q.mge=Math.hypot(q.x-CR.wx,q.y-CR.wy)<CRR+10?crEsc(q):1;return true}return false}
+function crRed(inL){/* jemand im Licht -> rot: Kran bleibt stehen, Bots im Licht wuerfeln, ob sie fliehen (c.mge) */for(const o of cars)if(crOk(o)&&inL(o)){CR.ph=2;CR.t=CRT[2];CR.ms=0;if(state==='play'&&AC){let v=crVol(CR.wx,CR.wy);for(const q of cars)if(q.hi>=0&&inL(q))v=1;if(v>.05)sndCrCharge(v)}for(const q of cars)q.mge=Math.hypot(q.x-CR.wx,q.y-CR.wy)<CRR+10?crEsc(q):1;return true}return false}
 function crStep(){if(!SYG.visible||!CRG)return;const pl=state==='play',snd=pl&&AC,R=Math.random;
  CR.x0=CR.x;CR.y0=CR.y;CR.h0=CR.h;CR.wx0=CR.wx;CR.wy0=CR.wy;
  if(cdT>0||(!pl&&state!=='idle')){if(CR.dc)crLet();return}
@@ -1281,7 +1295,7 @@ function crStep(){if(!SYG.visible||!CRG)return;const pl=state==='play',snd=pl&&A
  const roam=()=>{if(--CR.ln<=0){CR.ln=180+R()*240|0;CR.rx=W/2+(R()-.5)*SYA*1.3;CR.ry=W/2+(R()-.5)*SYB*1.3}crMv(CR.rx,CR.ry,2.2)},live=!(endT>0)&&cars.filter(o=>o.hp>0).length>1,inL=o=>Math.hypot(o.x-CR.wx,o.y-CR.wy)<CRR;
  if(CR.ph===0){/* weiss: faehrt ziellos, greift aber, wer im Licht steht (CR.off = Licht nach einem Griff noch aus) */roam();CR.h+=(CRM-CR.h)*.05;if(CR.off>0)CR.off--;CR.wv=CR.off>0?0:1;CR.wx=CR.x;CR.wy=CR.y;
   if(CR.wv&&live)crRed(inL);
-  if(CR.ph===0&&CR.t<=0&&!(CR.off>0)){if(live){CR.ph=1;CR.t=0;CR.tc=null;CR.wv=1;CR.wx=CR.wx0=CR.x;CR.wy=CR.wy0=CR.y;if(snd){const v=crVol(CR.x,CR.y);if(v>.05)tone(AC.currentTime,330,440,.25,.08*v,'triangle')}}else CR.t=90}}
+  if(CR.ph===0&&CR.t<=0&&!(CR.off>0)){if(live){CR.ph=1;CR.t=0;CR.tc=null;CR.wv=1;CR.wx=CR.wx0=CR.x;CR.wy=CR.wy0=CR.y;if(snd){const v=crVol(CR.x,CR.y);if(v>.05)sndCrUp(v)}}else CR.t=90}}
  else if(CR.ph===1){/* hungrig: jagt langsam ein Auto (nie das zuletzt gegriffene), Licht folgt dem Kran */
   if(!live){CR.tc=null;CR.wv=0;CR.ph=0;CR.t=300}
   else{if(!crOk(c,1)||CR.t<=0){const L=cars.filter(o=>o!==CR.lc&&o!==c&&crOk(o));c=CR.tc=L.length?CR.pk(L):crOk(c,1)?c:null;CR.esc=c?crEsc(c):0;CR.t=CRT[1]}
@@ -1289,12 +1303,12 @@ function crStep(){if(!SYG.visible||!CRG)return;const pl=state==='play',snd=pl&&A
    crRed(inL)}}
  else if(CR.ph===2){/* rot: Kran steht, wer rausfaehrt, entkommt */CR.vx=CR.vy=0;CR.h+=(CRM-50-CR.h)*.08;let me=0;
   for(const o of cars)if(o.hi>=0&&o.hp>0&&inL(o)){me=1;if(pl&&!(CR.ms>>o.hi&1)){CR.ms|=1<<o.hi;pmsg(o.hi,TXT.mgW,'#ff3b2a')}}
-  if(snd&&CR.t%7===0){const v=me?1:crVol(CR.wx,CR.wy),fq=(CR.t/7)&1?990:740;if(v>.05)tone(AC.currentTime,fq,fq*.9,.08,.13*v,'square')}
+  if(snd&&CR.t%12===0){const v=me?1:crVol(CR.wx,CR.wy),k=1-CR.t/CRT[2];if(v>.05)sndCrBuzz(v,k)}
   if(CR.t<=0){CR.ph=3;CR.t=CRT[3];CR.hs=CR.h}}
  else if(CR.ph===3){CR.vx=CR.vy=0;const u=1-CR.t/CRT[3];CR.h=CR.hs+(gH(CR.x,CR.y)+30-CR.hs)*u*u;
   if(CR.t<=0){let b=null,bd=CRR;for(const o of cars){if(!crOk(o,1)||(o.z||0)-gH(o.x,o.y)>=25)continue;const d=Math.hypot(o.x-CR.wx,o.y-CR.wy);if(d<bd){bd=d;b=o}}
    if(b)crGrab(b);
-   else{/* entkommen: Magnet schlaegt leer auf */crAb();const q=NP>2?.5:1;for(let i=0;i<Math.round(6*q);i++)fx(CR.x+(R()-.5)*50,CR.y+(R()-.5)*50,3,(R()-.5)*1.4,(R()-.5)*1.4,.5+R()*.5,28,'d',12);if(snd){const v=crVol(CR.x,CR.y);if(v>.05)nz(AC.currentTime,.25,500,.8,.25*v,'lowpass')}}}}
+   else{/* entkommen: Magnet schlaegt leer auf */crAb();const q=NP>2?.5:1;for(let i=0;i<Math.round(6*q);i++)fx(CR.x+(R()-.5)*50,CR.y+(R()-.5)*50,3,(R()-.5)*1.4,(R()-.5)*1.4,.5+R()*.5,28,'d',12);if(snd){const v=crVol(CR.x,CR.y);if(v>.05)sndCrMiss(v)}}}}
  else if(CR.ph===4||CR.ph===5){c=CR.dc;if(!c||c.hp<=0)crLet();else{if(CR.dt&&(CR.dt.trap?CR.dt.trap.ph>=1:!crOk(CR.dt,1)))CR.dt=null;const t=CR.dt;/* Kreis = vorausberechneter Landepunkt (Kranschwung x Fallzeit CRF) */CR.wx=CR.x+CR.vx*CRF;CR.wy=CR.y+CR.vy*CRF;
   if(CR.ph===4){CR.vx*=.85;CR.vy*=.85;CR.x+=CR.vx;CR.y+=CR.vy;const u=1-CR.t/CRT[4],e=u*u*(3-2*u),k=Math.min(1,u*2.5);CR.h=CR.cz+30+(CRC-CR.cz)*e;crHd(c,CR.cx+(CR.x-CR.cx)*k,CR.cy+(CR.y-CR.cy)*k,CR.h-30);if(CR.t<=0){CR.ph=5;CR.t=CRT[5]}}
   else{const gx=t?t.x+t.vx*CRF:CR.rx,gy=t?t.y+t.vy*CRF:CR.ry;crMv(gx,gy,CRV+1,t?t.vx:0,t?t.vy:0);CR.h=CRC+30;crHd(c,CR.x,CR.y,CRC);c.a+=.006;
@@ -1569,6 +1583,20 @@ function sndClang(){if(!AC)return;const t=AC.currentTime;tone(t,1100,900,.3,.25,
 let sgT=0;function sndGlass(){if(!AC||AC.currentTime-sgT<.08)return;const t=sgT=AC.currentTime;nz(t,.2,6000,.8,.07,"highpass");nz(t,.1,3500,3,.045,"bandpass");for(let i=0;i<3;i++){const u=t+.02+Math.random()*.12,f=2500+Math.random()*2500;tone(u,f,f*.9,.06,.015,"sine")}}
 function sndBoom(){if(!AC)return;const t=AC.currentTime;nz(t,.9,400,.5,1,'lowpass');tone(t,110,25,.8,1,'sine');nz(t,.3,1500,1,.5,'bandpass')}
 function sndBang(){if(!AC)return;const t=AC.currentTime;nz(t,.15,1800,.8,.6,'bandpass');tone(t,300,60,.12,.5)}
+/* Schrottplatz-Toene (Falltuer sndPr*, Kran sndCr*): sfSus = gehaltener Ton (statt Abklingen), sfLp = Tiefpass zum sfx-Bus; v = Lautstaerke 0..1 */
+function sfSus(t,f0,f1,d,g,ty,o){const os=AC.createOscillator(),e=AC.createGain();os.type=ty||'sine';os.frequency.setValueAtTime(f0,t);os.frequency.linearRampToValueAtTime(f1,t+d);e.gain.setValueAtTime(.0001,t);e.gain.linearRampToValueAtTime(g,t+.03);e.gain.setValueAtTime(g,t+d*.75);e.gain.linearRampToValueAtTime(.0001,t+d);os.connect(e);e.connect(o||sfx);os.start(t);os.stop(t+d+.02)}
+function sfLp(f,q){const l=AC.createBiquadFilter();l.type='lowpass';l.frequency.value=f;l.Q.value=q||.7;l.connect(sfx);return l}
+function sndPrWarn(v){const t=AC.currentTime,lp=sfLp(1300,2);sfSus(t,196,190,.38,.14*v,'sawtooth',lp);sfSus(t,247,240,.38,.1*v,'sawtooth',lp);sfSus(t,98,96,.38,.1*v,'square',lp);nz(t,.03,3000,4,.12*v,'bandpass')}
+function sndPrOpen(v){const t=AC.currentTime,R=Math.random;nz(t,.55,4500,.7,.13*v,'highpass');tone(t,140,45,.28,.5*v,'sine');nz(t,.12,700,1.5,.35*v,'bandpass');sfSus(t+.05,70,45,.5,.1*v,'sawtooth',sfLp(400,6));for(let i=0;i<4;i++)nz(t+.08+i*.06+R()*.03,.05,1200+R()*1500,3,.13*v,'bandpass');sndPrShred(v*.7,t+.15)}
+function sndPrShred(v,t0){const t=t0||AC.currentTime,R=Math.random;sfSus(t,52,60,1,.12*v,'sawtooth',sfLp(320,4));nz(t,1,380,2.5,.16*v,'bandpass');for(let i=0;i<5;i++)nz(t+i*.17+R()*.06,.07,600+R()*900,4,.12*v,'bandpass')}
+function sndPrClose(v){const t=AC.currentTime;sfSus(t,90,160,.9,.08*v,'sawtooth',sfLp(700,4));nz(t,.9,2500,.8,.05*v,'highpass')}
+function sndPrShut(v){const t=AC.currentTime;tone(t,95,32,.35,.5*v,'sine');nz(t,.1,900,1.2,.3*v,'bandpass')}
+function sndCrUp(v){const t=AC.currentTime;nz(t,.04,2200,3,.15*v,'bandpass');sfSus(t,40,110,.6,.1*v,'sawtooth',sfLp(600,5));sfSus(t,80,220,.6,.03*v,'square',sfLp(900,1))}
+function sndCrCharge(v){const t=AC.currentTime;sfSus(t,180,1400,1,.05*v,'sawtooth',sfLp(2500,3));sfSus(t,90,700,1,.06*v,'triangle')}
+function sndCrBuzz(v,k){const t=AC.currentTime,f=105+k*40;tone(t,f,f*.97,.1,.1*v,'sawtooth');tone(t,f*1.5,f*1.45,.1,.05*v,'square');nz(t,.06,5000,1,.05*v,'highpass')}
+function sndCrGrab(v){const t=AC.currentTime;nz(t,.07,5000,1,.22*v,'highpass');tone(t,1600,150,.09,.09*v,'sawtooth');tone(t,120,40,.3,.55*v,'sine');tone(t,310,300,.7,.1*v,'triangle');tone(t,467,455,.55,.07*v,'triangle');tone(t,691,680,.45,.05*v,'sine')}
+function sndCrLet(v){const t=AC.currentTime;tone(t,900,110,.2,.08*v,'sawtooth',sfLp(1800,2));nz(t,.03,2500,3,.1*v,'bandpass')}
+function sndCrMiss(v){const t=AC.currentTime;nz(t,.25,500,.8,.25*v,'lowpass');tone(t,100,38,.28,.4*v,'sine');tone(t,290,282,.4,.05*v,'triangle')}
 var engN=0;function engine(){
   if(!AC||!eo||++engN%3)return;wxSound();const t=AC.currentTime;let sp=0,on=false,nb=0;
   if(state==='play'||state==='replay')for(let i=0;i<NP;i++){const c=cars[i];if(c.hp>0){on=true;sp=Math.max(sp,Math.hypot(c.vx,c.vy));if(c.nb)nb=1}}
