@@ -553,7 +553,7 @@ body.p2 #feed{max-width:44%}body.p2 #feed div{white-space:normal;text-align:cent
 <label>Schadenszahlen <input type="checkbox" id="tdn"></label>
 <button id="trs">↺ Alles auf Standard zurücksetzen</button>
 </details>
-<div id="pk" data-v="pick"></div><small id="pkh" data-v="pick">Jeder Spieler mit seinem Controller: ↑↓ Feld · ←→ ändern · A oder Start bereit · B zurück · LB/RB Fahrzeug · Y Garage · X Zufall · Tastatur: P1 WASD+Leertaste, P2 Pfeile+Enter</small><small id="hlp" data-v="main map cars">A OK · B Zurück</small><small id="ver" data-v="main" style="display:block;text-align:right;font-size:10px;opacity:.45;cursor:pointer">v2026-11-24i-r187</small><button id="bk" data-v="mode map cars set how pick stats">◀ Zurück<span id="bkg"></span></button></div></div>
+<div id="pk" data-v="pick"></div><small id="pkh" data-v="pick">Jeder Spieler mit seinem Controller: ↑↓ Feld · ←→ ändern · A oder Start bereit · B zurück · LB/RB Fahrzeug · Y Garage · X Zufall · Tastatur: P1 WASD+Leertaste, P2 Pfeile+Enter</small><small id="hlp" data-v="main map cars">A OK · B Zurück</small><small id="ver" data-v="main" style="display:block;text-align:right;font-size:10px;opacity:.45;cursor:pointer">v2026-11-24j-r187</small><button id="bk" data-v="mode map cars set how pick stats">◀ Zurück<span id="bkg"></span></button></div></div>
 <div class="ctl"><div><button data-k="l">◀</button><button data-k="r">▶</button></div><button data-k="h">📯</button><button data-k="s" style="display:none">💥</button><div><button data-k="b">▼</button><button data-k="g">▲</button></div></div>
 <p id="hint">Nitro am Handy: Gas halten und Finger nach oben wischen · Zum Spielen zu zweit: Handy quer halten oder an den Fernseher anschließen</p>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.min.js","https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.core.js":"https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.core.min.js"}}</script><link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.min.js"><link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.core.min.js">
@@ -1215,7 +1215,7 @@ function prStep(){if(!SYG.visible||cdT>0||(state!=='play'&&state!=='idle'))retur
   p.lm.opacity=p.ph===1?((p.t>>2)&1?1:.2):p.ph===2||p.ph===3?1:p.ph===4?.55:p.t>0?.1:.18+.22*(.5+.5*Math.sin(p.f*.07));/* zu + bereit: Lampen glimmen langsam */
   p.gm.opacity=p.ph===1?(.22+.36*f)*(.65+.35*Math.sin(p.t*.45)):0;p.gl.visible=p.gm.opacity>.01;
   p.pm.opacity=p.ph===2?.45*f:p.ph===3?.45:p.ph===4?.45*(1-f):0;p.pg.visible=p.pm.opacity>.01;
-  if(p.ph===1){if(snd&&p.t%30===0){const v=prVol(p);if(v>.05)sndPrWarn(v)}
+  if(p.ph===1){if(snd&&(p.t%8===0||p.t<24&&p.t%4===0)){const v=prVol(p);if(v>.05)sndPrWarn(v,cl(1-p.t/PRT[1],0,1))}
    if(pl&&p.t%10===0)for(const c of cars)if(c.hi>=0&&c.hp>0&&!(p.ms>>c.hi&1)&&prIn(c.x,c.y,30)===p){p.ms|=1<<c.hi;pmsg(c.hi,'⚠️ Falltür!','#ff7a10')}}
   if(p.ph===3&&p.t%10===0)spark(mx+(Math.random()-.5)*PRD*.5,W/2+(Math.random()-.5)*PRW*.8,NP>2?1:2)}
  if(rl)prRoll();
@@ -1586,7 +1586,7 @@ function sndBang(){if(!AC)return;const t=AC.currentTime;nz(t,.15,1800,.8,.6,'ban
 /* Schrottplatz-Toene (Falltuer sndPr*, Kran sndCr*): sfSus = gehaltener Ton (statt Abklingen), sfLp = Tiefpass zum sfx-Bus; v = Lautstaerke 0..1 */
 function sfSus(t,f0,f1,d,g,ty,o){const os=AC.createOscillator(),e=AC.createGain();os.type=ty||'sine';os.frequency.setValueAtTime(f0,t);os.frequency.linearRampToValueAtTime(f1,t+d);e.gain.setValueAtTime(.0001,t);e.gain.linearRampToValueAtTime(g,t+.03);e.gain.setValueAtTime(g,t+d*.75);e.gain.linearRampToValueAtTime(.0001,t+d);os.connect(e);e.connect(o||sfx);os.start(t);os.stop(t+d+.02)}
 function sfLp(f,q){const l=AC.createBiquadFilter();l.type='lowpass';l.frequency.value=f;l.Q.value=q||.7;l.connect(sfx);return l}
-function sndPrWarn(v){const t=AC.currentTime,lp=sfLp(1300,2);sfSus(t,196,190,.38,.14*v,'sawtooth',lp);sfSus(t,247,240,.38,.1*v,'sawtooth',lp);sfSus(t,98,96,.38,.1*v,'square',lp);nz(t,.03,3000,4,.12*v,'bandpass')}
+function sndPrWarn(v,k){/* Riegel klacken (k 0..1 = Fortschritt, wird lauter/hoeher), am Anfang Metall-Knarzen + Druck-Zischen */const t=AC.currentTime,g=v*(.6+k*.5);nz(t,.035,1700+k*900,6,.3*g,'bandpass');tone(t,380+k*160,300,.05,.08*g,'triangle');tone(t,110,60,.06,.18*g,'sine');if(k<.05){sfSus(t,62,48,.9,.07*v,'sawtooth',sfLp(260,9));nz(t,.9,3800,.9,.05*v,'highpass')}}
 function sndPrOpen(v){const t=AC.currentTime,R=Math.random;nz(t,.55,4500,.7,.13*v,'highpass');tone(t,140,45,.28,.5*v,'sine');nz(t,.12,700,1.5,.35*v,'bandpass');sfSus(t+.05,70,45,.5,.1*v,'sawtooth',sfLp(400,6));for(let i=0;i<4;i++)nz(t+.08+i*.06+R()*.03,.05,1200+R()*1500,3,.13*v,'bandpass');sndPrShred(v*.7,t+.15)}
 function sndPrShred(v,t0){const t=t0||AC.currentTime,R=Math.random;sfSus(t,52,60,1,.12*v,'sawtooth',sfLp(320,4));nz(t,1,380,2.5,.16*v,'bandpass');for(let i=0;i<5;i++)nz(t+i*.17+R()*.06,.07,600+R()*900,4,.12*v,'bandpass')}
 function sndPrClose(v){const t=AC.currentTime;sfSus(t,90,160,.9,.08*v,'sawtooth',sfLp(700,4));nz(t,.9,2500,.8,.05*v,'highpass')}
