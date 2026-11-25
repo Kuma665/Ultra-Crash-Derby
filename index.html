@@ -553,7 +553,7 @@ body.p2 #feed{max-width:44%}body.p2 #feed div{white-space:normal;text-align:cent
 <label>Schadenszahlen <input type="checkbox" id="tdn"></label>
 <button id="trs">↺ Alles auf Standard zurücksetzen</button>
 </details>
-<div id="pk" data-v="pick"></div><small id="pkh" data-v="pick">Jeder Spieler mit seinem Controller: ↑↓ Feld · ←→ ändern · A oder Start bereit · B zurück · LB/RB Fahrzeug · Y Garage · X Zufall · Tastatur: P1 WASD+Leertaste, P2 Pfeile+Enter</small><small id="hlp" data-v="main map cars">A OK · B Zurück</small><small id="ver" data-v="main" style="display:block;text-align:right;font-size:10px;opacity:.45;cursor:pointer">v2026-11-25c-r187</small><button id="bk" data-v="mode map cars set how pick stats">◀ Zurück<span id="bkg"></span></button></div></div>
+<div id="pk" data-v="pick"></div><small id="pkh" data-v="pick">Jeder Spieler mit seinem Controller: ↑↓ Feld · ←→ ändern · A oder Start bereit · B zurück · LB/RB Fahrzeug · Y Garage · X Zufall · Tastatur: P1 WASD+Leertaste, P2 Pfeile+Enter</small><small id="hlp" data-v="main map cars">A OK · B Zurück</small><small id="ver" data-v="main" style="display:block;text-align:right;font-size:10px;opacity:.45;cursor:pointer">v2026-11-25d-r187</small><button id="bk" data-v="mode map cars set how pick stats">◀ Zurück<span id="bkg"></span></button></div></div>
 <div class="ctl"><div><button data-k="l">◀</button><button data-k="r">▶</button></div><button data-k="h">📯</button><button data-k="s" style="display:none">💥</button><div><button data-k="b">▼</button><button data-k="g">▲</button></div></div>
 <p id="hint">Nitro am Handy: Gas halten und Finger nach oben wischen · Zum Spielen zu zweit: Handy quer halten oder an den Fernseher anschließen</p>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.min.js","https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.core.js":"https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.core.min.js"}}</script><link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.min.js"><link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.core.min.js">
@@ -1880,12 +1880,19 @@ function swWall(c,R,u){
   const w=SWW.find(q=>q.l<=0)||SWW.reduce((a,b)=>a.l<b.l?a:b);w.l=w.l0=u?36:30;w.R=R;w.x=c.x;w.y=c.y;w.z=c.z||0;w.h=u?52:40;w.m.material.color.setHex(u?0xffc020:0xff7a20);w.m.visible=true}
 function swwStep(){for(const w of SWW){if(w.l<=0)continue;w.l--;const t=1-w.l/w.l0,e=1-Math.pow(1-t,2.2),s=14+(w.R-14)*e,h=w.h*(1-.65*t);w.m.scale.set(s,1,s);w.m.position.set(w.x-W/2,0,w.y-W/2);swCf(w.m,w.x,w.y,s,h);w.m.material.opacity=.65*Math.min(1,(1-t)*1.6);if(w.l<=0)w.m.visible=false}}
 function shockwave(c,u){
-  const kS=c.mps?1:0,kH=c.mjk||1,R=(u?380:260)*(kS?.7:1)*(.6+.4*kH),now=performance.now();
+  const kS=c.mps?1:0,kH=c.mjk||1,R=(u?380:260)*(kS?.7:1)*(.6+.4*kH),now=performance.now(),T=c.vk===3;let nh=0,hh=c.hi>=0;
   for(const o of cars){if(o===c||o.hp<=0||ally(o,c)||Math.abs((o.z||0)-gH(o.x,o.y)-((c.z||0)-gH(c.x,c.y)))>12)continue;const dx=o.x-c.x,dy=o.y-c.y,d=Math.hypot(dx,dy)||1;if(d>R)continue;
-    const f=1-d/R,k=15*(u?1.4:1)*kH*(.35+.65*f)/Math.pow(o.m,.55);o.lh=c;o.lt=now;o.vx+=dx/d*k;o.vy+=dy/d*k;o.w=cl(o.w+(Math.random()-.5)*.1*f/o.m,-.12,.12);hurt(o,16*(u?1.6:1)*(kS?1.4:1)*kH*(.4+.6*f),sd(o,-dx/d,-dy/d));c.p+=Math.round(20*f)}
+    const f=1-d/R,k=15*(u?1.4:1)*kH*(.35+.65*f)/Math.pow(o.m,.55);o.lh=c;o.lt=now;
+    if(T){/* Trucker-Bock-Moment: Gegner hüpfen (vz max 1,5 / Ulti 1,9 wie Konter), dafür Wegstoß ×0,65 (in der Luft kaum Bremsung); stärkerer Dreher, Karosserie-Wackeln wie crashFeel, Funken, Blitz/Wackeln für getroffene Menschen */
+      const hop=!o.air&&!o.mgh,ux=dx/d,uy=dy/d;if(hop){o.air=true;o.vz=Math.min(u?1.9:1.5,(.9+.6*f)*(u?1.25:1));o.at=0}const kk=hop?k*.65:k;o.vx+=ux*kk;o.vy+=uy*kk;o.w=cl(o.w+(Math.random()-.5)*.4*f/o.m,-.14,.14);
+      const ca=Math.cos(o.a),sa=Math.sin(o.a),q=1/Math.sqrt(o.m);o.vrv=(o.vrv||0)-(-ux*sa+uy*ca)*.2*q;o.vpv=(o.vpv||0)+(ux*ca+uy*sa)*.07*q;o.sqv=(o.sqv||0)-.07*q;spark(o.x,o.y,NP>2?5:10);nh++;
+      if(o.hi>=0){hh=true;shake=Math.max(shake,6+6*f);rumble(o.hi,4+4*f);if(now>(o.ifC|0)){o.ifT=now+130;o.ifC=now+1200}}}
+    else{o.vx+=dx/d*k;o.vy+=dy/d*k;o.w=cl(o.w+(Math.random()-.5)*.1*f/o.m,-.12,.12)}
+    hurt(o,16*(u?1.6:1)*(kS?1.4:1)*kH*(.4+.6*f),sd(o,-dx/d,-dy/d));c.p+=Math.round(20*f)}
+  if(T){c.sqt=6;if(nh){if(hh&&now>HST+500)HST=now+(NP>1?45:65);if(c.hi>=0&&now>(c.ifC|0)){c.ifT=now+130;c.ifC=now+1200}sndCrash(10);if(AC)tone(AC.currentTime+.02,55,25,.5,.8,'sine')}}
   swWall(c,R,u);ring(c.x,c.y,c.z,20,R,0xff7a1a,34,.85);ring(c.x,c.y,c.z,10,R*.7,0xffffff,20,.8,1);ring(c.x,c.y,c.z,5,R*.45,0xff5a10,16,.8);if(kS&&kH>=.8)ring(c.x,c.y,c.z,8,R*.95,0xff1a1a,26,1);
   for(let i=0;i<28;i++){const a=i/28*6.2832;add(c.x+Math.cos(a)*22,c.y+Math.sin(a)*22,3,Math.cos(a)*5,Math.sin(a)*5,.1,32,dsM)}
-  fx(c.x,c.y,10,0,0,0,10,'f',110);spark(c.x,c.y,20);sndBoom();if(c.hi>=0){shake=Math.max(shake,14);kick=Math.max(kick,8);rumble(c.hi,6)}
+  fx(c.x,c.y,10,0,0,0,10,'f',110);spark(c.x,c.y,20);sndBoom();if(c.hi>=0){shake=Math.max(shake,T&&u?18:14);kick=Math.max(kick,8);rumble(c.hi,6)}
 }
 function spinStep(c){
   if(c.hp<=0){c.spn=0;c.spa=0;c.spw=0;c.spT=0;return}
